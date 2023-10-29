@@ -32,28 +32,14 @@
                     <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
-                                <th class="text-center">Kode Kecamatan</th>
+                                <th>Kode Kecamatan</th>
                                 <th>Nama Kecamatan</th>
                                 <th>Nama Kabupaten</th>
                                 <th>Nama Provinsi</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php foreach($get_kecamatan as $v) { ?>
-                                <tr>
-                                <td class="text-center"><?php echo $v['province_id'] . '' . $v['regency_id'] . '' . $v['district_id'];?></td>
-                                    <td><?php echo $v['district_name'];?></td>
-                                    <td><?php echo $v['regency_name'];?></td>
-                                    <td><?php echo $v['province_name'];?></td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="<?php echo site_url('manajemen_data/kecamatan/update/' . $v['location_id']);?>" class="btn btn-sm btn-warning">Edit</a>
-                                        </div>                                        
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>                            
+                        <tbody></tbody>                            
                     </table>
                 </div>
             </div>
@@ -74,6 +60,27 @@
 
 <script>    
     $(document).ready(function () {
-        $("#data-form").DataTable();
+        var table = $("#data-form").DataTable({             
+            'processing': true,
+            'serverSide': true,
+            'serverMethod': 'POST',
+            'ajax': {
+                'url':'<?php echo site_url('manajemen_data/kecamatan/get_data');?>',
+                "type": "POST",
+                "data": function(d){                    
+                    // d.s_provinsi = $('#provinsi_src').val();
+                    // d.s_pendamping = $('#pendamping_src').val();
+                    // d.s_status = $('#status_src').val();
+                },
+            },
+            scrollX: !0,
+            'columns': [
+                { data: 'kode_kecamatan' },
+                { data: 'district_name' },
+                { data: 'regency_name' },
+                { data: 'province_name' },                
+                { data: 'action' },
+            ]            
+        });
     })
 </script>
