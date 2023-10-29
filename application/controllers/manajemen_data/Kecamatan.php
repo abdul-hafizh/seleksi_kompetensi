@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Provinsi extends Telescoope_Controller
+class Kecamatan extends Telescoope_Controller
 {
 
     var $data;
@@ -9,7 +9,7 @@ class Provinsi extends Telescoope_Controller
         
         parent::__construct();
 
-        $this->load->model(array("Administration_m", "Provinsi_m"));
+        $this->load->model(array("Administration_m", "Kecamatan_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -21,7 +21,7 @@ class Provinsi extends Telescoope_Controller
 
         $userdata = $this->Administration_m->getLogin();
 
-        $this->data['dir'] = 'provinsi';
+        $this->data['dir'] = 'kecamatan';
 
         $this->data['controller_name'] = $this->uri->segment(1);
 
@@ -56,8 +56,8 @@ class Provinsi extends Telescoope_Controller
     public function index(){
         $data = array();
 
-        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();      
+        $data['get_kecamatan'] = $this->Kecamatan_m->getKecamatan()->result_array();
 
-        $this->template("manajemen_data/provinsi/list_provinsi_v", "Data Provinsi", $data);
+        $this->template("manajemen_data/kecamatan/list_kecamatan_v", "Data Kecamatan", $data);
     }
 }

@@ -21,10 +21,10 @@
         <div class="card">
             <div class="card-header border-bottom pb-2">
                 <div class="float-start">
-                    <h5 class="card-title mb-0">Data Provinsi</h5>
+                    <h5 class="card-title mb-0">Data Desa</h5>
                 </div>
                 <div class="float-end">
-                    <a href="<?php echo site_url('manajemen_data/provinsi/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Provinsi</a>
+                    <a href="<?php echo site_url('manajemen_data/desa/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Desa</a>
                 </div>
             </div>
             <div class="card-content">
@@ -32,19 +32,25 @@
                     <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
-                                <th class="text-center">Kode Provinsi</th>
+                                <th class="text-center">Kode Desa</th>
+                                <th>Nama Desa</th>
+                                <th>Nama Kecamatan</th>
+                                <th>Nama Kabupaten</th>
                                 <th>Nama Provinsi</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($get_provinsi as $v) { ?>
+                            <?php foreach($get_desa as $v) { ?>
                                 <tr>
-                                    <td class="text-center"><?php echo $v['province_id'];?></td>
+                                <td class="text-center"><?php echo $v['province_id'] . '' . $v['regency_id'] . '' . $v['district_id'] . '' . $v['village_id'];?></td>
+                                    <td><?php echo $v['village_name'];?></td>
+                                    <td><?php echo $v['district_name'];?></td>
+                                    <td><?php echo $v['regency_name'];?></td>
                                     <td><?php echo $v['province_name'];?></td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="<?php echo site_url('manajemen_data/provinsi/update/' . $v['location_id']);?>" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="<?php echo site_url('manajemen_data/desa/update/' . $v['location_id']);?>" class="btn btn-sm btn-warning">Edit</a>
                                         </div>                                        
                                     </td>
                                 </tr>
