@@ -9,7 +9,7 @@ class Users extends Telescoope_Controller
     {
         parent::__construct();
 
-        $this->load->model(array("Administration_m","Provinsi_m"));
+        $this->load->model(array("Administration_m","Provinsi_m","Lokasi_Skd_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -60,10 +60,9 @@ class Users extends Telescoope_Controller
     }
 
     public function add(){
-        $data = array();
-        $data['get_employee_type'] = $this->Administration_m->get_employee_type()->result_array();
+        $data = array();        
         $data['get_pos'] = $this->Administration_m->getNewPos()->result_array();
-        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
+        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();        
 
         $this->template("manajemen_user/users/add_user_v", "Add User", $data);
     }
@@ -77,7 +76,6 @@ class Users extends Telescoope_Controller
 
     public function update($id){
         $data = array();
-        $data['get_employee_type'] = $this->Administration_m->get_employee_type()->result_array();
         $data['get_pos'] = $this->Administration_m->getNewPos()->result_array();  
         $data['get_employee'] = $this->Administration_m->employee_view($id)->row_array();
 
@@ -106,6 +104,7 @@ class Users extends Telescoope_Controller
             'fullname' => $post['fullname'],
             'nik' => $post['nik'],
             'lokasi_user' => $post['desa'],
+            'lokasi_skd_id' => $post['lokasi_skd_id'],
             'alamat' => $post['alamat'],
             'email' => $post['email'],
             'file_ktp' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
@@ -162,6 +161,7 @@ class Users extends Telescoope_Controller
             'fullname' => $post['fullname'],
             'nik' => $post['nik'],
             'lokasi_user' => $post['desa'],
+            'lokasi_skd_id' => $post['lokasi_skd_id'],
             'file_ktp' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : $row_data['file_ktp'],
             'alamat' => $post['alamat'],
             'email' => $post['email'],
@@ -258,6 +258,13 @@ class Users extends Telescoope_Controller
     {
         $kecamatan = $this->input->post('kecamatan', true);
         $data = $this->db->get_where('ref_locations', ['parent_id' => $kecamatan])->result_array();
+        echo json_encode($data);
+    }
+
+    public function get_lokasi()
+    {
+        $desa = $this->input->post('desa', true);
+        $data = $this->db->get_where('lokasi_skd', ['lokasi_id' => $desa])->result_array();
         echo json_encode($data);
     }
 }

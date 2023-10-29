@@ -12,115 +12,82 @@
     }
 </style>
 
-<form action="<?php echo site_url('manajemen_data/lokasi_skd/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+<form action="<?php echo site_url('manajemen_data/jadwal_kegiatan/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Tambah Data Lokasi Test</h5>
+                    <h5 class="card-title mb-0">Tambah Data Jadwal Kegiatan</h5>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-lg-2">
-                            <label class="form-label">Status Gedung</label>
+                            <label class="form-label">Status Kegiatan</label>
                         </div>
                         <div class="col-lg-3">       
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_gedung" value="Siap">
-                                <label class="form-check-label">Siap</label>
+                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Aktif">
+                                <label class="form-check-label">Aktif</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_gedung" value="Tidak">
-                                <label class="form-check-label">Tidak</label>
+                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Tidak Aktif">
+                                <label class="form-check-label">Tidak Aktif</label>
                             </div>
                         </div>
                     </div>    
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
-                            <label class="form-label">Kode Lokasi</label>
+                            <label class="form-label">Kode Kegiatan</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="kode_lokasi" placeholder="Kode Lokasi" required>
+                            <input type="text" class="form-control" name="kode_kegiatan" placeholder="Kode Kegiatan" required>
                         </div>
                     </div>     
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
-                            <label class="form-label">Nama Lokasi</label>
+                            <label class="form-label">Nama Kegiatan</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="nama_lokasi" placeholder="Nama Lokasi" required>
+                            <input type="text" class="form-control" name="nama_kegiatan" placeholder="Nama Kegiatan" required>
                         </div>
                     </div>     
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
-                            <label class="form-label">Lokasi</label>
+                            <label class="form-label">Tanggal Mulai/Selesai</label>
                         </div>
                         <div class="col-lg-4">
-                            <select class="select-single" name="provinsi" id="provinsi" required>
-                                <option value="">Pilih Provinsi</option>
-                                <?php foreach($get_provinsi as $v) { ?>
-                                    <option value="<?php echo $v['location_id']; ?>"><?php echo $v['province_name']; ?></option>
+                            <input type="date" class="form-control" name="tgl_mulai" title="Tanggal Mulai" required>
+                        </div>
+                        <div class="col-lg-4">
+                            <input type="date" class="form-control" name="tgl_selesai" title="Tanggal Selesai" required>                            
+                        </div>
+                    </div>                
+
+                    <div class="row mb-3">
+                        <div class="col-lg-2">
+                            <label class="form-label">Tahun</label>
+                        </div>
+                        <div class="col-lg-3">       
+                            <input type="number" class="form-control" min="2010" max="9999" name="tahun" placeholder="Tahun Kegiatan" required>
+                        </div>
+                    </div>     
+
+                    <div class="row mb-3">
+                        <div class="col-lg-2">
+                            <label class="form-label">Lokasi Kegiatan</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" required>
+                                <option value="">Pilih Lokasi</option>
+                                <?php foreach($get_lokasi as $v) { ?>
+                                    <option value="<?php echo $v['id']; ?>"><?php echo $v['nama_lokasi']; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="col-lg-4">
-                            <select class="select-single" name="kabupaten" id="kabupaten" disabled required>
-                                <option value="">Pilih Kabupaten</option>
-                            </select>
-                        </div>
                     </div>                
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">&nbsp;</label>
-                        </div>                        
-                        <div class="col-lg-4">
-                            <select class="select-single" name="kecamatan" id="kecamatan" disabled required>
-                                <option value="">Pilih Kecamatan</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <select class="select-single" name="desa" id="desa" disabled required>
-                                <option value="">Pilih Desa</option>
-                            </select>
-                        </div>
-                    </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">&nbsp;</label>
-                        </div> 
-                        <div class="col-lg-9">
-                            <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" required></textarea>
-                        </div>
-                    </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Luas Ruangan Test (m2)</label> 
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="panjang_ruangan_test" placeholder="Panjang" required>
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="lebar_ruangan_test" placeholder="Lebar" required>
-                        </div>
-                    </div>                
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Luas Ruangan Tunggu (m2)</label> 
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="panjang_ruangan_tunggu" placeholder="Panjang" required>
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="lebar_ruangan_tunggu" placeholder="Lebar" required>
-                        </div>
-                    </div>                  
 
                     <div class="row mb-3">
                         <div class="col-lg-2">

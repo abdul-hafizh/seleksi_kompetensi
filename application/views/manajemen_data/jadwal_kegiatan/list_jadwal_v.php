@@ -21,10 +21,10 @@
         <div class="card">
             <div class="card-header border-bottom pb-2">
                 <div class="float-start">
-                    <h5 class="card-title mb-0">Data Lokasi Test</h5>
+                    <h5 class="card-title mb-0">Data Jadwal Kegiatan</h5>
                 </div>
                 <div class="float-end">
-                    <a href="<?php echo site_url('manajemen_data/lokasi_skd/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Lokasi Test</a>
+                    <a href="<?php echo site_url('manajemen_data/jadwal_kegiatan/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Jadwal Kegiatan</a>
                 </div>
             </div>
             <div class="card-content">
@@ -32,15 +32,15 @@
                     <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Lokasi ID</th>
+                                <th>Kode Kegiatan</th>
+                                <th>Nama Kegiatan</th>
                                 <th>Nama Lokasi</th>
                                 <th>Nama Provinsi</th>
                                 <th>Nama Kabupaten</th>
-                                <th>Nama Kecamatan</th>
-                                <th>Nama Desa</th>
-                                <th>Status Gedung</th>
-                                <th>Luas Ruangan Test (m2)</th>
-                                <th>Luas Ruangan Tunggu (m2)</th>
+                                <th>Tahun</th>
+                                <th>Status Kegiatan</th>
+                                <th>Tanggal Mulai</th>
+                                <th>Tanggal Selesai</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -70,7 +70,7 @@
             'serverSide': true,
             'serverMethod': 'POST',
             'ajax': {
-                'url':'<?php echo site_url('manajemen_data/lokasi_skd/get_data');?>',
+                'url':'<?php echo site_url('manajemen_data/jadwal_kegiatan/get_data');?>',
                 "type": "POST",
                 "data": function(d){                    
                     // d.s_provinsi = $('#provinsi_src').val();
@@ -80,15 +80,15 @@
             },
             scrollX: !0,
             'columns': [
-                { data: 'lokasi_id' }, 
+                { data: 'kode_kegiatan' }, 
+                { data: 'nama_kegiatan' }, 
                 { data: 'nama_lokasi' }, 
                 { data: 'province_name' }, 
                 { data: 'regency_name' },
-                { data: 'district_name' },
-                { data: 'village_name' },
-                { data: 'status_gedung' },
-                { data: 'luas_ruangan_test' },                
-                { data: 'luas_ruangan_tunggu' },                
+                { data: 'tahun' },
+                { data: 'status_kegiatan' },
+                { data: 'tgl_mulai' },                
+                { data: 'tgl_selesai' },                
                 { data: 'action' },
             ]            
         });

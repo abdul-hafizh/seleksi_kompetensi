@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Lokasi_Skd extends Telescoope_Controller
+class Jadwal_Kegiatan extends Telescoope_Controller
 {
 
     var $data;
@@ -9,7 +9,7 @@ class Lokasi_Skd extends Telescoope_Controller
         
         parent::__construct();
 
-        $this->load->model(array("Administration_m", "Lokasi_Skd_m", "Provinsi_m"));
+        $this->load->model(array("Administration_m", "Lokasi_Skd_m", "Jadwal_Kegiatan_m", "Provinsi_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -21,7 +21,7 @@ class Lokasi_Skd extends Telescoope_Controller
 
         $userdata = $this->Administration_m->getLogin();
 
-        $this->data['dir'] = 'lokasi_skd';
+        $this->data['dir'] = 'jadwal_kegiatan';
 
         $this->data['controller_name'] = $this->uri->segment(1);
 
@@ -56,7 +56,7 @@ class Lokasi_Skd extends Telescoope_Controller
     public function index(){
         $data = array();
 
-        $this->template("manajemen_data/lokasi_skd/list_lokasi_skd_v", "Data Lokasi Test", $data);
+        $this->template("manajemen_data/jadwal_kegiatan/list_jadwal_v", "Data Jadwal Kegiatan", $data);
     }
 
     public function get_data(){
@@ -79,7 +79,7 @@ class Lokasi_Skd extends Telescoope_Controller
 
         $this->db->limit($rowperpage, $row);
 
-        $result = $this->Lokasi_Skd_m->getLokasi()->result_array();
+        $result = $this->Jadwal_Kegiatan_m->getJadwal()->result_array();
 
         if (!empty($search)) {
             // $this->db->group_start();
@@ -88,7 +88,7 @@ class Lokasi_Skd extends Telescoope_Controller
             // $this->db->group_end();
         }
 
-        $count = $this->Lokasi_Skd_m->getLokasi()->num_rows();
+        $count = $this->Jadwal_Kegiatan_m->getJadwal()->num_rows();
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;
@@ -98,20 +98,20 @@ class Lokasi_Skd extends Telescoope_Controller
         foreach($result as $v) {      
             
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('manajemen_data/lokasi_skd/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="' .  site_url('manajemen_data/lokasi_skd/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="' .  site_url('manajemen_data/jadwal_kegiatan/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('manajemen_data/jadwal_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
             
-            $data[] = array(                                
-                "lokasi_id" => $v['lokasi_id'],
+            $data[] = array(                   
+                "kode_kegiatan" => $v['kode_kegiatan'],
+                "nama_kegiatan" => $v['nama_kegiatan'],
                 "nama_lokasi" => $v['nama_lokasi'],
                 "province_name" => $v['province_name'],
                 "regency_name" => $v['regency_name'],
-                "district_name" => $v['district_name'],
-                "village_name" => $v['village_name'],
-                "status_gedung" => $v['status_gedung'],
-                "luas_ruangan_test" => $v['panjang_ruangan_test'] . 'x' . $v['lebar_ruangan_test'],
-                "luas_ruangan_tunggu" => $v['panjang_ruangan_tunggu'] . 'x' . $v['lebar_ruangan_tunggu'],
+                "tahun" => $v['tahun'],
+                "status_kegiatan" => $v['status_kegiatan'],
+                "tgl_mulai" => $v['tgl_mulai'],
+                "tgl_selesai" => $v['tgl_selesai'],                
                 "action" => $action
             );
         }
@@ -130,9 +130,9 @@ class Lokasi_Skd extends Telescoope_Controller
     public function add(){
         $data = array();
         
-        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
+        $data['get_lokasi'] = $this->Lokasi_Skd_m->getLokasi()->result_array();
   
-        $this->template("manajemen_data/lokasi_skd/add_lokasi_skd_v", "Tambah Lokasi Test", $data);
+        $this->template("manajemen_data/jadwal_kegiatan/add_jadwal_v", "Tambah Jadwal Kegiatan", $data);
     }
 
     public function submit_data(){
@@ -141,27 +141,25 @@ class Lokasi_Skd extends Telescoope_Controller
 
         if (count($post) == 0) {
             $this->setMessage("Isi data dengan Benar.");
-            redirect(site_url('manajemen_data/lokasi_skd/add'));
+            redirect(site_url('manajemen_data/jadwal_kegiatan/add'));
         }
 
         $this->db->trans_begin();
 
         $data = array(
-            'status_gedung' => $post['status_gedung'],
-            'kode_lokasi' => $post['kode_lokasi'],
-            'nama_lokasi' => $post['nama_lokasi'],
-            'lokasi_id' => $post['desa'],
-            'alamat' => $post['alamat'],
-            'panjang_ruangan_test' => $post['panjang_ruangan_test'],
-            'lebar_ruangan_test' => $post['lebar_ruangan_test'],
-            'panjang_ruangan_tunggu' => $post['panjang_ruangan_tunggu'],
-            'lebar_ruangan_tunggu' => $post['lebar_ruangan_tunggu'],
+            'lokasi_skd_id' => $post['lokasi_skd_id'],
+            'kode_kegiatan' => $post['kode_kegiatan'],
+            'nama_kegiatan' => $post['nama_kegiatan'],
+            'tahun' => $post['tahun'],
+            'status_kegiatan' => $post['status_kegiatan'],
+            'tgl_mulai' => $post['tgl_mulai'],
+            'tgl_selesai' => $post['tgl_selesai'],
             'catatan' => $post['catatan'],
             'created_by' => $this->data['userdata']['employee_id'],
             'created_at' => date('Y-m-d H:i:s'),
         );
 
-        $simpan = $this->db->insert('lokasi_skd', $data);
+        $simpan = $this->db->insert('jadwal_kegiatan', $data);
         
         if($simpan){        
             if ($this->db->trans_status() === FALSE)  {
@@ -172,31 +170,10 @@ class Lokasi_Skd extends Telescoope_Controller
                 $this->db->trans_commit();
             }            
 
-            redirect(site_url('manajemen_data/lokasi_skd'));
+            redirect(site_url('manajemen_data/jadwal_kegiatan'));
         
         } else {
             $this->renderMessage("error");
         }
-    }
-
-    public function get_regency()
-    {
-        $provinces = $this->input->post('provinsi', true);
-        $data = $this->db->get_where('ref_locations', ['parent_id' => $provinces])->result_array();
-        echo json_encode($data);
-    }
-
-    public function get_district()
-    {
-        $kabupaten = $this->input->post('kabupaten', true);
-        $data = $this->db->get_where('ref_locations', ['parent_id' => $kabupaten])->result_array();
-        echo json_encode($data);
-    }
-
-    public function get_village()
-    {
-        $kecamatan = $this->input->post('kecamatan', true);
-        $data = $this->db->get_where('ref_locations', ['parent_id' => $kecamatan])->result_array();
-        echo json_encode($data);
     }
 }

@@ -96,6 +96,14 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control">Lokasi</label>
+                            <div class="col-md-9">
+                                <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" disabled required>
+                                    <option value="">Pilih Lokasi</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row last mb-3">
                             <label class="col-md-3 label-control">Alamat</label>
                             <div class="col-md-9">
@@ -168,6 +176,23 @@
 						desa += '<option value="' + item.location_id +'">' + item.village_name + "</option>";
 					});
 					$("#desa").html(desa).removeAttr("disabled");
+				},
+			});
+		});
+        
+        $("#desa").on("change", function () {
+			let desa = $("#desa").val();
+			$.ajax({
+				url: "<?php echo site_url('manajemen_user/users/get_lokasi');?>",
+				data: { desa: desa },
+				method: "POST",
+				dataType: "json",
+				success: function (data) {
+					lokasi_skd_id = '<option value="">Pilih Lokasi</option>';
+					$.each(data, function (i, item) {   
+						lokasi_skd_id += '<option value="' + item.id +'">' + ite.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
+					});
+					$("#lokasi_skd_id").html(desa).removeAttr("disabled");
 				},
 			});
 		});
