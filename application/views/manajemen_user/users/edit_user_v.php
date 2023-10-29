@@ -17,11 +17,11 @@
     <div class="col-lg-8 col-12">
         <div class="card">
             <div class="card-header border-bottom pb-2">
-                <h4 class="card-title">Form Edit Data Employee</h4>
+                <h4 class="card-title">Form Edit Data User</h4>
             </div>
             <div class="card-content">
                 <div class="card-body">
-                    <form class="form-bordered" method="post" action="<?php echo site_url('employee/submit_update');?>">                        
+                    <form class="form-bordered" method="post" action="<?php echo site_url('manajemen_user/users/submit_update');?>">                        
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Posisi</label>
                             <div class="col-md-9">
@@ -29,18 +29,6 @@
                                     <option value="" disabled selected>Pilih Posisi</option>
                                     <?php foreach($get_pos as $v) { ?>
                                         <option value="<?php echo $v['pos_id'];?>" <?php echo $get_employee['adm_pos_id'] == $v['pos_id'] ? "selected" : "" ?>><?php echo $v['pos_name'];?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-2" id="pendamping_inp">
-                            <label class="col-md-3 label-control">Nama Pendamping</label>
-                            <div class="col-md-9">
-                                <select class="select-single" name="pendamping" id="pendamping">
-                                    <option value="">Pilih Pendamping</option>
-                                    <?php foreach($pendamping as $v) { ?>
-                                        <option value="<?php echo $v['id']; ?>" <?php echo $get_employee['pendamping_id'] == $v['id'] ? "selected" : "" ?>><?php echo $v['fullname']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -127,26 +115,17 @@
     $(document).ready(function () {
         $(".select-single").select2();
 
-        $('#posisi').on('change', function() {             
-            if (this.value == 3) {
-                $("#pendamping_inp").show();
-            } else {
-                $("#pendamping_inp").hide();
-                $("#pendamping").val('');
-            }
-        });
-
         $("#provinsi").on("change", function () {
 			let provinsi = $("#provinsi").val();
 			$.ajax({
-				url: "<?php echo site_url('employee/get_regency');?>",
+				url: "<?php echo site_url('manajemen_user/users/get_regency');?>",
 				data: { provinsi: provinsi },
 				method: "post",
 				dataType: "json",
 				success: function (data) {
 					kabupaten = '<option value="">Pilih Kabupaten</option>';                    
 					$.each(data, function (i, item) {   
-						kabupaten += '<option value="' + item.regency_name +'">' + item.regency_name + "</option>";
+						kabupaten += '<option value="' + item.location_id +'">' + item.regency_name + "</option>";
 					});                    
 					$("#kabupaten").html(kabupaten).removeAttr("disabled");
 				},

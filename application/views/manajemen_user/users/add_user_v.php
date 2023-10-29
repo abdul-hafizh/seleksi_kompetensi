@@ -5,11 +5,11 @@
     <div class="col-lg-8 col-12">
         <div class="card">
             <div class="card-header border-bottom pb-2">
-                <h4 class="card-title">Form Pengisian Employee</h4>
+                <h4 class="card-title">Form Pengisian User</h4>
             </div>
             <div class="card-content">
                 <div class="card-body">
-                    <form class="form-bordered" method="post" action="<?php echo site_url('employee/submit');?>">                        
+                    <form class="form-bordered" method="post" action="<?php echo site_url('manajemen_user/users/submit');?>">                        
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Posisi</label>
                             <div class="col-md-9">
@@ -21,39 +21,28 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row mb-2" id="pendamping_inp">
-                            <label class="col-md-3 label-control">Nama Pendamping</label>
-                            <div class="col-md-9">
-                                <select class="select-single" name="pendamping" id="pendamping">
-                                    <option value="">Pilih Pendamping</option>
-                                    <?php foreach($pendamping as $v) { ?>
-                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['fullname']; ?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                        </div>
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Nama Lengkap</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control col-lg-7" name="fullname" required>                                
+                                <input type="text" class="form-control col-lg-7" name="fullname" placeholder="Nama Lengkap" required>
                             </div>
                         </div>
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">NIK</label>
                             <div class="col-md-9">
-                                <input type="number" class="form-control col-lg-7" name="nik" required>                                
+                                <input type="number" class="form-control col-lg-7" name="nik" placeholder="NIK" required>
                             </div>
                         </div>
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Email</label>
                             <div class="col-md-9">
-                                <input type="email" class="form-control col-lg-7" name="email">                                
+                                <input type="email" class="form-control col-lg-7" name="email" placeholder="Email">
                             </div>
                         </div>
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Phone</label>
                             <div class="col-md-9">
-                                <input type="text" maxlength="25" class="form-control col-lg-7" name="phone" onkeypress="return onlyNumber(event)" required>                                
+                                <input type="text" maxlength="25" class="form-control col-lg-7" name="phone" onkeypress="return onlyNumber(event)" placeholder="Nomor HP" required>
                             </div>
                         </div>                        
                         <div class="form-group row mb-2">
@@ -88,7 +77,7 @@
                         <div class="form-group row last mb-3">
                             <label class="col-md-3 label-control">Alamat</label>
                             <div class="col-md-9">
-                                <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" required></textarea>
+                                <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" placeholder="Alamat" required></textarea>
                             </div>
                         </div>                        
                         <div class="text-right">
@@ -110,29 +99,17 @@
     $(document).ready(function () {
         $(".select-single").select2();
 
-        $("#pendamping_inp").hide();
-        $("#pendamping").val('');
-
-        $('#posisi').on('change', function() {             
-            if (this.value == 3) {
-                $("#pendamping_inp").show();
-            } else {
-                $("#pendamping_inp").hide();
-                $("#pendamping").val('');
-            }
-        });
-
         $("#provinsi").on("change", function () {
 			let provinsi = $("#provinsi").val();
 			$.ajax({
-				url: "<?php echo site_url('employee/get_regency');?>",
+				url: "<?php echo site_url('manajemen_user/users/get_regency');?>",
 				data: { provinsi: provinsi },
 				method: "post",
 				dataType: "json",
 				success: function (data) {
 					kabupaten = '<option value="">Pilih Kabupaten</option>';                    
 					$.each(data, function (i, item) {   
-						kabupaten += '<option value="' + item.regency_name +'">' + item.regency_name + "</option>";
+						kabupaten += '<option value="' + item.location_id +'">' + item.regency_name + "</option>";
 					});                    
 					$("#kabupaten").html(kabupaten).removeAttr("disabled");
 				},

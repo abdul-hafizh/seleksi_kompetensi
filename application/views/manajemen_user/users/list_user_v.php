@@ -24,7 +24,7 @@
                     <h5 class="card-title mb-0">List Employee</h5>
                 </div>
                 <div class="float-end">
-                    <a href="<?php echo site_url('employee/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Employee</a>
+                    <a href="<?php echo site_url('manajemen_user/users/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Employee</a>
                 </div>
             </div>
             <div class="card-content">
@@ -52,7 +52,7 @@
                                     <td><?php echo $v['status'] == 2 ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-danger">Tidak Aktif</span>'; ?></td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="<?php echo site_url('employee/update/' . $v['id']);?>" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="<?php echo site_url('manajemen_user/users/update/' . $v['id']);?>" class="btn btn-sm btn-warning">Edit</a>
                                         </div>                                        
                                     </td>
                                 </tr>

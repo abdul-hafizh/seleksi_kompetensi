@@ -101,7 +101,7 @@
         });
 
         $.ajax({
-          url: "<?php echo site_url('administration/submit_menu_management') ?>",
+          url: "<?php echo site_url('manajemen_user/roles/submit_menu_management') ?>",
           data: {
             jobtitle: "<?php echo html_escape($current_jobtitle) ?>",
             menu: mydata

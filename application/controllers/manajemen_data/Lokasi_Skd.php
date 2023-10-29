@@ -9,7 +9,7 @@ class Lokasi_Skd extends Telescoope_Controller
         
         parent::__construct();
 
-        $this->load->model(array("Administration_m", "Lokasi_Skd_m"));
+        $this->load->model(array("Administration_m", "Lokasi_Skd_m", "Provinsi_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -55,6 +55,7 @@ class Lokasi_Skd extends Telescoope_Controller
 
     public function index(){
         $data = array();
+
         $this->template("manajemen_data/lokasi_skd/list_lokasi_skd_v", "Data Lokasi SKD", $data);
     }
 
@@ -123,5 +124,75 @@ class Lokasi_Skd extends Telescoope_Controller
         );
         
         echo json_encode($response);
+    }
+    
+    public function add(){
+        $data = array();
+        
+        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
+  
+        $this->template("manajemen_data/lokasi_skd/add_lokasi_skd_v", "Tambah Lokasi SKD", $data);
+    }
+
+    public function submit_data(){
+
+        $post = $this->input->post(); 
+
+        if (count($post) == 0) {
+            $this->setMessage("Isi data dengan Benar.");
+            redirect(site_url('manajemen_data/lokasi_skd/add'));
+        }
+
+        $this->db->trans_begin();
+
+        $data = array(
+            'status_gedung' => $post['status_gedung'],
+            'lokasi_id' => $post['desa'],
+            'panjang_ruangan_test' => $post['panjang_ruangan_test'],
+            'lebar_ruangan_test' => $post['lebar_ruangan_test'],
+            'panjang_ruangan_tunggu' => $post['panjang_ruangan_tunggu'],
+            'lebar_ruangan_tunggu' => $post['lebar_ruangan_tunggu'],
+            'catatan' => $post['catatan'],
+            'created_by' => $this->data['userdata']['employee_id'],
+            'created_at' => date('Y-m-d H:i:s'),
+        );
+
+        $simpan = $this->db->insert('lokasi_skd', $data);
+        
+        if($simpan){        
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Failed save data.");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Success save data.");
+                $this->db->trans_commit();
+            }            
+
+            redirect(site_url('manajemen_data/lokasi_skd'));
+        
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
+    public function get_regency()
+    {
+        $provinces = $this->input->post('provinsi', true);
+        $data = $this->db->get_where('ref_locations', ['parent_id' => $provinces])->result_array();
+        echo json_encode($data);
+    }
+
+    public function get_district()
+    {
+        $kabupaten = $this->input->post('kabupaten', true);
+        $data = $this->db->get_where('ref_locations', ['parent_id' => $kabupaten])->result_array();
+        echo json_encode($data);
+    }
+
+    public function get_village()
+    {
+        $kecamatan = $this->input->post('kecamatan', true);
+        $data = $this->db->get_where('ref_locations', ['parent_id' => $kecamatan])->result_array();
+        echo json_encode($data);
     }
 }
