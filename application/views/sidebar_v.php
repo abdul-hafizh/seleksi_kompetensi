@@ -31,6 +31,7 @@
                 <div id="two-column-menu"></div>
                     
                 <div class="text-center">
+                    <img class="mt-2" src="<?php echo base_url()?>assets/images/logo-bkn-.png" alt="Header Avatar" height="50"> <br/>
                     <img class="rounded-circle" src="<?php echo base_url()?>assets/images/users/user-dummy-img.jpg" alt="Header Avatar" height="150">
                 </div>
                 
