@@ -34,6 +34,12 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control">Upload Foto KTP</label>
+                            <div class="col-md-9">
+                                <input type="file" class="form-control col-lg-7" name="file_ktp" placeholder="Foto KTP">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Email</label>
                             <div class="col-md-9">
                                 <input type="email" class="form-control col-lg-7" name="email" placeholder="Email">
@@ -44,7 +50,7 @@
                             <div class="col-md-9">
                                 <input type="text" maxlength="25" class="form-control col-lg-7" name="phone" onkeypress="return onlyNumber(event)" placeholder="Nomor HP" required>
                             </div>
-                        </div>                        
+                        </div>
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Status</label>
                             <div class="col-md-9">
@@ -54,34 +60,50 @@
                                     <option value="2">Aktif</option>
                                 </select>
                             </div>
-                        </div>                        
+                        </div>
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Provinsi</label>
                             <div class="col-md-9">
                                 <select class="select-single" name="provinsi" id="provinsi" required>
                                     <option value="">Pilih Provinsi</option>
-                                    <?php foreach($provinsi as $v) { ?>
-                                        <option value="<?php echo $v['province_name']; ?>"><?php echo $v['province_name']; ?></option>
+                                    <?php foreach($get_provinsi as $v) { ?>
+                                        <option value="<?php echo $v['location_id']; ?>"><?php echo $v['province_name']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
-                        </div>                        
+                        </div>
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Kabupaten</label>
                             <div class="col-md-9">
-                                <select class="select-single" name="kabupaten" id="kabupaten" disabled>
+                                <select class="select-single" name="kabupaten" id="kabupaten" disabled required>
                                     <option value="">Pilih Kabupaten</option>
                                 </select>
                             </div>
-                        </div>                        
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control">Kecamatan</label>
+                            <div class="col-md-9">
+                                <select class="select-single" name="kecamatan" id="kecamatan" disabled required>
+                                    <option value="">Pilih Kecamatan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control">Desa</label>
+                            <div class="col-md-9">
+                                <select class="select-single" name="desa" id="desa" disabled required>
+                                    <option value="">Pilih Desa</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row last mb-3">
                             <label class="col-md-3 label-control">Alamat</label>
                             <div class="col-md-9">
                                 <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" placeholder="Alamat" required></textarea>
                             </div>
-                        </div>                        
+                        </div>
                         <div class="text-right">
-                            <a href="<?php echo site_url('employee');?>" class="btn btn-secondary"><i class="ft-chevrons-left mr-1"></i>Kembali</a>
+                            <a href="<?php echo site_url('manajemen_user/users');?>" class="btn btn-secondary"><i class="ft-chevrons-left mr-1"></i>Kembali</a>
                             <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah Anda yakin simpan data ini?');"><i class="ft-check-square mr-1"></i>Simpan</button>
                         </div>
                     </form>
@@ -112,6 +134,40 @@
 						kabupaten += '<option value="' + item.location_id +'">' + item.regency_name + "</option>";
 					});                    
 					$("#kabupaten").html(kabupaten).removeAttr("disabled");
+				},
+			});
+		});
+
+        $("#kabupaten").on("change", function () {
+			let kabupaten = $("#kabupaten").val();
+			$.ajax({
+				url: "<?php echo site_url('manajemen_user/users/get_district');?>",
+				data: { kabupaten: kabupaten },
+				method: "POST",
+				dataType: "json",
+				success: function (data) {
+					kecamatan = '<option value="">Pilih Kecamatan</option>';
+					$.each(data, function (i, item) {   
+						kecamatan += '<option value="' + item.location_id +'">' + item.district_name + "</option>";
+					});
+					$("#kecamatan").html(kecamatan).removeAttr("disabled");
+				},
+			});
+		});        
+
+        $("#kecamatan").on("change", function () {
+			let kecamatan = $("#kecamatan").val();
+			$.ajax({
+				url: "<?php echo site_url('manajemen_user/users/get_village');?>",
+				data: { kecamatan: kecamatan },
+				method: "POST",
+				dataType: "json",
+				success: function (data) {
+					desa = '<option value="">Pilih Desa</option>';
+					$.each(data, function (i, item) {   
+						desa += '<option value="' + item.location_id +'">' + item.village_name + "</option>";
+					});
+					$("#desa").html(desa).removeAttr("disabled");
 				},
 			});
 		});

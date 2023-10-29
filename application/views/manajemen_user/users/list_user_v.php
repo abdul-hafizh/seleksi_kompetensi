@@ -24,7 +24,10 @@
                     <h5 class="card-title mb-0">List Employee</h5>
                 </div>
                 <div class="float-end">
-                    <a href="<?php echo site_url('manajemen_user/users/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Employee</a>
+                    <div class="btn-group">
+                        <a href="<?php echo site_url('manajemen_user/users/add_access');?>" class="btn btn-info btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah User Access</a>
+                        <a href="<?php echo site_url('manajemen_user/users/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah User</a>
+                    </div>
                 </div>
             </div>
             <div class="card-content">

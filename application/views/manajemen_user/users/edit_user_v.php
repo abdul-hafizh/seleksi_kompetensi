@@ -47,6 +47,12 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control">Upload Foto KTP</label>
+                            <div class="col-md-9">
+                                <input type="file" class="form-control col-lg-7" name="file_ktp" placeholder="Foto KTP">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Email</label>
                             <div class="col-md-9">
                                 <input type="email" class="form-control col-lg-7" name="email" value="<?php echo $get_employee['email'];?>">                                
@@ -74,22 +80,38 @@
                                 <select class="select-single" name="provinsi" id="provinsi" required>
                                     <option value="">Pilih Provinsi</option>
                                     <?php foreach($provinsi as $v) { ?>
-                                        <option value="<?php echo $v['province_name']; ?>" <?php echo $get_employee['provinsi'] == $v['province_name'] ? "selected" : "" ?>><?php echo $v['province_name']; ?></option>
+                                        <option value="<?php echo $v['location_id']; ?>" <?php echo $get_employee['provinsi'] == $v['province_name'] ? "selected" : "" ?>><?php echo $v['province_name']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
-                        </div>                        
+                        </div>
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Kabupaten</label>
                             <div class="col-md-9">
                                 <select class="select-single" name="kabupaten" id="kabupaten" disabled>
                                     <option value="">Pilih Kabupaten</option>
                                     <?php foreach($kabupaten as $v) { ?>
-                                        <option value="<?php echo $v['regency_name']; ?>" <?php echo $get_employee['kabupaten'] == $v['regency_name'] ? "selected" : "" ?>><?php echo $v['regency_name']; ?></option>
+                                        <option value="<?php echo $v['location_id']; ?>" <?php echo $get_employee['kabupaten'] == $v['regency_name'] ? "selected" : "" ?>><?php echo $v['regency_name']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
-                        </div>                        
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control">Kecamatan</label>
+                            <div class="col-md-9">
+                                <select class="select-single" name="kecamatan" id="kecamatan" disabled required>
+                                    <option value="">Pilih Kecamatan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control">Desa</label>
+                            <div class="col-md-9">
+                                <select class="select-single" name="desa" id="desa" disabled required>
+                                    <option value="">Pilih Desa</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row last mb-3">
                             <label class="col-md-3 label-control">Alamat</label>
                             <div class="col-md-9">
@@ -128,6 +150,40 @@
 						kabupaten += '<option value="' + item.location_id +'">' + item.regency_name + "</option>";
 					});                    
 					$("#kabupaten").html(kabupaten).removeAttr("disabled");
+				},
+			});
+		});
+
+        $("#kabupaten").on("change", function () {
+			let kabupaten = $("#kabupaten").val();
+			$.ajax({
+				url: "<?php echo site_url('manajemen_user/users/get_district');?>",
+				data: { kabupaten: kabupaten },
+				method: "POST",
+				dataType: "json",
+				success: function (data) {
+					kecamatan = '<option value="">Pilih Kecamatan</option>';
+					$.each(data, function (i, item) {   
+						kecamatan += '<option value="' + item.location_id +'">' + item.district_name + "</option>";
+					});
+					$("#kecamatan").html(kecamatan).removeAttr("disabled");
+				},
+			});
+		});        
+
+        $("#kecamatan").on("change", function () {
+			let kecamatan = $("#kecamatan").val();
+			$.ajax({
+				url: "<?php echo site_url('manajemen_user/users/get_village');?>",
+				data: { kecamatan: kecamatan },
+				method: "POST",
+				dataType: "json",
+				success: function (data) {
+					desa = '<option value="">Pilih Desa</option>';
+					$.each(data, function (i, item) {   
+						desa += '<option value="' + item.location_id +'">' + item.village_name + "</option>";
+					});
+					$("#desa").html(desa).removeAttr("disabled");
 				},
 			});
 		});

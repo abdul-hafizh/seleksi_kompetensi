@@ -21,13 +21,13 @@
             </div>
             <div class="card-content">
                 <div class="card-body">
-                    <form class="form-bordered" method="post" action="<?php echo site_url('user_access/submit');?>">
+                    <form class="form-bordered" method="post" action="<?php echo site_url('manajemen_user/users/submit_access');?>">
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Nama Employee</label>
+                            <label class="col-md-3 label-control">Nama User</label>
                             <div class="col-md-9">
                                 <div class="position-relative">
                                     <select class="select-single" name="employeeid_inp" required>
-                                        <option value="" disabled selected>Pilih Employee</option>
+                                        <option value="" disabled selected>Pilih User</option>
                                         <?php foreach($get_employee as $v) { ?>
                                             <option value="<?php echo $v['id'];?>"><?php echo $v['fullname'];?></option>
                                         <?php } ?>
@@ -58,7 +58,7 @@
                             </div>
                         </div>                    
                         <div class="text-right">
-                            <a href="<?php echo site_url('user_access');?>" class="btn btn-secondary"><i class="ft-chevrons-left mr-1"></i>Kembali</a>
+                            <a href="<?php echo site_url('manajemen_user/users');?>" class="btn btn-secondary"><i class="ft-chevrons-left mr-1"></i>Kembali</a>
                             <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah Anda yakin simpan data ini?');"><i class="ft-check-square mr-1"></i>Simpan</button>
                         </div>
                     </form>

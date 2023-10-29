@@ -9,7 +9,7 @@ class Users extends Telescoope_Controller
     {
         parent::__construct();
 
-        $this->load->model(array("Administration_m"));
+        $this->load->model(array("Administration_m","Provinsi_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -54,18 +54,25 @@ class Users extends Telescoope_Controller
 
     public function index(){
         $data = array();
-
         $data['get_employee'] = $this->Administration_m->employee_view()->result_array();      
 
-        $this->template("manajemen_user/users/list_user_v", "User", $data);
+        $this->template("manajemen_user/users/list_user_v", "Data User", $data);
     }
 
     public function add(){
         $data = array();
         $data['get_employee_type'] = $this->Administration_m->get_employee_type()->result_array();
         $data['get_pos'] = $this->Administration_m->getNewPos()->result_array();
+        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
 
         $this->template("manajemen_user/users/add_user_v", "Add User", $data);
+    }
+
+    public function add_access(){
+        $data = array();        
+        $data['get_employee'] = $this->Administration_m->get_employee()->result_array();        
+  
+        $this->template("manajemen_user/users/add_user_access_v", "Add User Access", $data);
     }
 
     public function update($id){
@@ -84,13 +91,24 @@ class Users extends Telescoope_Controller
 
         $this->db->trans_begin(); 
 
+        $dir = './uploads/' . $this->data['dir'];
+
+        if(!empty($_FILES['file_ktp']['name'])){
+            $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_ktp_' . date('his') . '_' . $_FILES['file_ktp']['name'];
+            $_FILES['file']['type'] = $_FILES['file_ktp']['type'];
+            $_FILES['file']['tmp_name'] = $_FILES['file_ktp']['tmp_name'];
+            $_FILES['file']['error'] = $_FILES['file_ktp']['error'];
+            $_FILES['file']['size'] = $_FILES['file_ktp']['size'];
+            if($this->upload->do_upload('file')){ $uploadKtp = $this->upload->data(); }
+        }
+
         $inputEmp = array(    
             'fullname' => $post['fullname'],
             'nik' => $post['nik'],
-            'provinsi' => $post['provinsi'],
-            'kabupaten' => $post['kabupaten'],
+            'lokasi_user' => $post['desa'],
             'alamat' => $post['alamat'],
             'email' => $post['email'],
+            'file_ktp' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
             'status' => $post['status'],
             'phone' => $post['phone'],
             'adm_pos_id' => $post['employee_pos_id']
@@ -127,13 +145,24 @@ class Users extends Telescoope_Controller
 
         $posisi = $this->Administration_m->get_pos_id($post['employee_pos_id'])->row_array();
 
+        $row_data = $this->Administration_m->employee_view($post['employee_pos_id'])->row_array();
+
         $this->db->trans_begin(); 
+
+        if(!empty($_FILES['file_ktp']['name'])){
+            $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_ktp_' . date('his') . '_' . $_FILES['file_ktp']['name'];
+            $_FILES['file']['type'] = $_FILES['file_ktp']['type'];
+            $_FILES['file']['tmp_name'] = $_FILES['file_ktp']['tmp_name'];
+            $_FILES['file']['error'] = $_FILES['file_ktp']['error'];
+            $_FILES['file']['size'] = $_FILES['file_ktp']['size'];
+            if($this->upload->do_upload('file')){ $uploadKtp = $this->upload->data(); }
+        }
 
         $updateEmp = array(
             'fullname' => $post['fullname'],
             'nik' => $post['nik'],
-            'provinsi' => $post['provinsi'],
-            'kabupaten' => isset($post['kabupaten']) ? $post['kabupaten'] : '',
+            'lokasi_user' => $post['desa'],
+            'file_ktp' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : $row_data['file_ktp'],
             'alamat' => $post['alamat'],
             'email' => $post['email'],
             'phone' => $post['phone'],
@@ -163,6 +192,51 @@ class Users extends Telescoope_Controller
             redirect(site_url('manajemen_user/users/update/' . $post['id']));
         } else {
             $this->renderMessage("error");
+        }
+    }
+
+    public function submit_access(){
+        $post = $this->input->post(); 
+  
+        $emp = $this->Administration_m->get_employee($post['employeeid_inp'])->row_array();
+  
+        $password = $post['password_inp'];
+  
+        $check = $this->db->where("user_name",$post['user_name_inp'])->get("adm_user")->num_rows();
+  
+        if(empty($check)){
+  
+            $data = array(
+              'employeeid' => $post['employeeid_inp'],
+              'user_name' => $post['user_name_inp'],
+              'complete_name' => $emp['fullname'],
+              'created_date' => date('Y-m-d H:i:s')
+            );
+  
+            if(!empty($password)){
+                $data['password'] = strtoupper(do_hash($password,'sha1'));
+            }
+  
+            $insert = $this->db->insert('adm_user', $data);
+            
+            if($insert){
+                if ($this->db->trans_status() === FALSE)  {
+                  $this->setMessage("Gagal menambah data");
+                  $this->db->trans_rollback();
+                } else {
+                  $this->setMessage("Sukses menambah data");
+                  $this->db->trans_commit();
+                }
+                redirect(site_url('manajemen_user/users'));
+            
+              } else {
+                $this->renderMessage("error");
+            }
+            
+        } else {
+          $this->setMessage("Username telah digunakan.");
+          $this->db->trans_rollback();
+          redirect(site_url('manajemen_user/users/add_access'));
         }
     }
 
