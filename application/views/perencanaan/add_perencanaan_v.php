@@ -40,6 +40,24 @@
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
+                            <label class="form-label">Jumlah</label>
+                        </div>
+                        <div class="col-lg-3">       
+                            <input type="text" class="form-control" name="jumlah" placeholder="Jumlah" required>
+                        </div>
+                    </div>    
+
+                    <div class="row mb-3">
+                        <div class="col-lg-2">
+                            <label class="form-label">Satuan</label>
+                        </div>
+                        <div class="col-lg-3">       
+                            <input type="text" class="form-control" name="satuan" placeholder="Satuan" required>
+                        </div>
+                    </div>    
+
+                    <div class="row mb-3">
+                        <div class="col-lg-2">
                             <label class="form-label">Jenis Barang</label>
                         </div>
                         <div class="col-lg-3">       
