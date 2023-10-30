@@ -196,7 +196,7 @@
 				success: function (data) {
 					kode_lokasi_skd = '<option value="">Pilih Lokasi</option>';
 					$.each(data, function (i, item) {   
-						kode_lokasi_skd += '<option value="' + item.id +'">' + ite.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
+						kode_lokasi_skd += '<option value="' + item.id +'">' + item.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
 					});
 					$("#kode_lokasi_skd").html(desa).removeAttr("disabled");
 				},
