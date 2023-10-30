@@ -43,7 +43,7 @@
                             <label class="form-label">Jumlah</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="jumlah" placeholder="Jumlah" required>
+                            <input type="number" class="form-control" name="jumlah" placeholder="Jumlah" required>
                         </div>
                     </div>    
 
