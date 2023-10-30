@@ -39,7 +39,6 @@
                                 <th>Jenis Barang</th>
                                 <th>Jumlah</th>
                                 <th>Satuan</th>
-                                <th>Luas Ruangan Tunggu (m2)</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
