@@ -198,7 +198,7 @@
 					$.each(data, function (i, item) {   
 						kode_lokasi_skd += '<option value="' + item.id +'">' + item.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
 					});
-					$("#kode_lokasi_skd").html(desa).removeAttr("disabled");
+					$("#kode_lokasi_skd").html(kode_lokasi_skd).removeAttr("disabled");
 				},
 			});
 		});

@@ -190,9 +190,9 @@
 				success: function (data) {
 					lokasi_skd_id = '<option value="">Pilih Lokasi</option>';
 					$.each(data, function (i, item) {   
-						lokasi_skd_id += '<option value="' + item.id +'">' + ite.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
+						lokasi_skd_id += '<option value="' + item.id +'">' + item.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
 					});
-					$("#lokasi_skd_id").html(desa).removeAttr("disabled");
+					$("#lokasi_skd_id").html(lokasi_skd_id).removeAttr("disabled");
 				},
 			});
 		});
