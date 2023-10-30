@@ -9,7 +9,7 @@ class Kecamatan extends Telescoope_Controller
         
         parent::__construct();
 
-        $this->load->model(array("Administration_m", "Kecamatan_m"));
+        $this->load->model(array("Administration_m", "Kecamatan_m", "Provinsi_m", "Kabupaten_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -121,5 +121,119 @@ class Kecamatan extends Telescoope_Controller
         );
         
         echo json_encode($response);
+    }
+
+    public function add(){
+        $data = array();        
+        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
+
+        $this->template("manajemen_data/kecamatan/add_kecamatan_v", "Tambah Kecamatan", $data);
+    }
+
+    public function update($id){
+        $data = array();        
+        $data['get_kecamatan'] = $this->Kecamatan_m->getKecamatan($id)->row_array();
+
+        $this->template("manajemen_data/kecamatan/edit_kecamatan_v", "Ubah Kecamatan", $data);
+    }
+
+    public function submit_data(){
+
+        $post = $this->input->post(); 
+
+        if (count($post) == 0) {
+            $this->setMessage("Isi data dengan Benar.");
+            redirect(site_url('manajemen_data/kecamatan/add'));
+        }
+
+        $this->db->trans_begin();
+
+        $kabupaten = $this->Kabupaten_m->getKabupaten($post['kabupaten'])->row_array();
+
+        $data = array(
+            'parent_id' => $kabupaten['regency_id'],
+            'province_id' => $kabupaten['province_id'],
+            'regency_id' => $kabupaten['regency_id'],
+            'level' => 4,
+            'country_id' => 100000,
+            'country_name' => 'Indonesia',
+            'province_name' => strtoupper($kabupaten['province_name']),
+            'regency_name' => strtoupper($kabupaten['regency_name']),
+            'district_name' => strtoupper($post['district_name']),
+            'name_prefix' => 'Kecamatan',
+            'name' => strtoupper($post['district_name']),
+            'full_name' => 'Kecamatan ' . strtoupper($post['district_name']),
+            'stereotype' => 'DISTRICT',
+            'row_status' => 'ACTIVE',
+        );
+
+        $simpan = $this->db->insert('ref_locations', $data);
+        
+        if($simpan){        
+
+            $this->db->set('district_id', $this->db->insert_id())->where('location_id', $this->db->insert_id())->update('ref_locations');
+
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Failed save data.");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Success save data.");
+                $this->db->trans_commit();
+            }            
+
+            redirect(site_url('manajemen_data/kecamatan'));
+        
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
+    public function submit_update(){
+
+        $post = $this->input->post(); 
+    
+        $this->db->trans_begin(); 
+
+        $kecamatan = $this->Kecamatan_m->getKecamatan($post['location_id'])->row_array();
+        
+        $dataUpdate = array(
+            'parent_id' => $kecamatan['regency_id'],
+            'province_id' => $kecamatan['province_id'],
+            'regency_id' => $kecamatan['regency_id'],
+            'level' => 4,
+            'country_id' => 100000,
+            'country_name' => 'Indonesia',
+            'province_name' => strtoupper($kecamatan['province_name']),
+            'regency_name' => strtoupper($kecamatan['regency_name']),
+            'district_name' => strtoupper($post['district_name']),
+            'name_prefix' => 'Kecamatan',
+            'name' => strtoupper($post['district_name']),
+            'full_name' => 'Kecamatan ' . strtoupper($post['district_name']),
+            'stereotype' => 'DISTRICT',
+            'row_status' => 'ACTIVE',
+        );
+        
+        $this->db->where('location_id', $post['location_id']);
+        $update = $this->db->update('ref_locations', $dataUpdate);
+
+        if($update){
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Gagal mengubah data");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Sukses mengubah data");
+                $this->db->trans_commit();
+            }
+            redirect(site_url('manajemen_data/kecamatan/update/' . $post['location_id']));
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
+    public function get_regency()
+    {
+        $provinces = $this->input->post('provinsi', true);
+        $data = $this->db->get_where('ref_locations', ['parent_id' => $provinces])->result_array();
+        echo json_encode($data);
     }
 }

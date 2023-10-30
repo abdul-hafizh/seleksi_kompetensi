@@ -3,15 +3,6 @@
 <!-- jquery validate-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
-<style>
-    label.error {
-        color: red;
-        font-size: 14px;
-        display: block;
-        margin-top: 5px;
-    }
-</style>
-
 <form action="<?php echo site_url('manajemen_data/lokasi_skd/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
@@ -177,7 +168,7 @@
 					$("#kabupaten").html(kabupaten).removeAttr("disabled");
 				},
 			});
-		});        
+		});
 
         $("#kabupaten").on("change", function () {
 			let kabupaten = $("#kabupaten").val();

@@ -29,6 +29,13 @@
         display: none !important;
       }
 
+      label.error {
+          color: red;
+          font-size: 14px;
+          display: block;
+          margin-top: 5px;
+      }
+
       @media screen and (max-width: 768px) {
           .show-topnav {
             display: block !important;

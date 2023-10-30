@@ -56,8 +56,102 @@ class Provinsi extends Telescoope_Controller
     public function index(){
         $data = array();
 
-        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();      
+        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
 
         $this->template("manajemen_data/provinsi/list_provinsi_v", "Data Provinsi", $data);
+    }
+
+    public function add(){
+        $data = array();        
+  
+        $this->template("manajemen_data/provinsi/add_provinsi_v", "Tambah Provinsi", $data);
+    }
+
+    public function update($id){
+        $data = array();        
+        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi($id)->row_array();
+
+        $this->template("manajemen_data/provinsi/edit_provinsi_v", "Ubah Provinsi", $data);
+    }
+
+    public function submit_data(){
+
+        $post = $this->input->post(); 
+
+        if (count($post) == 0) {
+            $this->setMessage("Isi data dengan Benar.");
+            redirect(site_url('manajemen_data/provinsi/add'));
+        }
+
+        $this->db->trans_begin();
+
+        $data = array(
+            'parent_id' => 100000,
+            'level' => 2,
+            'country_id' => 100000,
+            'country_name' => 'Indonesia',
+            'province_name' => strtoupper($post['province_name']),
+            'name_prefix' => 'Provinsi',
+            'name' => strtoupper($post['province_name']),
+            'full_name' => 'Provinsi ' . strtoupper($post['province_name']),
+            'stereotype' => 'PROVINCE',
+            'row_status' => 'ACTIVE',
+        );
+
+        $simpan = $this->db->insert('ref_locations', $data);
+        
+        if($simpan){        
+
+            $this->db->set('province_id', $this->db->insert_id())->where('location_id', $this->db->insert_id())->update('ref_locations');
+
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Failed save data.");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Success save data.");
+                $this->db->trans_commit();
+            }            
+
+            redirect(site_url('manajemen_data/provinsi'));
+        
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
+    public function submit_update(){
+
+        $post = $this->input->post(); 
+    
+        $this->db->trans_begin(); 
+        
+        $dataUpdate = array(
+            'parent_id' => 100000,
+            'level' => 2,
+            'country_id' => 100000,
+            'country_name' => 'Indonesia',
+            'province_name' => strtoupper($post['province_name']),
+            'name_prefix' => 'Provinsi',
+            'name' => strtoupper($post['province_name']),
+            'full_name' => 'Provinsi ' . strtoupper($post['province_name']),
+            'stereotype' => 'PROVINCE',
+            'row_status' => 'ACTIVE',
+        );
+        
+        $this->db->where('location_id', $post['location_id']);
+        $update = $this->db->update('ref_locations', $dataUpdate);
+
+        if($update){
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Gagal mengubah data");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Sukses mengubah data");
+                $this->db->trans_commit();
+            }
+            redirect(site_url('manajemen_data/provinsi/update/' . $post['location_id']));
+        } else {
+            $this->renderMessage("error");
+        }
     }
 }
