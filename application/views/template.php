@@ -24,12 +24,32 @@
     <!-- jquery cdn-->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
+    <style>
+      .show-topnav {
+        display: none !important;
+      }
+
+      @media screen and (max-width: 768px) {
+          .show-topnav {
+            display: block !important;
+          }
+      }
+    </style>
+
 </head>
 
 <body>
 
   <!-- Begin page -->
   <div id="layout-wrapper">    
+
+    <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger show-topnav" id="topnav-hamburger-icon">
+        <span class="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+    </button>
     
     <?php include("sidebar_v.php") ?>
 
