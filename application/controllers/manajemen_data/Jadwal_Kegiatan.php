@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Jadwal_Kegiatan extends Telescoope_Controller
+class Jadwal_kegiatan extends Telescoope_Controller
 {
 
     var $data;
@@ -9,7 +9,7 @@ class Jadwal_Kegiatan extends Telescoope_Controller
         
         parent::__construct();
 
-        $this->load->model(array("Administration_m", "Lokasi_Skd_m", "Jadwal_Kegiatan_m", "Provinsi_m"));
+        $this->load->model(array("Administration_m", "Lokasi_skd_m", "Jadwal_kegiatan_m", "Provinsi_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -79,7 +79,7 @@ class Jadwal_Kegiatan extends Telescoope_Controller
 
         $this->db->limit($rowperpage, $row);
 
-        $result = $this->Jadwal_Kegiatan_m->getJadwal()->result_array();
+        $result = $this->Jadwal_kegiatan_m->getJadwal()->result_array();
 
         if (!empty($search)) {
             // $this->db->group_start();
@@ -88,7 +88,7 @@ class Jadwal_Kegiatan extends Telescoope_Controller
             // $this->db->group_end();
         }
 
-        $count = $this->Jadwal_Kegiatan_m->getJadwal()->num_rows();
+        $count = $this->Jadwal_kegiatan_m->getJadwal()->num_rows();
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;
@@ -130,7 +130,7 @@ class Jadwal_Kegiatan extends Telescoope_Controller
     public function add(){
         $data = array();
         
-        $data['get_lokasi'] = $this->Lokasi_Skd_m->getLokasi()->result_array();
+        $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi()->result_array();
   
         $this->template("manajemen_data/jadwal_kegiatan/add_jadwal_v", "Tambah Jadwal Kegiatan", $data);
     }

@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Lokasi_Skd extends Telescoope_Controller
+class Lokasi_skd extends Telescoope_Controller
 {
 
     var $data;
@@ -9,7 +9,7 @@ class Lokasi_Skd extends Telescoope_Controller
         
         parent::__construct();
 
-        $this->load->model(array("Administration_m", "Lokasi_Skd_m", "Provinsi_m"));
+        $this->load->model(array("Administration_m", "Lokasi_skd_m", "Provinsi_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -79,7 +79,7 @@ class Lokasi_Skd extends Telescoope_Controller
 
         $this->db->limit($rowperpage, $row);
 
-        $result = $this->Lokasi_Skd_m->getLokasi()->result_array();
+        $result = $this->Lokasi_skd_m->getLokasi()->result_array();
 
         if (!empty($search)) {
             // $this->db->group_start();
@@ -88,7 +88,7 @@ class Lokasi_Skd extends Telescoope_Controller
             // $this->db->group_end();
         }
 
-        $count = $this->Lokasi_Skd_m->getLokasi()->num_rows();
+        $count = $this->Lokasi_skd_m->getLokasi()->num_rows();
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;

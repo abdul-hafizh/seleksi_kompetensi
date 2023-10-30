@@ -12,51 +12,48 @@
     }
 </style>
 
-<form action="<?php echo site_url('manajemen_data/lokasi_skd/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+<form action="<?php echo site_url('perencanaan/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Tambah Data Lokasi Test</h5>
+                    <h5 class="card-title mb-0">Tambah Data Perencanaan</h5>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-lg-2">
-                            <label class="form-label">Status Gedung</label>
+                            <label class="form-label">Kode Perencanaan</label>
                         </div>
                         <div class="col-lg-3">       
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_gedung" value="Siap">
-                                <label class="form-check-label">Siap</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_gedung" value="Tidak">
-                                <label class="form-check-label">Tidak</label>
-                            </div>
+                            <input type="text" class="form-control" name="kode_perencanaan" placeholder="Kode Perencanaan" required>
                         </div>
                     </div>    
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
-                            <label class="form-label">Kode Lokasi</label>
+                            <label class="form-label">Nama Barang</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="kode_lokasi" placeholder="Kode Lokasi" required>
+                            <input type="text" class="form-control" name="nama_barang" placeholder="Nama Barang" required>
+                        </div>
+                    </div>    
+
+                    <div class="row mb-3">
+                        <div class="col-lg-2">
+                            <label class="form-label">Jenis Barang</label>
+                        </div>
+                        <div class="col-lg-3">       
+                            <select class="select-single" name="jenis_barang" id="jenis_barang" required>
+                                <option value="">Pilih Jenis</option>                                
+                                <option value="IT">IT</option>                                
+                                <option value="Non-IT">Non-IT</option>                                
+                            </select>
                         </div>
                     </div>     
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
-                            <label class="form-label">Nama Lokasi</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="nama_lokasi" placeholder="Nama Lokasi" required>
-                        </div>
-                    </div>     
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Lokasi</label>
+                            <label class="form-label">Wilayah</label>
                         </div>
                         <div class="col-lg-4">
                             <select class="select-single" name="provinsi" id="provinsi" required>
@@ -88,39 +85,15 @@
                             </select>
                         </div>
                     </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">&nbsp;</label>
-                        </div> 
-                        <div class="col-lg-9">
-                            <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" required></textarea>
+                    
+                    <div class="form-group row mb-2">
+                        <label class="col-md-2 label-control">Lokasi</label>
+                        <div class="col-md-9">
+                            <select class="select-single" name="kode_lokasi_skd" id="kode_lokasi_skd" disabled required>
+                                <option value="">Pilih Lokasi</option>
+                            </select>
                         </div>
-                    </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Luas Ruangan Test (m2)</label> 
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="panjang_ruangan_test" placeholder="Panjang" required>
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="lebar_ruangan_test" placeholder="Lebar" required>
-                        </div>
-                    </div>                
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Luas Ruangan Tunggu (m2)</label> 
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="panjang_ruangan_tunggu" placeholder="Panjang" required>
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="lebar_ruangan_tunggu" placeholder="Lebar" required>
-                        </div>
-                    </div>                  
+                    </div>
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
@@ -165,7 +138,7 @@
         $("#provinsi").on("change", function () {
 			let provinsi = $("#provinsi").val();
 			$.ajax({
-				url: "<?php echo site_url('manajemen_data/lokasi_skd/get_regency');?>",
+				url: "<?php echo site_url('perencanaan/get_regency');?>",
 				data: { provinsi: provinsi },
 				method: "POST",
 				dataType: "json",
@@ -182,7 +155,7 @@
         $("#kabupaten").on("change", function () {
 			let kabupaten = $("#kabupaten").val();
 			$.ajax({
-				url: "<?php echo site_url('manajemen_data/lokasi_skd/get_district');?>",
+				url: "<?php echo site_url('perencanaan/get_district');?>",
 				data: { kabupaten: kabupaten },
 				method: "POST",
 				dataType: "json",
@@ -199,7 +172,7 @@
         $("#kecamatan").on("change", function () {
 			let kecamatan = $("#kecamatan").val();
 			$.ajax({
-				url: "<?php echo site_url('manajemen_data/lokasi_skd/get_village');?>",
+				url: "<?php echo site_url('perencanaan/get_village');?>",
 				data: { kecamatan: kecamatan },
 				method: "POST",
 				dataType: "json",
@@ -212,5 +185,22 @@
 				},
 			});
 		});        
+
+        $("#desa").on("change", function () {
+			let desa = $("#desa").val();
+			$.ajax({
+				url: "<?php echo site_url('perencanaan/get_lokasi');?>",
+				data: { desa: desa },
+				method: "POST",
+				dataType: "json",
+				success: function (data) {
+					kode_lokasi_skd = '<option value="">Pilih Lokasi</option>';
+					$.each(data, function (i, item) {   
+						kode_lokasi_skd += '<option value="' + item.id +'">' + ite.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
+					});
+					$("#kode_lokasi_skd").html(desa).removeAttr("disabled");
+				},
+			});
+		});
     })
 </script>

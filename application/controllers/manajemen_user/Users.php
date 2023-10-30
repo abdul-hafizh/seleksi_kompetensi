@@ -9,7 +9,7 @@ class Users extends Telescoope_Controller
     {
         parent::__construct();
 
-        $this->load->model(array("Administration_m","Provinsi_m","Lokasi_Skd_m"));
+        $this->load->model(array("Administration_m","Provinsi_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 

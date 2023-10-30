@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Lokasi_Skd_m extends CI_Model {
+class Lokasi_skd_m extends CI_Model {
 
 	public function __construct(){
 
