@@ -73,10 +73,11 @@ class Kecamatan extends Telescoope_Controller
         // $prov = isset($post['s_provinsi']) ? $post['s_provinsi'] : "";
                         
         if (!empty($search)) {
-            // $this->db->group_start();
-            // $this->db->like('test', $search);
-            // $this->db->or_like('test', $search);
-            // $this->db->group_end();
+            $this->db->group_start();
+            $this->db->like('province_name', $search);
+            $this->db->or_like('regency_name', $search);
+            $this->db->or_like('district_name', $search);
+            $this->db->group_end();
         }
 
         $this->db->limit($rowperpage, $row);
@@ -84,10 +85,11 @@ class Kecamatan extends Telescoope_Controller
         $result = $this->Kecamatan_m->getKecamatan()->result_array();
 
         if (!empty($search)) {
-            // $this->db->group_start();
-            // $this->db->like('test', $search);
-            // $this->db->or_like('test', $search);
-            // $this->db->group_end();
+            $this->db->group_start();
+            $this->db->like('province_name', $search);
+            $this->db->or_like('regency_name', $search);
+            $this->db->or_like('district_name', $search);
+            $this->db->group_end();
         }
 
         $count = $this->Kecamatan_m->getKecamatan()->num_rows();
