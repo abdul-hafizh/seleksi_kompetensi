@@ -21,7 +21,7 @@
             </div>
             <div class="card-content">
                 <div class="card-body">
-                    <form class="form-bordered" method="post" action="<?php echo site_url('manajemen_user/users/submit_update');?>">                        
+                    <form class="form-bordered" method="post" action="<?php echo site_url('manajemen_user/users/submit_update');?>" enctype="multipart/form-data">
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Posisi</label>
                             <div class="col-md-9">

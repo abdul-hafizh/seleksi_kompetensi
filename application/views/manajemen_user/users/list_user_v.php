@@ -40,6 +40,7 @@
                                 <th>Email</th>
                                 <th>Telepon</th>
                                 <th>Posisi</th>
+                                <th>KTP</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -52,6 +53,13 @@
                                     <td><?php echo $v['email'];?></td>
                                     <td><?php echo $v['phone'];?></td>
                                     <td><?php echo $v['pos_name'];?></td>
+                                    <td>
+                                        <div class="avatar-group">
+                                            <a href="<?php echo base_url('uploads/users/' . $v['file_ktp']); ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/users/' . $v['file_ktp']); ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto KTP">
+                                                <img src="<?php echo base_url('uploads/users/' . $v['file_ktp']); ?>" alt="" class="rounded-circle avatar-xxs">
+                                            </a>
+                                        </div>
+                                    </td>
                                     <td><?php echo $v['status'] == 2 ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-danger">Tidak Aktif</span>'; ?></td>
                                     <td>
                                         <div class="btn-group" role="group">
