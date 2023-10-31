@@ -68,12 +68,13 @@
                                         </div>
 
                                         <div class="mb-5">
-                                            <div class="float-end">
-                                            </div>
+                                            <div class="float-end"></div>
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
-                                                <input type="password" class="form-control pe-5" placeholder="Enter password" name="password_login" required>
-                                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                                <input type="password" class="form-control pe-5" placeholder="Enter password" name="password_login" id="password-input" required>
+                                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon">
+                                                    <i class="ri-eye-fill align-middle"></i>
+                                                </button>
                                             </div>
                                         </div>
 
@@ -129,6 +130,23 @@
         
     <!-- JAVASCRIPT -->
     <script src="<?php echo base_url();?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#password-addon").click(function() {
+                var passwordInput = $("#password-input");
+                var passwordAddon = $("#password-addon");
+                
+                if (passwordInput.attr("type") === "password") {
+                    passwordInput.attr("type", "text");
+                    passwordAddon.html('<i class="ri-eye-off-fill align-middle"></i>');
+                } else {
+                    passwordInput.attr("type", "password");
+                    passwordAddon.html('<i class="ri-eye-fill align-middle"></i>');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
