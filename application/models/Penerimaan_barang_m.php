@@ -16,7 +16,7 @@ class Penerimaan_barang_m extends CI_Model {
 
 		if(!empty($id)){
 
-			$this->db->where('id', $id);
+			$this->db->where('penerimaan_barang.id', $id);
 
 		}
 
