@@ -12,7 +12,7 @@ class Penerimaan_barang_m extends CI_Model {
 
 	public function getPenerimaan_barang($id = ''){
 
-        $this->db->select('penerimaan_barang.*, ref_locations.*, pr.kode_perencanaan, pr.nama_barang, pr.jenis_barang, pr.jumlah, pr.satuan, loc.lokasi_id, loc.kode_lokasi, loc.nama_lokasi');
+        $this->db->select('penerimaan_barang.*, ref_locations.*, pr.nama_barang, pr.jenis_barang, pb.jumlah_kirim, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi');
 
 		if(!empty($id)){
 
@@ -20,9 +20,10 @@ class Penerimaan_barang_m extends CI_Model {
 
 		}
 
-		$this->db->join('perencanaan as pr', 'pr.id = penerimaan_barang.perencanaan_id', 'left');
-		$this->db->join('lokasi_skd as loc', 'loc.id = penerimaan_barang.lokasi_test_id', 'left');
-		$this->db->join('ref_locations', 'ref_locations.location_id = loc.lokasi_id', 'left');
+		$this->db->join('pengiriman_barang as pb', 'pb.id = penerimaan_barang.pengiriman_id', 'left');
+		$this->db->join('perencanaan as pr', 'pr.id = pb.perencanaan_id', 'left');
+		$this->db->join('lokasi_skd', 'lokasi_skd.id = pr.kode_lokasi_skd', 'left');
+		$this->db->join('ref_locations', 'ref_locations.location_id = lokasi_skd.lokasi_id', 'left');
 
 		return $this->db->get('penerimaan_barang');
 

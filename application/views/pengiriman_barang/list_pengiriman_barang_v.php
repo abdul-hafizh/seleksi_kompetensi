@@ -21,10 +21,10 @@
         <div class="card">
             <div class="card-header border-bottom pb-2">
                 <div class="float-start">
-                    <h5 class="card-title mb-0">Data Penerimaan Barang</h5>
+                    <h5 class="card-title mb-0">Data Pengiriman Barang</h5>
                 </div>
                 <div class="float-end">
-                    <a href="<?php echo site_url('penerimaan_barang/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Penerimaan Barang</a>
+                    <a href="<?php echo site_url('pengiriman_barang/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Pengiriman Barang</a>
                 </div>
             </div>
             <div class="card-content">
@@ -32,16 +32,14 @@
                     <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
+                                <th>Kode Perencanaan</th>
                                 <th>Nama Lokasi</th>
                                 <th>Nama Provinsi</th>
                                 <th>Nama Barang</th>
                                 <th>Jenis Barang</th>
+                                <th>Jumlah Rencana</th>
                                 <th>Jumlah Kirim</th>
                                 <th>Tanggal Kirim</th>
-                                <th>Jumlah Terima</th>
-                                <th>Tanggal Terima</th>
-                                <th>Rusak</th>
-                                <th>Terpasang</th>
                                 <th>Foto</th>
                                 <th>Action</th>
                             </tr>
@@ -72,7 +70,7 @@
             'serverSide': true,
             'serverMethod': 'POST',
             'ajax': {
-                'url':'<?php echo site_url('penerimaan_barang/get_data');?>',
+                'url':'<?php echo site_url('pengiriman_barang/get_data');?>',
                 "type": "POST",
                 "data": function(d){                    
                     // d.s_provinsi = $('#provinsi_src').val();
@@ -82,16 +80,14 @@
             },
             scrollX: !0,
             'columns': [
+                { data: 'kode_perencanaan' }, 
                 { data: 'nama_lokasi' }, 
                 { data: 'province_name' }, 
                 { data: 'nama_barang' },
                 { data: 'jenis_barang' },
+                { data: 'jumlah' },
                 { data: 'jumlah_kirim' },
                 { data: 'tgl_kirim' },
-                { data: 'jumlah_terima' },
-                { data: 'tgl_terima' },
-                { data: 'rusak' },
-                { data: 'terpasang' },
                 { data: 'foto_barang' },
                 { data: 'action' },
             ]            

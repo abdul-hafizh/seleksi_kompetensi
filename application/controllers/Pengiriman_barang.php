@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Penerimaan_barang extends Telescoope_Controller
+class Pengiriman_barang extends Telescoope_Controller
 {
 
     var $data;
@@ -9,7 +9,7 @@ class Penerimaan_barang extends Telescoope_Controller
         
         parent::__construct();
 
-        $this->load->model(array("Administration_m", "Penerimaan_barang_m", "Pengiriman_barang_m"));
+        $this->load->model(array("Administration_m", "Pengiriman_barang_m", "Perencanaan_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -21,7 +21,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $userdata = $this->Administration_m->getLogin();
 
-        $this->data['dir'] = 'penerimaan_barang';
+        $this->data['dir'] = 'pengiriman_barang';
 
         $this->data['controller_name'] = $this->uri->segment(1);
 
@@ -57,7 +57,7 @@ class Penerimaan_barang extends Telescoope_Controller
     public function index(){
         $data = array();
 
-        $this->template("penerimaan_barang/list_penerimaan_barang_v", "Data Penerimaan Barang", $data);
+        $this->template("pengiriman_barang/list_pengiriman_barang_v", "Data Pengiriman Barang", $data);
     }
 
     public function get_data(){
@@ -80,7 +80,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $this->db->limit($rowperpage, $row);
 
-        $result = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
+        $result = $this->Pengiriman_barang_m->getPengiriman_barang()->result_array();
 
         if (!empty($search)) {
             // $this->db->group_start();
@@ -89,7 +89,7 @@ class Penerimaan_barang extends Telescoope_Controller
             // $this->db->group_end();
         }
 
-        $count = $this->Penerimaan_barang_m->getPenerimaan_barang()->num_rows();
+        $count = $this->Pengiriman_barang_m->getPengiriman_barang()->num_rows();
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;
@@ -98,26 +98,24 @@ class Penerimaan_barang extends Telescoope_Controller
         
         foreach($result as $v) {   
             
-            $foto_barang ='<a href="' . base_url('uploads/penerimaan_barang/' . $v['foto_barang']) . '" target="_blank" class="avatar-group-item" data-img="' . base_url('uploads/penerimaan_barang/' . $v['foto_barang']) . '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
-                            <img src="' . base_url('uploads/penerimaan_barang/' . $v['foto_barang']) . '" alt="" class="rounded-circle avatar-xxs">
+            $foto_barang ='<a href="' . base_url('uploads/pengiriman_barang/' . $v['foto_barang']) . '" target="_blank" class="avatar-group-item" data-img="' . base_url('uploads/pengiriman_barang/' . $v['foto_barang']) . '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
+                            <img src="' . base_url('uploads/pengiriman_barang/' . $v['foto_barang']) . '" alt="" class="rounded-circle avatar-xxs">
                         </a>';
             
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('penerimaan_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
-                        <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
+                        <a href="' .  site_url('pengiriman_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
+                        <a href="' .  site_url('pengiriman_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
                     </div>';
             
             $data[] = array(                                
+                "kode_perencanaan" => $v['kode_perencanaan'],
                 "nama_lokasi" => $v['kode_lokasi'] . ' | ' . $v['nama_lokasi'],
                 "province_name" => $v['province_name'],
                 "nama_barang" => $v['nama_barang'],
                 "jenis_barang" => $v['jenis_barang'],
+                "jumlah" => $v['jumlah'],
                 "jumlah_kirim" => $v['jumlah_kirim'],
-                "jumlah_terima" => $v['jumlah_terima'],
                 "tgl_kirim" => $v['tgl_kirim'],
-                "tgl_terima" => $v['tgl_terima'],
-                "rusak" => $v['rusak'],
-                "terpasang" => $v['terpasang'],
                 "foto_barang" => '<div class="avatar-group">' . $foto_barang . '</div>',
                 "action" => $action
             );
@@ -135,10 +133,10 @@ class Penerimaan_barang extends Telescoope_Controller
     }
     
     public function add(){
-        $data = array();        
-        $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang()->result_array();
+        $data = array();               
+        $data['get_perencanaan'] = $this->Perencanaan_m->getPerencanaan()->result_array(); 
   
-        $this->template("penerimaan_barang/add_penerimaan_barang_v", "Tambah Penerimaan Barang", $data);
+        $this->template("pengiriman_barang/add_pengiriman_barang_v", "Tambah Pengiriman Barang", $data);
     }
 
     public function submit_data(){
@@ -147,7 +145,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
         if (count($post) == 0) {
             $this->setMessage("Isi data dengan Benar.");
-            redirect(site_url('penerimaan_barang/add'));
+            redirect(site_url('pengiriman_barang/add'));
         }
 
         $this->db->trans_begin();
@@ -164,18 +162,16 @@ class Penerimaan_barang extends Telescoope_Controller
         }
 
         $data = array(
-            "pengiriman_id" => $post['pengiriman_id'],            
-            "tgl_terima" => $post['tgl_terima'],
-            "jumlah_terima" => $post['jumlah_terima'],
-            "rusak" => $post['rusak'],
-            "terpasang" => $post['terpasang'],
+            "perencanaan_id" => $post['perencanaan_id'],            
+            "tgl_kirim" => $post['tgl_kirim'],
+            "jumlah_kirim" => $post['jumlah_kirim'],
             'foto_barang' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
             'catatan' => $post['catatan'],
             'created_by' => $this->data['userdata']['employee_id'],
             'created_at' => date('Y-m-d H:i:s'),
         );
 
-        $simpan = $this->db->insert('penerimaan_barang', $data);
+        $simpan = $this->db->insert('pengiriman_barang', $data);
         
         if($simpan){        
             if ($this->db->trans_status() === FALSE)  {
@@ -186,17 +182,17 @@ class Penerimaan_barang extends Telescoope_Controller
                 $this->db->trans_commit();
             }            
 
-            redirect(site_url('penerimaan_barang'));
+            redirect(site_url('pengiriman_barang'));
         
         } else {
             $this->renderMessage("error");
         }
     }
 
-    public function get_pengiriman()
+    public function get_perencanaan()
     {
-        $pengiriman_id = $this->input->post('pengiriman_id', true);
-        $data = $this->Pengiriman_barang_m->getPengiriman_barang($pengiriman_id)->row_array();
+        $perencanaan_id = $this->input->post('perencanaan_id', true);
+        $data = $this->Perencanaan_m->getPerencanaan($perencanaan_id)->row_array();
         echo json_encode($data);
     }
 }

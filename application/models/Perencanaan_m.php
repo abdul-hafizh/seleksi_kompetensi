@@ -12,9 +12,11 @@ class Perencanaan_m extends CI_Model {
 
 	public function getPerencanaan($id = ''){
 
+		$this->db->select('perencanaan.*, ref_locations.*, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi');
+
 		if(!empty($id)){
 
-			$this->db->where('id', $id);
+			$this->db->where('perencanaan.id', $id);
 
 		}
 

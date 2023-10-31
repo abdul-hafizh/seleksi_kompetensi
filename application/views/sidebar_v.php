@@ -43,8 +43,7 @@
                 </div>
 
 
-                <ul class="navbar-nav" id="navbar-nav">
-	                <li class="menu-title"><span data-key="t-menu">System Menu</span></li>
+                <ul class="navbar-nav" id="navbar-nav">	                
                     <?php include("menu_v.php"); ?>    
                 </ul>
 
