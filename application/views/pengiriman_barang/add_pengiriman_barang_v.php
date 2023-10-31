@@ -28,7 +28,7 @@
                             <label class="form-label">Jumlah Rencana</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="text" class="form-control" id="jumlah_rencana" readonly>
+                            <input type="text" class="form-control" id="jumlah_rencana" placeholder="Jumlah Rencana" readonly>
                         </div>
                     </div>    
                     
