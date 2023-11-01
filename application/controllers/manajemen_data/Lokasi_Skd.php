@@ -103,15 +103,12 @@ class Lokasi_skd extends Telescoope_Controller
                     </div>';
             
             $data[] = array(                                
-                "lokasi_id" => $v['lokasi_id'],
+                "kode_lokasi" => $v['kode_lokasi'],
                 "nama_lokasi" => $v['nama_lokasi'],
                 "province_name" => $v['province_name'],
                 "regency_name" => $v['regency_name'],
-                "district_name" => $v['district_name'],
-                "village_name" => $v['village_name'],
                 "status_gedung" => $v['status_gedung'],
-                "luas_ruangan_test" => $v['panjang_ruangan_test'] . 'x' . $v['lebar_ruangan_test'],
-                "luas_ruangan_tunggu" => $v['panjang_ruangan_tunggu'] . 'x' . $v['lebar_ruangan_tunggu'],
+                "catatan" => $v['catatan'],
                 "action" => $action
             );
         }
@@ -147,15 +144,10 @@ class Lokasi_skd extends Telescoope_Controller
         $this->db->trans_begin();
 
         $data = array(
-            'status_gedung' => $post['status_gedung'],
-            'kode_lokasi' => $post['kode_lokasi'],
+            'status_gedung' => $post['status_gedung'],            
             'nama_lokasi' => $post['nama_lokasi'],
-            'lokasi_id' => $post['desa'],
+            'lokasi_id' => $post['kabupaten'],
             'alamat' => $post['alamat'],
-            'panjang_ruangan_test' => $post['panjang_ruangan_test'],
-            'lebar_ruangan_test' => $post['lebar_ruangan_test'],
-            'panjang_ruangan_tunggu' => $post['panjang_ruangan_tunggu'],
-            'lebar_ruangan_tunggu' => $post['lebar_ruangan_tunggu'],
             'catatan' => $post['catatan'],
             'created_by' => $this->data['userdata']['employee_id'],
             'created_at' => date('Y-m-d H:i:s'),
@@ -164,6 +156,12 @@ class Lokasi_skd extends Telescoope_Controller
         $simpan = $this->db->insert('lokasi_skd', $data);
         
         if($simpan){        
+            
+            $id = strval($this->db->insert_id()); 
+            $res = str_repeat('0', 5 - strlen($id)).$id;   
+
+            $this->db->set('kode_lokasi', 'LK.' . $res)->where('id', $this->db->insert_id())->update('lokasi_skd');
+
             if ($this->db->trans_status() === FALSE)  {
                 $this->setMessage("Failed save data.");
                 $this->db->trans_rollback();
@@ -183,20 +181,6 @@ class Lokasi_skd extends Telescoope_Controller
     {
         $provinces = $this->input->post('provinsi', true);
         $data = $this->db->get_where('ref_locations', ['parent_id' => $provinces])->result_array();
-        echo json_encode($data);
-    }
-
-    public function get_district()
-    {
-        $kabupaten = $this->input->post('kabupaten', true);
-        $data = $this->db->get_where('ref_locations', ['parent_id' => $kabupaten])->result_array();
-        echo json_encode($data);
-    }
-
-    public function get_village()
-    {
-        $kecamatan = $this->input->post('kecamatan', true);
-        $data = $this->db->get_where('ref_locations', ['parent_id' => $kecamatan])->result_array();
         echo json_encode($data);
     }
 }

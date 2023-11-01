@@ -34,11 +34,9 @@
                             <tr>
                                 <th>Kode Perencanaan</th>
                                 <th>Nama Provinsi</th>
+                                <th>Nama Kabupaten</th>
                                 <th>Nama Lokasi</th>
-                                <th>Nama Barang</th>
-                                <th>Jenis Barang</th>
-                                <th>Jumlah</th>
-                                <th>Satuan</th>
+                                <th>Catatan</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -80,11 +78,9 @@
             'columns': [
                 { data: 'kode_perencanaan' }, 
                 { data: 'province_name' }, 
+                { data: 'regency_name' }, 
                 { data: 'nama_lokasi' }, 
-                { data: 'nama_barang' },
-                { data: 'jenis_barang' },
-                { data: 'jumlah' },
-                { data: 'satuan' },
+                { data: 'catatan' },
                 { data: 'action' },
             ]            
         });

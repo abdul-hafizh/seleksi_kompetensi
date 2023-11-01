@@ -105,11 +105,9 @@ class Perencanaan extends Telescoope_Controller
             $data[] = array(                                
                 "kode_perencanaan" => $v['kode_perencanaan'],
                 "province_name" => $v['province_name'],
+                "regency_name" => $v['regency_name'],
                 "nama_lokasi" => $v['nama_lokasi'],
-                "nama_barang" => $v['nama_barang'],
-                "jenis_barang" => $v['jenis_barang'],
-                "jumlah" => $v['jumlah'],
-                "satuan" => $v['satuan'],
+                "catatan" => $v['catatan'],
                 "action" => $action
             );
         }
@@ -136,21 +134,18 @@ class Perencanaan extends Telescoope_Controller
     public function submit_data(){
 
         $post = $this->input->post(); 
+        $jumlah = $this->input->post('jumlah');
+        $barang_id = $this->input->post('barang_id');
 
         if (count($post) == 0) {
             $this->setMessage("Isi data dengan Benar.");
             redirect(site_url('perencanaan/add'));
-        }
+        }     
 
         $this->db->trans_begin();
 
         $data = array(
             "kode_lokasi_skd" => $post['kode_lokasi_skd'],
-            "kode_perencanaan" => $post['kode_perencanaan'],            
-            "nama_barang" => $post['nama_barang'],
-            "jenis_barang" => $post['jenis_barang'],
-            "jumlah" => $post['jumlah'],
-            "satuan" => $post['satuan'],
             'catatan' => $post['catatan'],
             'created_by' => $this->data['userdata']['employee_id'],
             'created_at' => date('Y-m-d H:i:s'),
@@ -159,6 +154,49 @@ class Perencanaan extends Telescoope_Controller
         $simpan = $this->db->insert('perencanaan', $data);
         
         if($simpan){        
+
+            $insert_id = $this->db->insert_id();
+
+            $id = strval($insert_id); 
+            $res = str_repeat('0', 5 - strlen($id)).$id;   
+
+            $this->db->set('kode_perencanaan', 'PR.' . $res)->where('id', $insert_id)->update('perencanaan');
+
+            $dir = './uploads/' . $this->data['dir'];
+
+            if (!empty($_FILES['foto_barang']['name'])) {
+                $data_insert = array();
+            
+                foreach ($_FILES['foto_barang']['name'] as $key => $file_name) {
+                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
+                    $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
+                    $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
+                    $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
+                    $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
+            
+                    if ($this->upload->do_upload('file')) {
+                        $uploadKtp = $this->upload->data();
+                        $data_insert[] = array(
+                            'jumlah' => $jumlah[$key],
+                            'barang_id' => $barang_id[$key],
+                            'file_path' => $uploadKtp['file_name'],
+                        );
+                    }
+                }     
+                
+                foreach ($data_insert as $insert_data) {
+                    $detail = array(
+                        "perencanaan_id" => $insert_id,
+                        "barang_id" => $insert_data['barang_id'],
+                        "jumlah" => $insert_data['jumlah'],
+                        'foto_barang' => $insert_data['file_path'],
+                        'created_by' => $this->data['userdata']['employee_id'],
+                        'created_at' => date('Y-m-d H:i:s'),
+                    );            
+                    $simpan_detail = $this->db->insert('perencanaan_detail', $detail);
+                }
+            }            
+
             if ($this->db->trans_status() === FALSE)  {
                 $this->setMessage("Failed save data.");
                 $this->db->trans_rollback();
@@ -181,24 +219,16 @@ class Perencanaan extends Telescoope_Controller
         echo json_encode($data);
     }
 
-    public function get_district()
-    {
-        $kabupaten = $this->input->post('kabupaten', true);
-        $data = $this->db->get_where('ref_locations', ['parent_id' => $kabupaten])->result_array();
-        echo json_encode($data);
-    }
-
-    public function get_village()
-    {
-        $kecamatan = $this->input->post('kecamatan', true);
-        $data = $this->db->get_where('ref_locations', ['parent_id' => $kecamatan])->result_array();
-        echo json_encode($data);
-    }
-
     public function get_lokasi()
     {
-        $desa = $this->input->post('desa', true);
-        $data = $this->db->get_where('lokasi_skd', ['lokasi_id' => $desa])->result_array();
+        $kabupaten = $this->input->post('kabupaten', true);
+        $data = $this->db->get_where('lokasi_skd', ['lokasi_id' => $kabupaten])->result_array();
+        echo json_encode($data);
+    }
+
+    public function get_barang()
+    {        
+        $data = $this->db->order_by('id', 'asc')->get('adm_barang')->result_array();
         echo json_encode($data);
     }
 }

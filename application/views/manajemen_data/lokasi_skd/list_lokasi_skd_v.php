@@ -32,15 +32,12 @@
                     <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Lokasi ID</th>
+                                <th>Kode Lokasi</th>
                                 <th>Nama Lokasi</th>
                                 <th>Nama Provinsi</th>
                                 <th>Nama Kabupaten</th>
-                                <th>Nama Kecamatan</th>
-                                <th>Nama Desa</th>
                                 <th>Status Gedung</th>
-                                <th>Luas Ruangan Test (m2)</th>
-                                <th>Luas Ruangan Tunggu (m2)</th>
+                                <th>Catatan</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -80,15 +77,12 @@
             },
             scrollX: !0,
             'columns': [
-                { data: 'lokasi_id' }, 
+                { data: 'kode_lokasi' }, 
                 { data: 'nama_lokasi' }, 
                 { data: 'province_name' }, 
                 { data: 'regency_name' },
-                { data: 'district_name' },
-                { data: 'village_name' },
-                { data: 'status_gedung' },
-                { data: 'luas_ruangan_test' },                
-                { data: 'luas_ruangan_tunggu' },                
+                { data: 'status_gedung' },  
+                { data: 'catatan' },  
                 { data: 'action' },
             ]            
         });

@@ -14,7 +14,7 @@ class Lokasi_skd_m extends CI_Model {
 
 		if(!empty($id)){
 
-			$this->db->where('id', $id);
+			$this->db->where('lokasi_skd.id', $id);
 
 		}
 

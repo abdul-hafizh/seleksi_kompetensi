@@ -17,24 +17,15 @@
                         </div>
                         <div class="col-lg-3">       
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_gedung" value="Siap">
+                                <input class="form-check-input" type="radio" name="status_gedung" value="Siap" required>
                                 <label class="form-check-label">Siap</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_gedung" value="Tidak">
+                                <input class="form-check-input" type="radio" name="status_gedung" value="Tidak" required>
                                 <label class="form-check-label">Tidak</label>
                             </div>
                         </div>
                     </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Kode Lokasi</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="kode_lokasi" placeholder="Kode Lokasi" required>
-                        </div>
-                    </div>     
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
@@ -67,58 +58,18 @@
                     <div class="row mb-3">
                         <div class="col-lg-2">
                             <label class="form-label">&nbsp;</label>
-                        </div>                        
-                        <div class="col-lg-4">
-                            <select class="select-single" name="kecamatan" id="kecamatan" disabled required>
-                                <option value="">Pilih Kecamatan</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <select class="select-single" name="desa" id="desa" disabled required>
-                                <option value="">Pilih Desa</option>
-                            </select>
-                        </div>
-                    </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">&nbsp;</label>
                         </div> 
                         <div class="col-lg-9">
                             <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" required></textarea>
                         </div>
-                    </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Luas Ruangan Test (m2)</label> 
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="panjang_ruangan_test" placeholder="Panjang" required>
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="lebar_ruangan_test" placeholder="Lebar" required>
-                        </div>
-                    </div>                
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Luas Ruangan Tunggu (m2)</label> 
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="panjang_ruangan_tunggu" placeholder="Panjang" required>
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="number" class="form-control" name="lebar_ruangan_tunggu" placeholder="Lebar" required>
-                        </div>
-                    </div>                  
+                    </div>                 
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-9">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan" required></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
                         </div>
                     </div>                    
                 </div>
@@ -168,40 +119,6 @@
 					$("#kabupaten").html(kabupaten).removeAttr("disabled");
 				},
 			});
-		});
-
-        $("#kabupaten").on("change", function () {
-			let kabupaten = $("#kabupaten").val();
-			$.ajax({
-				url: "<?php echo site_url('manajemen_data/lokasi_skd/get_district');?>",
-				data: { kabupaten: kabupaten },
-				method: "POST",
-				dataType: "json",
-				success: function (data) {
-					kecamatan = '<option value="">Pilih Kecamatan</option>';
-					$.each(data, function (i, item) {   
-						kecamatan += '<option value="' + item.location_id +'">' + item.district_name + "</option>";
-					});
-					$("#kecamatan").html(kecamatan).removeAttr("disabled");
-				},
-			});
-		});        
-
-        $("#kecamatan").on("change", function () {
-			let kecamatan = $("#kecamatan").val();
-			$.ajax({
-				url: "<?php echo site_url('manajemen_data/lokasi_skd/get_village');?>",
-				data: { kecamatan: kecamatan },
-				method: "POST",
-				dataType: "json",
-				success: function (data) {
-					desa = '<option value="">Pilih Desa</option>';
-					$.each(data, function (i, item) {   
-						desa += '<option value="' + item.location_id +'">' + item.village_name + "</option>";
-					});
-					$("#desa").html(desa).removeAttr("disabled");
-				},
-			});
-		});        
+		});  
     })
 </script>

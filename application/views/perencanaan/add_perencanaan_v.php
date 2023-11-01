@@ -10,56 +10,7 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">Tambah Data Perencanaan</h5>
                 </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Kode Perencanaan</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="kode_perencanaan" placeholder="Kode Perencanaan" required>
-                        </div>
-                    </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Nama Barang</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="nama_barang" placeholder="Nama Barang" required>
-                        </div>
-                    </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Jumlah</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="number" class="form-control" name="jumlah" placeholder="Jumlah" required>
-                        </div>
-                    </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Satuan</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="satuan" placeholder="Satuan" required>
-                        </div>
-                    </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Jenis Barang</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <select class="select-single" name="jenis_barang" id="jenis_barang" required>
-                                <option value="">Pilih Jenis</option>                                
-                                <option value="IT">IT</option>                                
-                                <option value="Non-IT">Non-IT</option>                                
-                            </select>
-                        </div>
-                    </div>     
-
+                <div class="card-body">                    
                     <div class="row mb-3">
                         <div class="col-lg-2">
                             <label class="form-label">Wilayah</label>
@@ -78,22 +29,6 @@
                             </select>
                         </div>
                     </div>                
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">&nbsp;</label>
-                        </div>                        
-                        <div class="col-lg-4">
-                            <select class="select-single" name="kecamatan" id="kecamatan" disabled required>
-                                <option value="">Pilih Kecamatan</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <select class="select-single" name="desa" id="desa" disabled required>
-                                <option value="">Pilih Desa</option>
-                            </select>
-                        </div>
-                    </div>    
                     
                     <div class="form-group row mb-2">
                         <label class="col-md-2 label-control">Lokasi</label>
@@ -109,9 +44,38 @@
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-9">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan" required></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
                         </div>
                     </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Data Barang</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3 p-3">
+                        <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kode Barang</th>
+                                    <th>Nama Barang</th>
+                                    <th>Merk</th>
+                                    <th>Jenis Alat</th>
+                                    <th>Satuan</th>
+                                    <th>Jumlah</th>
+                                    <th>Foto</th>
+                                </tr>
+                            </thead>
+                            <tbody id="show-barang"></tbody>                            
+                        </table>                    
+                    </div>                      
                 </div>
             </div>
         </div>
@@ -164,42 +128,8 @@
         $("#kabupaten").on("change", function () {
 			let kabupaten = $("#kabupaten").val();
 			$.ajax({
-				url: "<?php echo site_url('perencanaan/get_district');?>",
-				data: { kabupaten: kabupaten },
-				method: "POST",
-				dataType: "json",
-				success: function (data) {
-					kecamatan = '<option value="">Pilih Kecamatan</option>';
-					$.each(data, function (i, item) {   
-						kecamatan += '<option value="' + item.location_id +'">' + item.district_name + "</option>";
-					});
-					$("#kecamatan").html(kecamatan).removeAttr("disabled");
-				},
-			});
-		});        
-
-        $("#kecamatan").on("change", function () {
-			let kecamatan = $("#kecamatan").val();
-			$.ajax({
-				url: "<?php echo site_url('perencanaan/get_village');?>",
-				data: { kecamatan: kecamatan },
-				method: "POST",
-				dataType: "json",
-				success: function (data) {
-					desa = '<option value="">Pilih Desa</option>';
-					$.each(data, function (i, item) {   
-						desa += '<option value="' + item.location_id +'">' + item.village_name + "</option>";
-					});
-					$("#desa").html(desa).removeAttr("disabled");
-				},
-			});
-		});        
-
-        $("#desa").on("change", function () {
-			let desa = $("#desa").val();
-			$.ajax({
 				url: "<?php echo site_url('perencanaan/get_lokasi');?>",
-				data: { desa: desa },
+				data: { kabupaten: kabupaten },
 				method: "POST",
 				dataType: "json",
 				success: function (data) {
@@ -211,5 +141,36 @@
 				},
 			});
 		});
+
+        $("#kode_lokasi_skd").on("change", function () {			
+            $.ajax({
+                url: "<?php echo site_url('perencanaan/get_barang');?>",				
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var rows = '';
+
+                    $.each(data, function (i, item) {   
+						rows+= '<tr>';
+                            rows+= '<td>' + (i + 1) + '</td>';
+                            rows+= '<td>' + item.kode_barang_id + '</td>';
+                            rows+= '<td>' + item.nama_barang + '</td>';
+                            rows+= '<td>' + item.merek + '</td>';
+                            rows+= '<td>' + item.jenis_alat + '</td>';
+                            rows+= '<td>' + item.satuan + '</td>';
+                            rows+= '<td><input id="jumlah" name="jumlah[]" type="number" min="0" class="form-control" placeholder="Jumlah"></td>';
+                            rows+= '<td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control"></td>';
+                            rows+= '<input id="barang_id" name="barang_id[]" type="hidden" value="' + item.id + '">';
+                        rows+= '</tr>';
+					});
+
+                    $('#show-barang').html(rows);
+                },
+                error: function (xhr, status, error) {
+                    alert('Gagal ambil data barang.');
+                },
+            });
+        });
+
     })
 </script>
