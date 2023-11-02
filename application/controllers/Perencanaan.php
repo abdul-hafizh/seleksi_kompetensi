@@ -124,11 +124,18 @@ class Perencanaan extends Telescoope_Controller
     }
     
     public function add(){
-        $data = array();
-        
+        $data = array();        
         $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
   
         $this->template("perencanaan/add_perencanaan_v", "Tambah Perencanaan", $data);
+    }
+
+    public function detail($id){
+        $data = array();        
+        $data['get_perencanaan'] = $this->Perencanaan_m->getPerencanaan($id)->row_array();
+        $data['get_detail'] = $this->Perencanaan_m->getDetail($id)->result_array();
+  
+        $this->template("perencanaan/detail_perencanaan_v", "Detail Perencanaan", $data);
     }
 
     public function submit_data(){

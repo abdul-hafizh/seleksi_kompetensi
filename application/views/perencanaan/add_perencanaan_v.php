@@ -32,7 +32,7 @@
                     
                     <div class="form-group row mb-2">
                         <label class="col-md-2 label-control">Lokasi</label>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <select class="select-single" name="kode_lokasi_skd" id="kode_lokasi_skd" disabled required>
                                 <option value="">Pilih Lokasi</option>
                             </select>
@@ -43,7 +43,7 @@
                         <div class="col-lg-2">
                             <label class="form-label">Catatan</label>
                         </div>
-                        <div class="col-lg-9">
+                        <div class="col-lg-8">
                             <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
                         </div>
                     </div>                    

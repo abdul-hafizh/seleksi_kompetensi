@@ -26,4 +26,20 @@ class Perencanaan_m extends CI_Model {
 		return $this->db->get('perencanaan');
 
 	}
+
+	public function getDetail($id = ''){
+
+		$this->db->select('pd.*, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn');
+
+		if(!empty($id)){
+
+			$this->db->where('pd.perencanaan_id', $id);
+
+		}
+
+		$this->db->join('adm_barang', 'adm_barang.id = pd.barang_id', 'left');
+
+		return $this->db->get('perencanaan_detail pd');
+
+	}
 }
