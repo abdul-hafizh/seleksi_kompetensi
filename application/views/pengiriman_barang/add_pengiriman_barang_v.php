@@ -65,6 +65,7 @@
                                     <th>Satuan</th>
                                     <th>Jumlah Rencana</th>
                                     <th>Jumlah Kirim</th>
+                                    <th style="display:none">Barang ID </th>
                                 </tr>
                             </thead>
                             <tbody id="show-barang"></tbody>                            
@@ -122,8 +123,8 @@
                             rows+= '<td>' + item.jenis_alat + '</td>';
                             rows+= '<td>' + item.satuan + '</td>';
                             rows+= '<td>' + item.jumlah + '</td>';
-                            rows+= '<td><input id="jumlah_kirim" name="jumlah_kirim[]" type="number" min="0" class="form-control" placeholder="Jumlah"></td>';                            
-                            rows+= '<input id="barang_id" name="barang_id[]" type="hidden" value="' + item.id + '">';
+                            rows+= '<td><input id="jumlah_kirim" name="jumlah_kirim[]" type="number" min="0" class="form-control" placeholder="Jumlah" required></td>';
+                            rows+= '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';
                         rows+= '</tr>';
 					});
 
