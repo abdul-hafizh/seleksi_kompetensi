@@ -8,39 +8,22 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Tambah Data Pengiriman Barang</h5>
+                    <h5 class="card-title mb-0">Tambah Data Pengiriman</h5>
                 </div>
                 <div class="card-body">                    
+                    
                     <div class="form-group row mb-2">
                         <label class="col-md-2 label-control">Perencanaan</label>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <select class="select-single" name="perencanaan_id" id="perencanaan_id" required>
-                                <option value="0">Pilih Perencanaan</option>
+                                <option value="">Pilih Perencanaan</option>
                                 <?php foreach($get_perencanaan as $v) { ?>
-                                    <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_perencanaan'] . ' | ' . $v['nama_barang'] . ' (' . $v['province_name'] . ', ' . $v['regency_name'] . ', ' . $v['district_name'] . ', ' . $v['village_name'] . ')'; ?></option>
+                                    <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_perencanaan'] . ' | ' . $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
                     </div>
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Jumlah Rencana</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="text" class="form-control" id="jumlah_rencana" placeholder="Jumlah Rencana" readonly>
-                        </div>
-                    </div>    
                     
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Jumlah Kirim</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="number" class="form-control" name="jumlah_kirim" placeholder="Jumlah Kirim" required>
-                        </div>
-                    </div>
-
                     <div class="row mb-3">
                         <div class="col-lg-2">
                             <label class="form-label">Tanggal Kirim</label>
@@ -49,24 +32,45 @@
                             <input type="date" class="form-control" name="tgl_kirim" placeholder="Tanggal Kirim" required>
                         </div>
                     </div>    
-                    
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Foto Barang</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="file" class="form-control" name="foto_barang" placeholder="Foto Barang" required>
-                        </div>
-                    </div>          
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
                             <label class="form-label">Catatan</label>
                         </div>
-                        <div class="col-lg-9">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan" required></textarea>
+                        <div class="col-lg-8">
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
                         </div>
                     </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Data Barang</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3 p-3">
+                        <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kode Barang</th>
+                                    <th>Nama Barang</th>
+                                    <th>Merk</th>
+                                    <th>Jenis Alat</th>
+                                    <th>Satuan</th>
+                                    <th>Jumlah Rencana</th>
+                                    <th>Jumlah Kirim</th>
+                                    <th>Foto Barang</th>
+                                </tr>
+                            </thead>
+                            <tbody id="show-barang"></tbody>                            
+                        </table>                    
+                    </div>                      
                 </div>
             </div>
         </div>
@@ -97,19 +101,47 @@
                 var errors = validator.numberOfInvalids();
                 if (errors) { window.scrollTo({top: 0}); }
             }
+        });        
+
+        $("#perencanaan_id").on("change", function () {			
+            let perencanaan_id = $("#perencanaan_id").val();
+            var url_file = '<?php echo base_url('uploads/perencanaan/');?>';
+            $.ajax({
+                url: "<?php echo site_url('pengiriman_barang/get_barang');?>",
+                data: { perencanaan_id: perencanaan_id },
+                method: "POST",
+                dataType: "json",
+                success: function (data) {
+                    var rows = '';
+
+                    $.each(data, function (i, item) {   
+						rows+= '<tr>';
+                            rows+= '<td>' + (i + 1) + '</td>';
+                            rows+= '<td>' + item.kode_barang_id + '</td>';
+                            rows+= '<td>' + item.nama_barang + '</td>';
+                            rows+= '<td>' + item.merek + '</td>';
+                            rows+= '<td>' + item.jenis_alat + '</td>';
+                            rows+= '<td>' + item.satuan + '</td>';
+                            rows+= '<td>' + item.jumlah + '</td>';
+                            rows+= '<td><input id="jumlah_kirim" name="jumlah_kirim[]" type="number" min="0" class="form-control" placeholder="Jumlah"></td>';
+                            rows+= '<td>';
+                                rows+= '<div class="avatar-group">';
+                                    rows+= '<a href="' + url_file + '/' + item.foto_barang + '" target="_blank" class="avatar-group-item" data-img="' + url_file + '/' + item.foto_barang + '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto KTP">';
+                                        rows+= '<img src="' + url_file + '/' + item.foto_barang + '" alt="" class="rounded-circle avatar-xxs">';
+                                    rows+= '</a>';
+                                rows+= '</div>';
+                            rows+= '</td>';
+                            rows+= '<input id="barang_id" name="barang_id[]" type="hidden" value="' + item.id + '">';
+                        rows+= '</tr>';
+					});
+
+                    $('#show-barang').html(rows);
+                },
+                error: function (xhr, status, error) {
+                    alert('Gagal ambil data barang.');
+                },
+            });
         });
-        
-        $("#perencanaan_id").on("change", function () {
-			let perencanaan_id = $("#perencanaan_id").val();
-			$.ajax({
-				url: "<?php echo site_url('pengiriman_barang/get_perencanaan');?>",
-				data: { perencanaan_id: perencanaan_id },
-				method: "POST",
-				dataType: "json",
-				success: function (data) {					
-					$("#jumlah_rencana").val(data.jumlah);
-				},
-			});
-		});        
+
     })
 </script>

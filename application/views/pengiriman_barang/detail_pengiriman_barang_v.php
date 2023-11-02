@@ -2,13 +2,13 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">Detail Data Perencanaan</h5>
+                <h5 class="card-title mb-0">Detail Data Pengiriman</h5>
             </div>
             <div class="card-body">                    
                 <div class="form-group row mb-2">
-                    <label class="col-md-2 label-control">Kode Perencanaan</label>
+                    <label class="col-md-2 label-control">Kode Pengiriman</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" value="<?php echo $get_perencanaan['kode_perencanaan']; ?>" readonly>
+                        <input type="text" class="form-control" value="<?php echo $get_pengiriman['kode_pengiriman']; ?>" readonly>
                     </div>
                 </div>
 
@@ -17,17 +17,24 @@
                         <label class="form-label">Wilayah</label>
                     </div>
                     <div class="col-lg-4">
-                        <input type="text" class="form-control" value="<?php echo $get_perencanaan['province_name']; ?>" readonly>
+                        <input type="text" class="form-control" value="<?php echo $get_pengiriman['province_name']; ?>" readonly>
                     </div>
                     <div class="col-lg-4">
-                        <input type="text" class="form-control" value="<?php echo $get_perencanaan['regency_name']; ?>" readonly>
+                        <input type="text" class="form-control" value="<?php echo $get_pengiriman['regency_name']; ?>" readonly>
                     </div>
                 </div>                
                 
                 <div class="form-group row mb-2">
                     <label class="col-md-2 label-control">Lokasi</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" value="<?php echo $get_perencanaan['nama_lokasi']; ?>" readonly>
+                        <input type="text" class="form-control" value="<?php echo $get_pengiriman['nama_lokasi']; ?>" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2">
+                    <label class="col-md-2 label-control">Tanggal Kirim</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" value="<?php echo $get_pengiriman['tgl_kirim']; ?>" readonly>
                     </div>
                 </div>
 
@@ -36,7 +43,7 @@
                         <label class="form-label">Catatan</label>
                     </div>
                     <div class="col-lg-8">
-                        <textarea class="form-control" rows="3" readonly><?php echo $get_perencanaan['catatan']; ?></textarea>
+                        <textarea class="form-control" rows="3" readonly><?php echo $get_pengiriman['catatan']; ?></textarea>
                     </div>
                 </div>                    
             </div>
@@ -61,7 +68,8 @@
                                 <th>Merk</th>
                                 <th>Jenis Alat</th>
                                 <th>Satuan</th>
-                                <th>Jumlah</th>
+                                <th>Jumlah Rencana</th>
+                                <th>Jumlah Kirim</th>
                                 <th>Foto</th>
                             </tr>
                         </thead>
@@ -75,6 +83,7 @@
                                     <td><?php echo $v['jenis_alat'];?></td>
                                     <td><?php echo $v['satuan'];?></td>
                                     <td><?php echo $v['jumlah'];?></td>
+                                    <td><?php echo $v['jumlah_kirim'];?></td>
                                     <td>
                                         <div class="avatar-group">
                                             <a href="<?php echo base_url('uploads/perencanaan/' . $v['foto_barang']); ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/perencanaan/' . $v['foto_barang']); ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
