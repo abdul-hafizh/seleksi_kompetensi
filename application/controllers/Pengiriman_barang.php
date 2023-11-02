@@ -108,6 +108,7 @@ class Pengiriman_barang extends Telescoope_Controller
                 "province_name" => $v['province_name'],
                 "regency_name" => $v['regency_name'],
                 "nama_lokasi" => $v['kode_lokasi'] . ' | ' . $v['nama_lokasi'],
+                "tgl_kirim" => $v['tgl_kirim'],
                 "catatan" => $v['catatan'],
                 "action" => $action
             );
@@ -152,9 +153,7 @@ class Pengiriman_barang extends Telescoope_Controller
         }
 
         $this->db->trans_begin();
-
-        $dir = './uploads/' . $this->data['dir'];
-
+        
         $data = array(
             "perencanaan_id" => $post['perencanaan_id'],
             "kode_pengiriman" => $post['kode_pengiriman'],
@@ -174,8 +173,6 @@ class Pengiriman_barang extends Telescoope_Controller
             $res = str_repeat('0', 5 - strlen($id)).$id;   
 
             $this->db->set('kode_pengiriman', 'PRB.' . $res)->where('id', $insert_id)->update('pengiriman_barang');
-
-            $dir = './uploads/' . $this->data['dir'];
 
             if (!empty($jumlah)) {
                 $data_insert = array();

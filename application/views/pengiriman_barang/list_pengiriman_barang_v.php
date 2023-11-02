@@ -36,6 +36,7 @@
                                 <th>Nama Provinsi</th>
                                 <th>Nama Kabupaten</th>
                                 <th>Nama Lokasi</th>
+                                <th>Tanggal Kirim</th>
                                 <th>Catatan</th>
                                 <th>Action</th>
                             </tr>
@@ -80,6 +81,7 @@
                 { data: 'province_name' }, 
                 { data: 'regency_name' }, 
                 { data: 'nama_lokasi' }, 
+                { data: 'tgl_kirim' }, 
                 { data: 'catatan' }, 
                 { data: 'action' },
             ]            

@@ -32,17 +32,12 @@
                     <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Nama Lokasi</th>
+                                <th>Kode Penerimaan</th>
                                 <th>Nama Provinsi</th>
-                                <th>Nama Barang</th>
-                                <th>Jenis Barang</th>
-                                <th>Jumlah Kirim</th>
-                                <th>Tanggal Kirim</th>
-                                <th>Jumlah Terima</th>
+                                <th>Nama Kabupaten</th>
+                                <th>Nama Lokasi</th>
                                 <th>Tanggal Terima</th>
-                                <th>Rusak</th>
-                                <th>Terpasang</th>
-                                <th>Foto</th>
+                                <th>Catatan</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -82,17 +77,12 @@
             },
             scrollX: !0,
             'columns': [
-                { data: 'nama_lokasi' }, 
+                { data: 'kode_penerimaan' }, 
                 { data: 'province_name' }, 
-                { data: 'nama_barang' },
-                { data: 'jenis_barang' },
-                { data: 'jumlah_kirim' },
-                { data: 'tgl_kirim' },
-                { data: 'jumlah_terima' },
+                { data: 'regency_name' }, 
+                { data: 'nama_lokasi' }, 
                 { data: 'tgl_terima' },
-                { data: 'rusak' },
-                { data: 'terpasang' },
-                { data: 'foto_barang' },
+                { data: 'catatan' },
                 { data: 'action' },
             ]            
         });

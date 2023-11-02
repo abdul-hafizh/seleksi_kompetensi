@@ -65,7 +65,6 @@
                                     <th>Satuan</th>
                                     <th>Jumlah Rencana</th>
                                     <th>Jumlah Kirim</th>
-                                    <th>Foto Barang</th>
                                 </tr>
                             </thead>
                             <tbody id="show-barang"></tbody>                            
@@ -123,14 +122,7 @@
                             rows+= '<td>' + item.jenis_alat + '</td>';
                             rows+= '<td>' + item.satuan + '</td>';
                             rows+= '<td>' + item.jumlah + '</td>';
-                            rows+= '<td><input id="jumlah_kirim" name="jumlah_kirim[]" type="number" min="0" class="form-control" placeholder="Jumlah"></td>';
-                            rows+= '<td>';
-                                rows+= '<div class="avatar-group">';
-                                    rows+= '<a href="' + url_file + '/' + item.foto_barang + '" target="_blank" class="avatar-group-item" data-img="' + url_file + '/' + item.foto_barang + '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto KTP">';
-                                        rows+= '<img src="' + url_file + '/' + item.foto_barang + '" alt="" class="rounded-circle avatar-xxs">';
-                                    rows+= '</a>';
-                                rows+= '</div>';
-                            rows+= '</td>';
+                            rows+= '<td><input id="jumlah_kirim" name="jumlah_kirim[]" type="number" min="0" class="form-control" placeholder="Jumlah"></td>';                            
                             rows+= '<input id="barang_id" name="barang_id[]" type="hidden" value="' + item.id + '">';
                         rows+= '</tr>';
 					});
