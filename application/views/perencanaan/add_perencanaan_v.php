@@ -66,7 +66,6 @@
                                     <th>No</th>
                                     <th>Kode Barang</th>
                                     <th>Nama Barang</th>
-                                    <th>Merk</th>
                                     <th>Jenis Alat</th>
                                     <th>Satuan</th>
                                     <th>Jumlah</th>
@@ -155,7 +154,6 @@
                             rows+= '<td>' + (i + 1) + '</td>';
                             rows+= '<td>' + item.kode_barang_id + '</td>';
                             rows+= '<td>' + item.nama_barang + '</td>';
-                            rows+= '<td>' + item.merek + '</td>';
                             rows+= '<td>' + item.jenis_alat + '</td>';
                             rows+= '<td>' + item.satuan + '</td>';
                             rows+= '<td><input id="jumlah" name="jumlah[]" type="number" min="0" class="form-control" placeholder="Jumlah" required></td>';
