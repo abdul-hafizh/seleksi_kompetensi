@@ -6,6 +6,7 @@
 	foreach ($main_menu as $key => $value) {
 		$parent = $value['child'];
 		$class = "";
+		$show = "";
 
 		if (isset($uri)) {
 			$class = ($uri == $key) ? "collapsed active" : "";

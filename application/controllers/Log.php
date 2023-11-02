@@ -25,7 +25,8 @@ class Log extends Telescoope_Controller {
 
 		$data = array();
 
-		if(!empty($sess)){
+		if(!empty($sess)){			
+			
 			$data['controller_name'] = "log";
 
 			$this->template("dashboard_v", "Dashboard", $data);
@@ -35,13 +36,6 @@ class Log extends Telescoope_Controller {
 			$this->load->view("login_v", $data);
 
 		}			
-	}
-
-	public function get_regency()
-	{
-		$provinces = $this->input->post('provinsi', true);
-		$data = $this->db->get_where('adm_ref_locations', ['province_name' => $provinces, 'regency_name !=' => NULL, 'district_name' => NULL])->result_array();
-		echo json_encode($data);
 	}
 	
 	public function in(){
