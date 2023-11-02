@@ -148,7 +148,6 @@ class Jadwal_kegiatan extends Telescoope_Controller
 
         $data = array(
             'lokasi_skd_id' => $post['lokasi_skd_id'],
-            'kode_kegiatan' => $post['kode_kegiatan'],
             'nama_kegiatan' => $post['nama_kegiatan'],
             'tahun' => $post['tahun'],
             'status_kegiatan' => $post['status_kegiatan'],
@@ -161,7 +160,15 @@ class Jadwal_kegiatan extends Telescoope_Controller
 
         $simpan = $this->db->insert('jadwal_kegiatan', $data);
         
-        if($simpan){        
+        if($simpan){      
+            
+            $insert_id = $this->db->insert_id();
+
+            $id = strval($insert_id); 
+            $res = str_repeat('0', 5 - strlen($id)).$id;   
+
+            $this->db->set('kode_kegiatan', 'JK.' . $res)->where('id', $insert_id)->update('jadwal_kegiatan');
+
             if ($this->db->trans_status() === FALSE)  {
                 $this->setMessage("Failed save data.");
                 $this->db->trans_rollback();

@@ -41,10 +41,11 @@ class Roles extends Telescoope_Controller
 
     $sess = $this->session->userdata(do_hash(SESSION_PREFIX));
 
-    $position = $this->Administration_m->getPosition("ADMINISTRATOR");
+    $position1 = $this->Administration_m->getPosition("ADMINISTRATOR");
+    $position2 = $this->Administration_m->getPosition("PUSAT");
 
-    if(!$position){
-        $this->noAccess("Hanya ADMINISTRATOR yang dapat mengubah data.");
+    if(!$position1 && !$position2){
+        $this->noAccess("Anda tidak memiliki hak akses untuk halaman ini.");
     }
 
     if(empty($sess)){

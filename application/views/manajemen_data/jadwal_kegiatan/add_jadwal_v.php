@@ -17,24 +17,15 @@
                         </div>
                         <div class="col-lg-3">       
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Aktif">
+                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Aktif" required>
                                 <label class="form-check-label">Aktif</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Tidak Aktif">
+                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Tidak Aktif" required>
                                 <label class="form-check-label">Tidak Aktif</label>
                             </div>
                         </div>
                     </div>    
-
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Kode Kegiatan</label>
-                        </div>
-                        <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="kode_kegiatan" placeholder="Kode Kegiatan" required>
-                        </div>
-                    </div>     
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
@@ -74,7 +65,7 @@
                             <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" required>
                                 <option value="">Pilih Lokasi</option>
                                 <?php foreach($get_lokasi as $v) { ?>
-                                    <option value="<?php echo $v['id']; ?>"><?php echo $v['nama_lokasi']; ?></option>
+                                    <option value="<?php echo $v['id']; ?>"><?php echo $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -85,7 +76,7 @@
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-9">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan" required></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
                         </div>
                     </div>                    
                 </div>

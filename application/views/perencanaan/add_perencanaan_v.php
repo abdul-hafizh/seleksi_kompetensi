@@ -158,7 +158,7 @@
                             rows+= '<td>' + item.merek + '</td>';
                             rows+= '<td>' + item.jenis_alat + '</td>';
                             rows+= '<td>' + item.satuan + '</td>';
-                            rows+= '<td><input id="jumlah" name="jumlah[]" type="number" min="0" class="form-control" placeholder="Jumlah"></td>';
+                            rows+= '<td><input id="jumlah" name="jumlah[]" type="number" min="0" class="form-control" placeholder="Jumlah" required></td>';
                             rows+= '<td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control"></td>';
                             rows+= '<input id="barang_id" name="barang_id[]" type="hidden" value="' + item.id + '">';
                         rows+= '</tr>';

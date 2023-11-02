@@ -5,7 +5,7 @@
     <div class="col-lg-8 col-12">
         <div class="card">
             <div class="card-header border-bottom pb-2">
-                <h4 class="card-title">Form Pengisian User</h4>
+                <h4 class="card-title">Form Pengisian SDM</h4>
             </div>
             <div class="card-content">
                 <div class="card-body">
@@ -81,23 +81,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Kecamatan</label>
-                            <div class="col-md-9">
-                                <select class="select-single" name="kecamatan" id="kecamatan" disabled required>
-                                    <option value="">Pilih Kecamatan</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Desa</label>
-                            <div class="col-md-9">
-                                <select class="select-single" name="desa" id="desa" disabled required>
-                                    <option value="">Pilih Desa</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Lokasi</label>
+                            <label class="col-md-3 label-control">Titik Lokasi</label>
                             <div class="col-md-9">
                                 <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" disabled required>
                                     <option value="">Pilih Lokasi</option>
@@ -149,53 +133,19 @@
         $("#kabupaten").on("change", function () {
 			let kabupaten = $("#kabupaten").val();
 			$.ajax({
-				url: "<?php echo site_url('manajemen_user/users/get_district');?>",
-				data: { kabupaten: kabupaten },
-				method: "POST",
-				dataType: "json",
-				success: function (data) {
-					kecamatan = '<option value="">Pilih Kecamatan</option>';
-					$.each(data, function (i, item) {   
-						kecamatan += '<option value="' + item.location_id +'">' + item.district_name + "</option>";
-					});
-					$("#kecamatan").html(kecamatan).removeAttr("disabled");
-				},
-			});
-		});        
-
-        $("#kecamatan").on("change", function () {
-			let kecamatan = $("#kecamatan").val();
-			$.ajax({
-				url: "<?php echo site_url('manajemen_user/users/get_village');?>",
-				data: { kecamatan: kecamatan },
-				method: "POST",
-				dataType: "json",
-				success: function (data) {
-					desa = '<option value="">Pilih Desa</option>';
-					$.each(data, function (i, item) {   
-						desa += '<option value="' + item.location_id +'">' + item.village_name + "</option>";
-					});
-					$("#desa").html(desa).removeAttr("disabled");
-				},
-			});
-		});
-        
-        $("#desa").on("change", function () {
-			let desa = $("#desa").val();
-			$.ajax({
 				url: "<?php echo site_url('manajemen_user/users/get_lokasi');?>",
-				data: { desa: desa },
+				data: { kabupaten: kabupaten },
 				method: "POST",
 				dataType: "json",
 				success: function (data) {
 					lokasi_skd_id = '<option value="">Pilih Lokasi</option>';
 					$.each(data, function (i, item) {   
-						lokasi_skd_id += '<option value="' + item.id +'">' + item.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
+						lokasi_skd_id += '<option value="' + item.id +'">' + item.province_name + ' | ' + item.regency_name + ' | ' + item.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
 					});
 					$("#lokasi_skd_id").html(lokasi_skd_id).removeAttr("disabled");
 				},
 			});
-		});
+		});        
     })
     
 </script>

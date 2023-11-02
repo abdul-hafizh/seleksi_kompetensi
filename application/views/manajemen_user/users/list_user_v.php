@@ -21,12 +21,12 @@
         <div class="card">
             <div class="card-header border-bottom pb-2">
                 <div class="float-start">
-                    <h5 class="card-title mb-0">List Employee</h5>
+                    <h5 class="card-title mb-0">List SDM</h5>
                 </div>
                 <div class="float-end">
                     <div class="btn-group">
-                        <a href="<?php echo site_url('manajemen_user/users/add_access');?>" class="btn btn-info btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah User Access</a>
-                        <a href="<?php echo site_url('manajemen_user/users/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah User</a>
+                        <a href="<?php echo site_url('manajemen_user/users/add_access');?>" class="btn btn-info btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah SDM Access</a>
+                        <a href="<?php echo site_url('manajemen_user/users/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah SDM</a>
                     </div>
                 </div>
             </div>

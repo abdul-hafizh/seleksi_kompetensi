@@ -17,17 +17,17 @@
     <div class="col-lg-8 col-12">
         <div class="card">
             <div class="card-header border-bottom pb-2">
-                <h4 class="card-title">Form Pengisian User Access</h4>
+                <h4 class="card-title">Form Pengisian SDM Access</h4>
             </div>
             <div class="card-content">
                 <div class="card-body">
                     <form class="form-bordered" method="post" action="<?php echo site_url('manajemen_user/users/submit_access');?>">
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Nama User</label>
+                            <label class="col-md-3 label-control">Nama SDM</label>
                             <div class="col-md-9">
                                 <div class="position-relative">
                                     <select class="select-single" name="employeeid_inp" required>
-                                        <option value="" disabled selected>Pilih User</option>
+                                        <option value="" disabled selected>Pilih SDM</option>
                                         <?php foreach($get_employee as $v) { ?>
                                             <option value="<?php echo $v['id'];?>"><?php echo $v['fullname'];?></option>
                                         <?php } ?>

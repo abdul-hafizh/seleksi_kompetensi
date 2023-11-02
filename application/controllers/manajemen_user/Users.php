@@ -9,7 +9,7 @@ class Users extends Telescoope_Controller
     {
         parent::__construct();
 
-        $this->load->model(array("Administration_m","Provinsi_m"));
+        $this->load->model(array("Administration_m","Provinsi_m","Lokasi_skd_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -41,9 +41,10 @@ class Users extends Telescoope_Controller
 
         $sess = $this->session->userdata(do_hash(SESSION_PREFIX));
 
-        $position = $this->Administration_m->getPosition("ADMINISTRATOR");
+        $position1 = $this->Administration_m->getPosition("ADMINISTRATOR");
+        $position2 = $this->Administration_m->getPosition("PUSAT");
 
-        if(!$position){
+        if(!$position1 && !$position2){
             $this->noAccess("Anda tidak memiliki hak akses untuk halaman ini.");
         }
 
@@ -56,7 +57,7 @@ class Users extends Telescoope_Controller
         $data = array();
         $data['get_employee'] = $this->Administration_m->employee_view()->result_array();      
 
-        $this->template("manajemen_user/users/list_user_v", "Data User", $data);
+        $this->template("manajemen_user/users/list_user_v", "Data SDM", $data);
     }
 
     public function add(){
@@ -64,14 +65,14 @@ class Users extends Telescoope_Controller
         $data['get_pos'] = $this->Administration_m->getNewPos()->result_array();
         $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();        
 
-        $this->template("manajemen_user/users/add_user_v", "Add User", $data);
+        $this->template("manajemen_user/users/add_user_v", "Add SDM", $data);
     }
 
     public function add_access(){
         $data = array();        
         $data['get_employee'] = $this->Administration_m->get_employee()->result_array();        
   
-        $this->template("manajemen_user/users/add_user_access_v", "Add User Access", $data);
+        $this->template("manajemen_user/users/add_user_access_v", "Add SDM Access", $data);
     }
 
     public function update($id){
@@ -79,7 +80,7 @@ class Users extends Telescoope_Controller
         $data['get_pos'] = $this->Administration_m->getNewPos()->result_array();  
         $data['get_employee'] = $this->Administration_m->employee_view($id)->row_array();
 
-        $this->template("manajemen_user/users/edit_user_v", "Edit User", $data);
+        $this->template("manajemen_user/users/edit_user_v", "Edit SDM", $data);
     }
 
     public function submit(){
@@ -103,7 +104,7 @@ class Users extends Telescoope_Controller
         $inputEmp = array(    
             'fullname' => $post['fullname'],
             'nik' => $post['nik'],
-            'lokasi_user' => $post['desa'],
+            'lokasi_user' => $post['kabupaten'],
             'lokasi_skd_id' => $post['lokasi_skd_id'],
             'alamat' => $post['alamat'],
             'email' => $post['email'],
@@ -160,7 +161,7 @@ class Users extends Telescoope_Controller
         $updateEmp = array(
             'fullname' => $post['fullname'],
             'nik' => $post['nik'],
-            'lokasi_user' => $post['desa'],
+            'lokasi_user' => $post['kabupaten'],
             'lokasi_skd_id' => $post['lokasi_skd_id'],
             'file_ktp' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : $row_data['file_ktp'],
             'alamat' => $post['alamat'],
@@ -247,24 +248,10 @@ class Users extends Telescoope_Controller
         echo json_encode($data);
     }
 
-    public function get_district()
-    {
-        $kabupaten = $this->input->post('kabupaten', true);
-        $data = $this->db->get_where('ref_locations', ['parent_id' => $kabupaten])->result_array();
-        echo json_encode($data);
-    }
-
-    public function get_village()
-    {
-        $kecamatan = $this->input->post('kecamatan', true);
-        $data = $this->db->get_where('ref_locations', ['parent_id' => $kecamatan])->result_array();
-        echo json_encode($data);
-    }
-
     public function get_lokasi()
     {
-        $desa = $this->input->post('desa', true);
-        $data = $this->db->get_where('lokasi_skd', ['lokasi_id' => $desa])->result_array();
+        $kabupaten = $this->input->post('kabupaten', true);        
+        $data = $this->Lokasi_skd_m->getLokasi("", $kabupaten)->result_array();
         echo json_encode($data);
     }
 }

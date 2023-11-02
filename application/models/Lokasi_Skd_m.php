@@ -10,11 +10,17 @@ class Lokasi_skd_m extends CI_Model {
 
 	}
 
-	public function getLokasi($id = ''){
+	public function getLokasi($id = '', $code = ''){
 
 		if(!empty($id)){
 
 			$this->db->where('lokasi_skd.id', $id);
+
+		}
+
+		if(!empty($code)){
+
+			$this->db->where('lokasi_skd.lokasi_id', $code);
 
 		}
 
