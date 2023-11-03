@@ -18,7 +18,7 @@
                             <select class="select-single" name="pengiriman_id" id="pengiriman_id" required>
                                 <option value="">Pilih Pengiriman</option>
                                 <?php foreach($get_pengiriman as $v) { ?>
-                                    <option value="<?php echo $v['perencanaan_id']; ?>"><?php echo $v['kode_pengiriman'] . ' | ' . $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
+                                    <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_pengiriman'] . ' | ' . $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
                                 <?php } ?>
                             </select>
                         </div>

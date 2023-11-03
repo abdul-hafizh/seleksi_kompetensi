@@ -27,13 +27,19 @@ class Perencanaan_m extends CI_Model {
 
 	}
 
-	public function getDetail($id = ''){
+	public function getDetail($id = '', $barang_id = ''){
 
 		$this->db->select('pd.*, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn');
 
 		if(!empty($id)){
 
 			$this->db->where('pd.perencanaan_id', $id);
+
+		}
+
+		if(!empty($barang_id)){
+
+			$this->db->where('pd.barang_id', $barang_id);
 
 		}
 

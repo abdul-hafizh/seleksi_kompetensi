@@ -136,7 +136,7 @@ class Pengiriman_barang extends Telescoope_Controller
     public function detail($id){
         $data = array();        
         $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang($id)->row_array();
-        $data['get_detail'] = $this->Pengiriman_barang_m->getDetail($id)->result_array();
+        $data['get_detail'] = $this->Pengiriman_barang_m->getDetailKirim($id)->result_array();
   
         $this->template("pengiriman_barang/detail_pengiriman_barang_v", "Detail Pengiriman Barang", $data);
     }
@@ -156,14 +156,13 @@ class Pengiriman_barang extends Telescoope_Controller
         
         $data = array(
             "perencanaan_id" => $post['perencanaan_id'],
-            "kode_pengiriman" => $post['kode_pengiriman'],
             'tgl_kirim' => $post['tgl_kirim'],
             'catatan' => $post['catatan'],
             'created_by' => $this->data['userdata']['employee_id'],
             'created_at' => date('Y-m-d H:i:s'),
         );
 
-        $simpan = $this->db->insert('pengiriman_barang', $data);
+        $simpan = $this->db->insert('pengiriman_barang', $data);        
         
         if($simpan){        
 
@@ -191,8 +190,31 @@ class Pengiriman_barang extends Telescoope_Controller
                         "jumlah_kirim" => $insert_data['jumlah_kirim'],
                         'created_by' => $this->data['userdata']['employee_id'],
                         'created_at' => date('Y-m-d H:i:s'),
-                    );            
+                    );
                     $simpan_detail = $this->db->insert('pengiriman_detail', $detail);
+
+                    $sum = $this->db->select_sum('pd.jumlah_kirim')->from('pengiriman_barang pb')->join('pengiriman_detail pd', 'pb.id = pd.pengiriman_id', 'left')->where('pb.perencanaan_id', $post['perencanaan_id'])->where('pd.barang_id', $insert_data['barang_id'])->get()->row()->jumlah_kirim;
+                    
+                    if($simpan_detail) {
+                        $updateData = array(
+                            "jumlah_terkirim" => $sum,
+                            'updated_by' => $this->data['userdata']['employee_id'],
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        );
+
+                        $get_pr = $this->Perencanaan_m->getDetail($post['perencanaan_id'], $insert_data['barang_id'])->row_array();
+                        $sisa = (int)$get_pr['jumlah'] - (int)$get_pr['jumlah_terkirim'];
+
+                        if($insert_data['jumlah_kirim'] > $sisa) {
+                            $this->setMessage("Gagal simpan, jumlah barang melebihi rencana.");
+                            $this->db->trans_rollback();
+                            redirect(site_url('pengiriman_barang/add'));
+                        }
+    
+                        $this->db->where('barang_id', $insert_data['barang_id']);
+                        $this->db->where('perencanaan_id', $post['perencanaan_id']);
+                        $update = $this->db->update('perencanaan_detail', $updateData);
+                    }
                 }
             }
 

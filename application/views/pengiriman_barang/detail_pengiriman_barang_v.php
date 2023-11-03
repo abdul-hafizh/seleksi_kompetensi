@@ -73,7 +73,7 @@
                                 <th>Nama Barang</th>
                                 <th>Jenis Alat</th>
                                 <th>Satuan</th>
-                                <th>Jumlah Kirim</th>
+                                <th>Jumlah Terkirim</th>
                             </tr>
                         </thead>
                         <tbody>

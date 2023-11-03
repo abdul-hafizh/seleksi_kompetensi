@@ -171,26 +171,37 @@ class Perencanaan extends Telescoope_Controller
 
             $dir = './uploads/' . $this->data['dir'];
 
-            if (!empty($_FILES['foto_barang']['name'])) {
+            if (!empty($jumlah)) {
                 $data_insert = array();
             
-                foreach ($_FILES['foto_barang']['name'] as $key => $file_name) {
-                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
-                    $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
-                    $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
-                    $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
-                    $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
+                foreach ($jumlah as $key => $v) {
+                    
+                    $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
+                    
+                    if (!empty($file_name)) {
+                        $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
+                        $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
+                        $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
+                        $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
+                        $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
             
-                    if ($this->upload->do_upload('file')) {
-                        $uploadKtp = $this->upload->data();
+                        if ($this->upload->do_upload('file')) {
+                            $uploadKtp = $this->upload->data();
+                            $data_insert[] = array(
+                                'jumlah' => $jumlah[$key],
+                                'barang_id' => $barang_id[$key],
+                                'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
+                            );
+                        }
+                    } else {
                         $data_insert[] = array(
                             'jumlah' => $jumlah[$key],
                             'barang_id' => $barang_id[$key],
-                            'file_path' => $uploadKtp['file_name'],
+                            'file_path' => '',
                         );
                     }
-                }     
-                
+                }
+            
                 foreach ($data_insert as $insert_data) {
                     $detail = array(
                         "perencanaan_id" => $insert_id,
@@ -199,7 +210,7 @@ class Perencanaan extends Telescoope_Controller
                         'foto_barang' => $insert_data['file_path'],
                         'created_by' => $this->data['userdata']['employee_id'],
                         'created_at' => date('Y-m-d H:i:s'),
-                    );            
+                    );
                     $simpan_detail = $this->db->insert('perencanaan_detail', $detail);
                 }
             }            

@@ -63,6 +63,7 @@
                                     <th>Jenis Alat</th>
                                     <th>Satuan</th>
                                     <th>Jumlah Rencana</th>
+                                    <th>Jumlah Terkirim</th>
                                     <th>Jumlah Kirim</th>
                                     <th style="display:none">Barang ID </th>
                                 </tr>
@@ -121,6 +122,7 @@
                             rows+= '<td>' + item.jenis_alat + '</td>';
                             rows+= '<td>' + item.satuan + '</td>';
                             rows+= '<td>' + item.jumlah + '</td>';
+                            rows+= '<td>' + item.jumlah_terkirim + '</td>';
                             rows+= '<td><input id="jumlah_kirim" name="jumlah_kirim[]" type="number" min="0" class="form-control" placeholder="Jumlah" required></td>';
                             rows+= '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';
                         rows+= '</tr>';

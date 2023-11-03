@@ -61,7 +61,9 @@ class Penerimaan_barang extends Telescoope_Controller
     }
 
     public function get_data(){
-        $post = $this->input->post();     
+        $post = $this->input->post();    
+        
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
         
         $draw = $post['draw'];
         $row = $post['start'];
@@ -82,6 +84,10 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $result = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
 
+        if($position) {
+            $result = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_user'])->result_array();
+        }
+
         if (!empty($search)) {
             // $this->db->group_start();
             // $this->db->like('test', $search);
@@ -90,6 +96,10 @@ class Penerimaan_barang extends Telescoope_Controller
         }
 
         $count = $this->Penerimaan_barang_m->getPenerimaan_barang()->num_rows();
+
+        if($position) {
+            $count = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_user'])->num_rows();
+        }
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;
@@ -127,7 +137,15 @@ class Penerimaan_barang extends Telescoope_Controller
     
     public function add(){
         $data = array();        
+
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+
         $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang()->result_array();        
+
+        if($position) {
+            $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang("", $this->data['userdata']['lokasi_user'])->result_array();
+        }
+        
   
         $this->template("penerimaan_barang/add_penerimaan_barang_v", "Tambah Penerimaan Barang", $data);
     }
@@ -231,8 +249,8 @@ class Penerimaan_barang extends Telescoope_Controller
     public function get_barang()
     {        
         $pengiriman_id = $this->input->post('pengiriman_id', true);
-        $data = $this->Pengiriman_barang_m->getDetail($pengiriman_id)->result_array();
-
+        $data = $this->Pengiriman_barang_m->getDetailKirim($pengiriman_id)->result_array();
+        
         echo json_encode($data);
     }
 }
