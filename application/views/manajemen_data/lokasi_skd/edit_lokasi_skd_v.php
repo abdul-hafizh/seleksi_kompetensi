@@ -3,12 +3,12 @@
 <!-- jquery validate-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
-<form action="<?php echo site_url('manajemen_data/lokasi_skd/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+<form action="<?php echo site_url('manajemen_data/lokasi_skd/submit_update'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Tambah Data Lokasi Test</h5>
+                    <h5 class="card-title mb-0">Edit Data Lokasi Test</h5>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
@@ -17,11 +17,11 @@
                         </div>
                         <div class="col-lg-3">       
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_gedung" value="Siap" required>
+                                <input class="form-check-input" type="radio" name="status_gedung" value="Siap" <?php echo $get_lokasi['status_gedung'] == 'Siap' ? 'checked' : ''; ?> required>
                                 <label class="form-check-label">Siap</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_gedung" value="Tidak" required>
+                                <input class="form-check-input" type="radio" name="status_gedung" value="Tidak" <?php echo $get_lokasi['status_gedung'] == 'Tidak' ? 'checked' : ''; ?> required>
                                 <label class="form-check-label">Tidak</label>
                             </div>
                         </div>
@@ -32,7 +32,8 @@
                             <label class="form-label">Nama Lokasi</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="nama_lokasi" placeholder="Nama Lokasi" required>
+                            <input type="text" class="form-control" name="nama_lokasi" placeholder="Nama Lokasi" value="<?php echo $get_lokasi['nama_lokasi']; ?>" required>
+                            <input type="hidden" name="id" value="<?php echo $get_lokasi['id']; ?>" readonly>
                         </div>
                     </div>     
 
@@ -60,7 +61,7 @@
                             <label class="form-label">&nbsp;</label>
                         </div> 
                         <div class="col-lg-9">
-                            <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" required></textarea>
+                            <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" required><?php echo $get_lokasi['alamat']; ?></textarea>
                         </div>
                     </div>                 
 
@@ -69,7 +70,7 @@
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-9">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"><?php echo $get_lokasi['catatan']; ?></textarea>
                         </div>
                     </div>                    
                 </div>

@@ -12,9 +12,11 @@ class Jadwal_kegiatan_m extends CI_Model {
 
 	public function getJadwal($id = ''){
 
+		$this->db->select('jadwal_kegiatan.*, ref_locations.*, lokasi_skd.lokasi_id, lokasi_skd.nama_lokasi');
+
 		if(!empty($id)){
 
-			$this->db->where('id', $id);
+			$this->db->where('jadwal_kegiatan.id', $id);
 
 		}
 

@@ -96,11 +96,20 @@ class Lokasi_skd extends Telescoope_Controller
         $data = array();
         
         foreach($result as $v) {      
+
+            $cek_integrasi = $this->db->select('lokasi_skd.id')->from('lokasi_skd')->join('perencanaan', 'lokasi_skd.id = perencanaan.kode_lokasi_skd', 'right')->where('lokasi_skd.id', $v['id'])->get()->num_rows();
             
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('manajemen_data/lokasi_skd/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                         <a href="' .  site_url('manajemen_data/lokasi_skd/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="' .  site_url('manajemen_data/lokasi_skd/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('manajemen_data/lokasi_skd/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
+
+            if($cek_integrasi > 0) {
+                $action = '<div class="btn-group" role="group">
+                            <a href="' .  site_url('manajemen_data/lokasi_skd/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        </div>';
+            }
             
             $data[] = array(                                
                 "kode_lokasi" => $v['kode_lokasi'],
@@ -125,11 +134,26 @@ class Lokasi_skd extends Telescoope_Controller
     }
     
     public function add(){
-        $data = array();
-        
+        $data = array();        
         $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
   
         $this->template("manajemen_data/lokasi_skd/add_lokasi_skd_v", "Tambah Lokasi Test", $data);
+    }
+
+    public function update($id){
+        $data = array();
+        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();        
+        $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi($id)->row_array();
+  
+        $this->template("manajemen_data/lokasi_skd/edit_lokasi_skd_v", "Edit Lokasi Test", $data);
+    
+    }
+    public function detail($id){
+        $data = array();
+        
+        $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi($id)->row_array();
+  
+        $this->template("manajemen_data/lokasi_skd/detail_lokasi_skd_v", "Detail Lokasi Test", $data);
     }
 
     public function submit_data(){
@@ -177,10 +201,60 @@ class Lokasi_skd extends Telescoope_Controller
         }
     }
 
+    public function submit_update(){
+        $post = $this->input->post(); 
+
+        $this->db->trans_begin(); 
+
+        $update_data = array(
+            'status_gedung' => $post['status_gedung'],            
+            'nama_lokasi' => $post['nama_lokasi'],
+            'lokasi_id' => $post['kabupaten'],
+            'alamat' => $post['alamat'],
+            'catatan' => $post['catatan'],
+            'updated_by' => $this->data['userdata']['employee_id'],
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+        
+        $this->db->where('id', $post['id']);
+        $update = $this->db->update('lokasi_skd', $update_data);
+
+        if($update){
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Gagal mengubah data");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Sukses mengubah data");
+                $this->db->trans_commit();
+            }
+            redirect(site_url('manajemen_data/lokasi_skd'));
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
     public function get_regency()
     {
         $provinces = $this->input->post('provinsi', true);
         $data = $this->db->get_where('ref_locations', ['parent_id' => $provinces])->result_array();
         echo json_encode($data);
+    }
+
+    public function delete($id) {        
+        $this->db->trans_begin();
+
+        $this->db->where('id', $id);
+        $this->db->delete('lokasi_skd');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->setMessage("Gagal hapus data.");
+            redirect(site_url('manajemen_data/lokasi_skd'));
+
+        } else {
+            $this->db->trans_commit();
+            $this->setMessage("Berhasil hapus data.");
+            redirect(site_url('manajemen_data/lokasi_skd'));
+        }
     }
 }

@@ -15,22 +15,22 @@
     </div>
 <?php } $this->session->unset_userdata('message'); ?>
 
-<form action="<?php echo site_url('penerimaan_barang/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+<form action="<?php echo site_url('pengiriman_barang/submit_update'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Tambah Data Penerimaan</h5>
+                    <h5 class="card-title mb-0">Edit Data Pengiriman</h5>
                 </div>
                 <div class="card-body">                    
                     
                     <div class="form-group row mb-2">
-                        <label class="col-md-2 label-control">Pengiriman</label>
+                        <label class="col-md-2 label-control">Perencanaan</label>
                         <div class="col-md-8">
-                            <select class="select-single" name="pengiriman_id" id="pengiriman_id" required>
-                                <option value="">Pilih Pengiriman</option>
-                                <?php foreach($get_pengiriman as $v) { ?>
-                                    <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_pengiriman'] . ' | ' . $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
+                            <select class="select-single" disabled required>
+                                <option value="">Pilih Perencanaan</option>
+                                <?php foreach($get_perencanaan as $v) { ?>
+                                    <option value="<?php echo $v['id']; ?>" <?php echo $get_pengiriman['perencanaan_id'] == $v['id'] ? 'selected' : ''; ?>><?php echo $v['kode_perencanaan'] . ' | ' . $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -38,10 +38,10 @@
                     
                     <div class="row mb-3">
                         <div class="col-lg-2">
-                            <label class="form-label">Tanggal Terima</label>
+                            <label class="form-label">Tanggal Kirim</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="date" class="form-control" name="tgl_terima" placeholder="Tanggal Terima" required>
+                            <input type="date" class="form-control" name="tgl_kirim" placeholder="Tanggal Kirim" value="<?php echo $get_pengiriman['tgl_kirim']; ?>" required>
                         </div>
                     </div>    
 
@@ -50,7 +50,9 @@
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-8">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"><?php echo $get_pengiriman['catatan']; ?></textarea>
+                            <input type="hidden" name="pengiriman_id" value="<?php echo $get_pengiriman['id']; ?>" readonly>
+                            <input type="hidden" name="perencanaan_id" value="<?php echo $get_pengiriman['perencanaan_id']; ?>" readonly>
                         </div>
                     </div>                    
                 </div>
@@ -72,16 +74,33 @@
                                     <th>No</th>
                                     <th>Kode Barang</th>
                                     <th>Nama Barang</th>
+                                    <th>Jenis Alat</th>
                                     <th>Satuan</th>
+                                    <th>Jumlah Rencana</th>
+                                    <th>Jumlah Terkirim</th>
                                     <th>Jumlah Kirim</th>
-                                    <th>Jumlah Terima</th>
-                                    <th>Jumlah Rusak</th>
-                                    <th>Jumlah Terpasang</th>
-                                    <th>Foto Terima </th>
                                     <th style="display:none">Barang ID </th>
+                                    <th style="display:none">Detail ID </th>
                                 </tr>
                             </thead>
-                            <tbody id="show-barang"></tbody>                            
+                            <tbody id="show-barang">
+                                <?php $no = 1; foreach($get_detail as $v) { ?>
+                                <?php $jumlah_rencana = $this->db->where('perencanaan_id', $v['perencanaan_id'])->get('perencanaan_detail')->row()->jumlah; ?>
+                                <?php $jumlah_terkirim = $this->db->where('perencanaan_id', $v['perencanaan_id'])->get('perencanaan_detail')->row()->jumlah_terkirim; ?>
+                                <tr>
+                                    <td><?php echo $no++;?></td>
+                                    <td><?php echo $v['kode_barang_id'];?></td>
+                                    <td><?php echo $v['nama_barang'];?></td>
+                                    <td><?php echo $v['jenis_alat'];?></td>
+                                    <td><?php echo $v['satuan'];?></td>
+                                    <td><?php echo $jumlah_rencana; ?></td>
+                                    <td><?php echo $jumlah_terkirim; ?></td>
+                                    <td><input id="jumlah_kirim" name="jumlah_kirim[]" type="number" min="0" class="form-control" placeholder="Jumlah Kirim" value="<?php echo $v['jumlah_kirim'];?>" required></td>
+                                    <td><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
+                                    <td><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>                            
                         </table>                    
                     </div>                      
                 </div>
@@ -115,41 +134,5 @@
                 if (errors) { window.scrollTo({top: 0}); }
             }
         });        
-
-        $("#pengiriman_id").on("change", function () {			
-            let pengiriman_id = $("#pengiriman_id").val();
-            var url_file = '<?php echo base_url('uploads/perencanaan/');?>';
-            $.ajax({
-                url: "<?php echo site_url('penerimaan_barang/get_barang');?>",
-                data: { pengiriman_id: pengiriman_id },
-                method: "POST",
-                dataType: "json",
-                success: function (data) {
-                    var rows = '';
-
-                    $.each(data, function (i, item) {  
-                        console.log(item); 
-						rows+= '<tr>';
-                            rows+= '<td>' + (i + 1) + '</td>';
-                            rows+= '<td>' + item.kode_barang_id + '</td>';
-                            rows+= '<td>' + item.nama_barang + '</td>';
-                            rows+= '<td>' + item.satuan + '</td>';
-                            rows+= '<td>' + item.jumlah_kirim + '</td>';
-                            rows+= '<td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" placeholder="Jumlah Terima" required></td>';
-                            rows+= '<td><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" placeholder="Jumlah Rusak" required></td>';
-                            rows+= '<td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" required></td>';
-                            rows+= '<td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" required></td>';
-                            rows+= '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';
-                        rows+= '</tr>';
-					});
-
-                    $('#show-barang').html(rows);
-                },
-                error: function (xhr, status, error) {
-                    alert('Gagal ambil data barang.');
-                },
-            });
-        });
-
     })
 </script>

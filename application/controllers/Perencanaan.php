@@ -10,7 +10,7 @@ class Perencanaan extends Telescoope_Controller
 
         parent::__construct();
 
-        $this->load->model(array("Administration_m", "Perencanaan_m", "Provinsi_m"));
+        $this->load->model(array("Administration_m", "Perencanaan_m", "Provinsi_m", "Kabupaten_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -100,10 +100,19 @@ class Perencanaan extends Telescoope_Controller
 
         foreach ($result as $v) {
 
+            $cek_integrasi = $this->db->select('perencanaan.id')->from('perencanaan')->join('pengiriman_barang', 'perencanaan.id = pengiriman_barang.perencanaan_id', 'right')->where('perencanaan.id', $v['id'])->get()->num_rows();
+
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('perencanaan/update/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
-                        <a href="' .  site_url('perencanaan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
+                        <a href="' .  site_url('perencanaan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="' .  site_url('perencanaan/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('perencanaan/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
+
+            if ($cek_integrasi > 0) {
+                $action = '<div class="btn-group" role="group">
+                    <a href="' .  site_url('perencanaan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                </div>';
+            }
 
             $data[] = array(
                 "kode_perencanaan" => $v['kode_perencanaan'],
@@ -132,6 +141,18 @@ class Perencanaan extends Telescoope_Controller
         $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
 
         $this->template("perencanaan/add_perencanaan_v", "Tambah Perencanaan", $data);
+    }
+
+    public function update($id)
+    {
+        $data = array();
+        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
+        $data['get_kabupaten'] = $this->Kabupaten_m->getKabupaten()->result_array();
+        $data['get_perencanaan'] = $this->Perencanaan_m->getPerencanaan($id)->row_array();
+        $data['get_detail'] = $this->Perencanaan_m->getDetail($id)->result_array();
+        $data['get_lokasi'] = $this->db->get_where('lokasi_skd', ['lokasi_id' => $data['get_perencanaan']['location_id']])->result_array();
+
+        $this->template("perencanaan/edit_perencanaan_v", "Edit Perencanaan", $data);
     }
 
     public function detail($id)
@@ -235,6 +256,91 @@ class Perencanaan extends Telescoope_Controller
         }
     }
 
+    public function submit_update()
+    {
+        $post = $this->input->post();
+        $jumlah = $this->input->post('jumlah');
+        $barang_id = $this->input->post('barang_id');
+        $detail_id = $this->input->post('detail_id');
+        $foto_exist = $this->input->post('foto_exist');
+
+        $this->db->trans_begin();
+
+        $update_data = array(
+            "kode_lokasi_skd" => $post['kode_lokasi_skd'],
+            'catatan' => $post['catatan'],
+            'updated_by' => $this->data['userdata']['employee_id'],
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        $this->db->where('id', $post['perencanaan_id']);
+        $update = $this->db->update('perencanaan', $update_data);
+
+        if ($update) {
+
+            $dir = './uploads/' . $this->data['dir'];
+
+            if (!empty($jumlah)) {
+                $data_insert = array();
+
+                foreach ($jumlah as $key => $v) {
+
+                    $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
+
+                    if (!empty($file_name)) {
+                        $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
+                        $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
+                        $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
+                        $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
+                        $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
+
+                        if ($this->upload->do_upload('file')) {
+                            $uploadKtp = $this->upload->data();
+                            $data_insert[] = array(
+                                'jumlah' => $jumlah[$key],
+                                'barang_id' => $barang_id[$key],
+                                'detail_id' => $detail_id[$key],
+                                'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
+                            );
+                        }
+                    } else {
+                        $data_insert[] = array(
+                            'jumlah' => $jumlah[$key],
+                            'barang_id' => $barang_id[$key],
+                            'detail_id' => $detail_id[$key],
+                            'file_path' => $foto_exist[$key],
+                        );
+                    }
+                }
+
+                foreach ($data_insert as $insert_data) {
+                    $detail = array(
+                        "perencanaan_id" => $post['perencanaan_id'],
+                        "barang_id" => $insert_data['barang_id'],
+                        "jumlah" => $insert_data['jumlah'],
+                        'foto_barang' => $insert_data['file_path'],
+                        'updated_by' => $this->data['userdata']['employee_id'],
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    );
+
+                    $this->db->where('id', $insert_data['detail_id']);
+                    $simpan_detail = $this->db->update('perencanaan_detail', $detail);
+                }
+            }
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->setMessage("Gagal mengubah data");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Sukses mengubah data");
+                $this->db->trans_commit();
+            }
+            redirect(site_url('perencanaan'));
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
     public function get_regency()
     {
         $provinces = $this->input->post('provinsi', true);
@@ -253,6 +359,33 @@ class Perencanaan extends Telescoope_Controller
     {
         $data = $this->db->order_by('id', 'asc')->get('adm_barang')->result_array();
         echo json_encode($data);
+    }
+
+    public function get_detail($id)
+    {
+        $data = $this->Perencanaan_m->getDetail($id)->result_array();
+        echo json_encode($data);
+    }
+
+    public function delete($id)
+    {
+        $this->db->trans_begin();
+
+        $this->db->where('id', $id);
+        $this->db->delete('perencanaan');
+
+        $this->db->where('perencanaan_id', $id);
+        $this->db->delete('perencanaan_detail');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->setMessage("Gagal hapus data.");
+            redirect(site_url('perencanaan'));
+        } else {
+            $this->db->trans_commit();
+            $this->setMessage("Berhasil hapus data.");
+            redirect(site_url('perencanaan'));
+        }
     }
 
     public function get_kelompok()

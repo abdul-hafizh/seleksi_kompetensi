@@ -98,8 +98,9 @@ class Jadwal_kegiatan extends Telescoope_Controller
         foreach($result as $v) {      
             
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('manajemen_data/jadwal_kegiatan/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                         <a href="' .  site_url('manajemen_data/jadwal_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="' .  site_url('manajemen_data/jadwal_kegiatan/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('manajemen_data/jadwal_kegiatan/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
             
             $data[] = array(                   
@@ -128,11 +129,26 @@ class Jadwal_kegiatan extends Telescoope_Controller
     }
     
     public function add(){
-        $data = array();
-        
+        $data = array();        
         $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi()->result_array();
   
         $this->template("manajemen_data/jadwal_kegiatan/add_jadwal_v", "Tambah Jadwal Kegiatan", $data);
+    }
+
+    public function update($id){
+        $data = array();     
+        $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi()->result_array();
+        $data['get_jadwal'] = $this->Jadwal_kegiatan_m->getJadwal($id)->row_array();
+  
+        $this->template("manajemen_data/jadwal_kegiatan/edit_jadwal_v", "Edit Jadwal Kegiatan", $data);
+    
+    }
+    public function detail($id){
+        $data = array();        
+        $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi($id)->row_array();
+        $data['get_jadwal'] = $this->Jadwal_kegiatan_m->getJadwal($id)->row_array();
+  
+        $this->template("manajemen_data/jadwal_kegiatan/detail_jadwal_v", "Detail Jadwal Kegiatan", $data);
     }
 
     public function submit_data(){
@@ -181,6 +197,58 @@ class Jadwal_kegiatan extends Telescoope_Controller
         
         } else {
             $this->renderMessage("error");
+        }
+    }
+
+    public function submit_update(){
+        $post = $this->input->post(); 
+
+        $this->db->trans_begin(); 
+
+        $update_data = array(
+            'lokasi_skd_id' => $post['lokasi_skd_id'],
+            'nama_kegiatan' => $post['nama_kegiatan'],
+            'tahun' => $post['tahun'],
+            'status_kegiatan' => $post['status_kegiatan'],
+            'tgl_mulai' => $post['tgl_mulai'],
+            'tgl_selesai' => $post['tgl_selesai'],
+            'catatan' => $post['catatan'],
+            'updated_by' => $this->data['userdata']['employee_id'],
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+        
+        $this->db->where('id', $post['id']);
+        $update = $this->db->update('jadwal_kegiatan', $update_data);
+
+        if($update){
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Gagal mengubah data");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Sukses mengubah data");
+                $this->db->trans_commit();
+            }
+            redirect(site_url('manajemen_data/jadwal_kegiatan'));
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
+    public function delete($id) {        
+        $this->db->trans_begin();
+
+        $this->db->where('id', $id);
+        $this->db->delete('jadwal_kegiatan');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->setMessage("Gagal hapus data.");
+            redirect(site_url('manajemen_data/jadwal_kegiatan'));
+
+        } else {
+            $this->db->trans_commit();
+            $this->setMessage("Berhasil hapus data.");
+            redirect(site_url('manajemen_data/jadwal_kegiatan'));
         }
     }
 }
