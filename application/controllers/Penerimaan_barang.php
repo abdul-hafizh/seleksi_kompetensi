@@ -382,11 +382,11 @@ class Penerimaan_barang extends Telescoope_Controller
     public function delete($id) {
         $this->db->trans_begin();
 
-        $this->db->where('id', $id);
-        $this->db->delete('penerimaan_barang');
-
         $this->db->where('penerimaan_id', $id);
         $this->db->delete('penerimaan_detail');
+
+        $this->db->where('id', $id);
+        $this->db->delete('penerimaan_barang');
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
