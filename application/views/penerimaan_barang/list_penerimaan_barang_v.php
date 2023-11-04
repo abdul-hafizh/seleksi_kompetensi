@@ -33,6 +33,7 @@
                         <thead>
                             <tr>
                                 <th>Kode Penerimaan</th>
+                                <th>Kode Pengiriman</th>
                                 <th>Nama Provinsi</th>
                                 <th>Nama Kabupaten</th>
                                 <th>Nama Lokasi</th>
@@ -78,6 +79,7 @@
             scrollX: !0,
             'columns': [
                 { data: 'kode_penerimaan' }, 
+                { data: 'kode_pengiriman' }, 
                 { data: 'province_name' }, 
                 { data: 'regency_name' }, 
                 { data: 'nama_lokasi' }, 

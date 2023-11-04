@@ -3,6 +3,18 @@
 <!-- jquery validate-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
+<?php
+    $pesan = $this->session->userdata('message');
+    $pesan = (empty($pesan)) ? "" : $pesan;
+    if(!empty($pesan)){ ?>
+    <div class="alert bg-light-danger alert-dismissible">
+        <?php echo $pesan ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true"><i class="ft-x font-medium-2 text-bold-700"></i></span>
+        </button>
+    </div>
+<?php } $this->session->unset_userdata('message'); ?>
+
 <form action="<?php echo site_url('perencanaan/submit_update'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
@@ -16,7 +28,7 @@
                         <div class="col-md-8">
                             <input type="text" class="form-control" value="<?php echo $get_perencanaan['kode_perencanaan']; ?>" readonly>
                         </div>
-                    </div>             
+                    </div>
                     <div class="row mb-3">
                         <div class="col-lg-2">
                             <label class="form-label">Wilayah</label>
@@ -107,9 +119,9 @@
                                         </div>
                                     </td>
                                     <td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control"></td>
-                                    <td><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
-                                    <td><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
-                                    <td><input id="foto_exist" name="foto_exist[]" type="hidden" value="<?php echo $v['foto_barang'];?>"></td>
+                                    <td style="display:none"><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
+                                    <td style="display:none"><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
+                                    <td style="display:none"><input id="foto_exist" name="foto_exist[]" type="hidden" value="<?php echo $v['foto_barang'];?>"></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>                            

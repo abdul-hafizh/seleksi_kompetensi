@@ -116,6 +116,7 @@ class Penerimaan_barang extends Telescoope_Controller
             
             $data[] = array(                                
                 "kode_penerimaan" => $v['kode_penerimaan'],
+                "kode_pengiriman" => $v['kode_pengiriman'],
                 "province_name" => $v['province_name'],
                 "regency_name" => $v['regency_name'],
                 "nama_lokasi" => $v['kode_lokasi'] . ' | ' . $v['nama_lokasi'],
@@ -147,15 +148,30 @@ class Penerimaan_barang extends Telescoope_Controller
             $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang("", $this->data['userdata']['lokasi_user'])->result_array();
         }
         
-  
         $this->template("penerimaan_barang/add_penerimaan_barang_v", "Tambah Penerimaan Barang", $data);
+    }
+
+    public function update($id){
+        $data = array();        
+
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+
+        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
+        $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
+
+        if($position) {
+            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
+            $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
+        }        
+        
+        $this->template("penerimaan_barang/edit_penerimaan_barang_v", "Edit Penerimaan Barang", $data);
     }
 
     public function detail($id){
         $data = array();        
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
         $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
-  
+
         $this->template("penerimaan_barang/detail_penerimaan_barang_v", "Detail Penerimaan Barang", $data);
     }
 
@@ -174,8 +190,15 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $this->db->trans_begin();
 
+        $cek_integrasi = $this->db->select('id')->from('penerimaan_barang')->where('pengiriman_id', $post['pengiriman_id'])->get()->num_rows();
+
+        if ($cek_integrasi > 0) {
+            $this->setMessage("Data pengiriman sudah pernah diinput.");
+            redirect(site_url('penerimaan_barang'));
+        }
+
         $data = array(
-            "pengiriman_id" => $post['pengiriman_id'],            
+            "pengiriman_id" => $post['pengiriman_id'],
             "tgl_terima" => $post['tgl_terima'],
             'catatan' => $post['catatan'],
             'created_by' => $this->data['userdata']['employee_id'],
@@ -229,6 +252,107 @@ class Penerimaan_barang extends Telescoope_Controller
                         'created_at' => date('Y-m-d H:i:s'),
                     );            
                     $simpan_detail = $this->db->insert('penerimaan_detail', $detail);
+                }
+            }            
+
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Failed save data.");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Success save data.");
+                $this->db->trans_commit();
+            }            
+
+            redirect(site_url('penerimaan_barang'));
+        
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
+    public function submit_update(){
+
+        $post = $this->input->post(); 
+        $jumlah_terima = $this->input->post('jumlah_terima');
+        $jumlah_rusak = $this->input->post('jumlah_rusak');
+        $jumlah_terpasang = $this->input->post('jumlah_terpasang');
+        $barang_id = $this->input->post('barang_id');
+        $detail_id = $this->input->post('detail_id');
+        $foto_exist = $this->input->post('foto_exist');
+
+        if (count($post) == 0) {
+            $this->setMessage("Isi data dengan Benar.");
+            redirect(site_url('penerimaan_barang/add'));
+        }
+
+        $this->db->trans_begin();
+
+        $update_data = array(
+            "pengiriman_id" => $post['pengiriman_id'],
+            "tgl_terima" => $post['tgl_terima'],
+            'catatan' => $post['catatan'],
+            'updated_by' => $this->data['userdata']['employee_id'],
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
+
+        $this->db->where('id', $post['id']);
+        $update = $this->db->update('penerimaan_barang', $update_data);
+        
+        if($update){                            
+
+            $dir = './uploads/' . $this->data['dir'];
+
+            if (!empty($jumlah_terima)) {
+                $data_insert = array();
+            
+                foreach ($jumlah_terima as $key => $v) {
+                    
+                    $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
+
+                    if (!empty($file_name)) {
+                        $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
+                        $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
+                        $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
+                        $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
+                        $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
+            
+                        if ($this->upload->do_upload('file')) {
+                            $uploadKtp = $this->upload->data();
+                            $data_insert[] = array(
+                                'jumlah_terima' => $jumlah_terima[$key],
+                                'jumlah_rusak' => $jumlah_rusak[$key],
+                                'jumlah_terpasang' => $jumlah_terpasang[$key],
+                                'barang_id' => $barang_id[$key],
+                                'detail_id' => $detail_id[$key],
+                                'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',                            
+                            );
+                        }
+                    } else {
+                        $data_insert[] = array(
+                            'jumlah_terima' => $jumlah_terima[$key],
+                            'jumlah_rusak' => $jumlah_rusak[$key],
+                            'jumlah_terpasang' => $jumlah_terpasang[$key],
+                            'barang_id' => $barang_id[$key],
+                            'detail_id' => $detail_id[$key],
+                            'file_path' => $foto_exist[$key],
+                        );
+                    }            
+                }     
+                
+                foreach ($data_insert as $insert_data) {
+                    $detail = array(
+                        "penerimaan_id" => $post['id'],
+                        "barang_id" => $insert_data['barang_id'],
+                        "jumlah_terima" => $insert_data['jumlah_terima'],
+                        "jumlah_rusak" => $insert_data['jumlah_rusak'],
+                        "jumlah_terpasang" => $insert_data['jumlah_terpasang'],
+                        'foto_barang' => $insert_data['file_path'],
+                        'updated_by' => $this->data['userdata']['employee_id'],
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    );            
+
+                    $this->db->where('id', $insert_data['detail_id']);
+                    $simpan_detail = $this->db->update('penerimaan_detail', $detail);
                 }
             }            
 

@@ -270,6 +270,9 @@ class Perencanaan extends Telescoope_Controller
         $update = $this->db->update('perencanaan', $update_data);
 
         if($update){
+
+            $dir = './uploads/' . $this->data['dir'];
+            
             if (!empty($jumlah)) {
                 $data_insert = array();
             

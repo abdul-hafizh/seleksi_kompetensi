@@ -3,6 +3,18 @@
 <!-- jquery validate-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
+<?php
+    $pesan = $this->session->userdata('message');
+    $pesan = (empty($pesan)) ? "" : $pesan;
+    if(!empty($pesan)){ ?>
+    <div class="alert bg-light-danger alert-dismissible">
+        <?php echo $pesan ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true"><i class="ft-x font-medium-2 text-bold-700"></i></span>
+        </button>
+    </div>
+<?php } $this->session->unset_userdata('message'); ?>
+
 <form action="<?php echo site_url('penerimaan_barang/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
