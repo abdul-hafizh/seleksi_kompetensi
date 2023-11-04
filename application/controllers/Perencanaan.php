@@ -5,8 +5,9 @@ class Perencanaan extends Telescoope_Controller
 
     var $data;
 
-    public function __construct() {
-        
+    public function __construct()
+    {
+
         parent::__construct();
 
         $this->load->model(array("Administration_m", "Perencanaan_m", "Provinsi_m"));
@@ -44,32 +45,34 @@ class Perencanaan extends Telescoope_Controller
         $position1 = $this->Administration_m->getPosition("ADMINISTRATOR");
         $position2 = $this->Administration_m->getPosition("PUSAT");
 
-        if(!$position1 && !$position2){
+        if (!$position1 && !$position2) {
             $this->noAccess("Anda tidak memiliki hak akses untuk halaman ini.");
         }
 
-        if(empty($sess)){
+        if (empty($sess)) {
             redirect(site_url('log/in'));
         }
     }
 
-    public function index(){
+    public function index()
+    {
         $data = array();
 
         $this->template("perencanaan/list_perencanaan_v", "Data Perencanaan", $data);
     }
 
-    public function get_data(){
-        $post = $this->input->post();     
-        
+    public function get_data()
+    {
+        $post = $this->input->post();
+
         $draw = $post['draw'];
         $row = $post['start'];
-        $rowperpage = $post['length']; 
-        $search = $post['search']['value']; 
+        $rowperpage = $post['length'];
+        $search = $post['search']['value'];
         $columnIndex = $post['order'][0]['column'];
         $columnName = $post['columns'][$columnIndex]['data'];
         // $prov = isset($post['s_provinsi']) ? $post['s_provinsi'] : "";
-                        
+
         if (!empty($search)) {
             // $this->db->group_start();
             // $this->db->like('test', $search);
@@ -94,15 +97,15 @@ class Perencanaan extends Telescoope_Controller
         $totalRecordwithFilter = $count;
 
         $data = array();
-        
-        foreach($result as $v) {      
-            
+
+        foreach ($result as $v) {
+
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('perencanaan/update/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
                         <a href="' .  site_url('perencanaan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
                     </div>';
-            
-            $data[] = array(                                
+
+            $data[] = array(
                 "kode_perencanaan" => $v['kode_perencanaan'],
                 "province_name" => $v['province_name'],
                 "regency_name" => $v['regency_name'],
@@ -111,7 +114,7 @@ class Perencanaan extends Telescoope_Controller
                 "action" => $action
             );
         }
-        
+
         ## Response
         $response = array(
             "draw" => intval($draw),
@@ -119,35 +122,38 @@ class Perencanaan extends Telescoope_Controller
             "iTotalDisplayRecords" => $totalRecordwithFilter,
             "aaData" => $data
         );
-        
+
         echo json_encode($response);
     }
-    
-    public function add(){
-        $data = array();        
+
+    public function add()
+    {
+        $data = array();
         $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
-  
+
         $this->template("perencanaan/add_perencanaan_v", "Tambah Perencanaan", $data);
     }
 
-    public function detail($id){
-        $data = array();        
+    public function detail($id)
+    {
+        $data = array();
         $data['get_perencanaan'] = $this->Perencanaan_m->getPerencanaan($id)->row_array();
         $data['get_detail'] = $this->Perencanaan_m->getDetail($id)->result_array();
-  
+
         $this->template("perencanaan/detail_perencanaan_v", "Detail Perencanaan", $data);
     }
 
-    public function submit_data(){
+    public function submit_data()
+    {
 
-        $post = $this->input->post(); 
+        $post = $this->input->post();
         $jumlah = $this->input->post('jumlah');
         $barang_id = $this->input->post('barang_id');
 
         if (count($post) == 0) {
             $this->setMessage("Isi data dengan Benar.");
             redirect(site_url('perencanaan/add'));
-        }     
+        }
 
         $this->db->trans_begin();
 
@@ -159,13 +165,13 @@ class Perencanaan extends Telescoope_Controller
         );
 
         $simpan = $this->db->insert('perencanaan', $data);
-        
-        if($simpan){        
+
+        if ($simpan) {
 
             $insert_id = $this->db->insert_id();
 
-            $id = strval($insert_id); 
-            $res = str_repeat('0', 5 - strlen($id)).$id;   
+            $id = strval($insert_id);
+            $res = str_repeat('0', 5 - strlen($id)) . $id;
 
             $this->db->set('kode_perencanaan', 'PR.' . $res)->where('id', $insert_id)->update('perencanaan');
 
@@ -173,18 +179,18 @@ class Perencanaan extends Telescoope_Controller
 
             if (!empty($jumlah)) {
                 $data_insert = array();
-            
+
                 foreach ($jumlah as $key => $v) {
-                    
+
                     $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
-                    
+
                     if (!empty($file_name)) {
                         $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
                         $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
                         $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
                         $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
                         $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
-            
+
                         if ($this->upload->do_upload('file')) {
                             $uploadKtp = $this->upload->data();
                             $data_insert[] = array(
@@ -201,7 +207,7 @@ class Perencanaan extends Telescoope_Controller
                         );
                     }
                 }
-            
+
                 foreach ($data_insert as $insert_data) {
                     $detail = array(
                         "perencanaan_id" => $insert_id,
@@ -213,18 +219,17 @@ class Perencanaan extends Telescoope_Controller
                     );
                     $simpan_detail = $this->db->insert('perencanaan_detail', $detail);
                 }
-            }            
+            }
 
-            if ($this->db->trans_status() === FALSE)  {
+            if ($this->db->trans_status() === FALSE) {
                 $this->setMessage("Failed save data.");
                 $this->db->trans_rollback();
             } else {
                 $this->setMessage("Success save data.");
                 $this->db->trans_commit();
-            }            
+            }
 
             redirect(site_url('perencanaan'));
-        
         } else {
             $this->renderMessage("error");
         }
@@ -245,8 +250,101 @@ class Perencanaan extends Telescoope_Controller
     }
 
     public function get_barang()
-    {        
+    {
         $data = $this->db->order_by('id', 'asc')->get('adm_barang')->result_array();
         echo json_encode($data);
+    }
+
+    public function get_kelompok()
+    {
+        $jenis = $this->input->post('jenis', true);
+        $data = $this->db->group_by('jenis_alat')->get_where('adm_barang', ['kelompok' => $jenis])->result_array();
+        echo json_encode($data);
+    }
+
+    public function get_barang_dashboard()
+    {
+        $post = $this->input->post();
+
+        $draw = $post['draw'];
+        $row = $post['start'];
+        $rowperpage = $post['length'];
+        $search = $post['search']['value'];
+        $columnIndex = $post['order'][0]['column'];
+        $columnName = $post['columns'][$columnIndex]['data'];
+        // $prov = isset($post['s_provinsi']) ? $post['s_provinsi'] : "";
+
+        $searchColumn = $post['columns'];
+        $search = [];
+        $provinsi = '';
+        $regency = '';
+        $kode_lokasi = '';
+        $jenis = '';
+        $kelompok = '';
+        if (!empty($searchColumn[0]['search']['value'])) {
+            $value = $searchColumn[0]['search']['value'];
+            // $search['project_new.name'] = $value;
+            $filterjs = json_decode($value);
+            $provinsi = $filterjs[0]->provinsi;
+            $regency = $filterjs[0]->kabupaten;
+            $kode_lokasi = $filterjs[0]->kode_lokasi_skd;
+            $jenis = $filterjs[0]->jenis;
+            $kelompok = $filterjs[0]->kelompok;
+        }
+
+
+        if (!empty($search)) {
+            // $this->db->group_start();
+            // $this->db->like('test', $search);
+            // $this->db->or_like('test', $search);
+            // $this->db->group_end();
+        }
+
+        $this->db->limit($rowperpage, $row);
+
+        $result = $this->Perencanaan_m->getListBarang($provinsi, $regency, $kode_lokasi, $jenis, $kelompok)->result_array();
+
+        if (!empty($search)) {
+            // $this->db->group_start();
+            // $this->db->like('test', $search);
+            // $this->db->or_like('test', $search);
+            // $this->db->group_end();
+        }
+
+        $count = $this->Perencanaan_m->getListBarang($provinsi, $regency, $kode_lokasi, $jenis, $kelompok)->num_rows();
+
+        $totalRecords = $count;
+        $totalRecordwithFilter = $count;
+
+        $data = array();
+        $no = 1;
+        foreach ($result as $v) {
+
+            $row    = array();
+            $row[]  = $no;
+            $row[]  = $v['province_name'];
+            $row[]  =  $v['regency_name'];
+            $row[]  =  $v['nama_lokasi'];
+            $row[]  =  $v['nama_barang'];
+            $row[]  =  $v['jumlah'];
+            $row[]  =  $v['jumlah_kirim'];
+            $row[]  =  $v['jumlah_terima'];
+            $row[]  =  $v['jumlah_terpasang'];
+
+
+            $data[] = $row;
+
+            $no++;
+        }
+
+        ## Response
+        $response = array(
+            "draw" => intval($draw),
+            "recordsTotal" => $totalRecords,
+            "recordsFiltered" => $totalRecordwithFilter,
+            "data" => $data
+        );
+
+        echo json_encode($response);
     }
 }
