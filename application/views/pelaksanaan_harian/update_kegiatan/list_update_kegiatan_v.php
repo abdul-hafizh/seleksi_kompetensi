@@ -38,6 +38,12 @@
                                 <th>Foto Pengarahan</th>
                                 <th>Foto Kegiatan Lainnya</th>
                                 <th>Video Kegiatan</th>
+                                <th>Jumlah Peserta Sesi-1</th>
+                                <th>Jumlah Peserta Sesi-2</th>
+                                <th>Jumlah Peserta Sesi-3</th>
+                                <th>Jumlah Peserta Sesi-4</th>
+                                <th>Jumlah Peserta Sesi-5</th>
+                                <th>Jumlah Peserta Sesi-6</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -83,6 +89,12 @@
                 { data: 'foto_pengarahan' }, 
                 { data: 'foto_kegiatan_lain' },
                 { data: 'video_kegiatan' },
+                { data: 'sesi_1' },
+                { data: 'sesi_2' },
+                { data: 'sesi_3' },
+                { data: 'sesi_4' },
+                { data: 'sesi_5' },
+                { data: 'sesi_6' },
                 { data: 'action' },
             ]            
         });

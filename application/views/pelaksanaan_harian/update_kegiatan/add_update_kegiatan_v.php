@@ -14,9 +14,9 @@
                             <label class="col-md-3 label-control">Jadwal Kegiatan</label>
                             <div class="col-md-9">
                                 <select class="select-single" name="jadwal_kegiatan_id" id="jadwal_kegiatan_id" required>
-                                    <option value="" disabled selected>Jadwal Kegiatan</option>
+                                    <option value="" disabled selected>Titik Lokasi</option>
                                     <?php foreach ($get_jadwal_kegiatan as $v) { ?>
-                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_kegiatan'] . " | " . $v['nama_kegiatan'] . " • " . $v['nama_lokasi']; ?></option>
+                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_kegiatan'] . " • " . $v['nama_lokasi']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -54,6 +54,55 @@
                             <label class="col-md-3 label-control">Upload Video Kegiatan</label>
                             <div class="col-md-9">
                                 <input type="file" class="form-control col-lg-7" name="video_kegiatan" placeholder="Video Kegiatan">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control">Jumlah Peserta :</label>
+                            <div class="col-md-9">
+                                &nbsp;
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-1</label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control col-lg-7" name="sesi_1" placeholder="" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-2</label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control col-lg-7" name="sesi_2" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-3</label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control col-lg-7" name="sesi_3" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-4</label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control col-lg-7" name="sesi_4" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-5</label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control col-lg-7" name="sesi_5" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-6</label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control col-lg-7" name="sesi_6" placeholder="">
                             </div>
                         </div>
 

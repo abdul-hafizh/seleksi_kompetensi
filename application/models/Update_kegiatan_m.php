@@ -11,27 +11,36 @@ class Update_kegiatan_m extends CI_Model
 		$this->load->helper('security');
 	}
 
-	public function getUpdateKegiatan($id = '')
+	public function getUpdateKegiatan($id = '', $lokasi = '')
 	{
 
 		$this->db->select('uhk.*, jk.kode_kegiatan');
 
 		$this->db->from('update_harian_kegiatan as uhk');
 		$this->db->join('jadwal_kegiatan as jk', 'uhk.jadwal_kegiatan_id = jk.id', 'inner');
+		$this->db->join('lokasi_skd as lok', 'lok.id = jk.lokasi_skd_id', 'inner');
 
 		if (!empty($id)) {
 			$this->db->where('uhk.id', $id);
 		}
 
+		if (!empty($lokasi)) {
+			$this->db->where('lok.lokasi_id', $lokasi);
+		}
+
 		return $this->db->get();
 	}
 
-	public function getJadwalKegiatan()
+	public function getJadwalKegiatan($lokasi = '')
 	{
 
 		$this->db->select('jk.*, lok.nama_lokasi');
 		$this->db->from('jadwal_kegiatan as jk');
 		$this->db->join('lokasi_skd as lok', 'jk.lokasi_skd_id = lok.id', 'inner');
+
+		if (!empty($lokasi)) {
+			$this->db->where('lok.lokasi_id', $lokasi);
+		}
 
 		return $this->db->get();
 	}

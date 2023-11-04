@@ -82,8 +82,8 @@ class Update_kegiatan extends Telescoope_Controller
         }
 
         $this->db->limit($rowperpage, $row);
-
-        $result = $this->Update_kegiatan_m->getUpdateKegiatan()->result_array();
+        $lokasi = $this->data['userdata']['lokasi_user'];
+        $result = $this->Update_kegiatan_m->getUpdateKegiatan('', $lokasi)->result_array();
 
         if (!empty($search)) {
             // $this->db->group_start();
@@ -92,7 +92,7 @@ class Update_kegiatan extends Telescoope_Controller
             // $this->db->group_end();
         }
 
-        $count = $this->Update_kegiatan_m->getUpdateKegiatan()->num_rows();
+        $count = $this->Update_kegiatan_m->getUpdateKegiatan('', $lokasi)->num_rows();
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;
@@ -129,6 +129,12 @@ class Update_kegiatan extends Telescoope_Controller
                             " . $v['video_kegiatan'] . "
                         </a>
                     </div>",
+                "sesi_1" => $v['sesi_1'],
+                "sesi_2" => $v['sesi_2'],
+                "sesi_3" => $v['sesi_3'],
+                "sesi_4" => $v['sesi_4'],
+                "sesi_5" => $v['sesi_5'],
+                "sesi_6" => $v['sesi_6'],
                 "action" => $action
             );
         }
@@ -147,7 +153,8 @@ class Update_kegiatan extends Telescoope_Controller
     public function add()
     {
         $data = array();
-        $data['get_jadwal_kegiatan'] = $this->Update_kegiatan_m->getJadwalKegiatan()->result_array();
+        $lokasi = $this->data['userdata']['lokasi_user'];
+        $data['get_jadwal_kegiatan'] = $this->Update_kegiatan_m->getJadwalKegiatan($lokasi)->result_array();
 
         $this->template("pelaksanaan_harian/update_kegiatan/add_update_kegiatan_v", "Tambah Update Kegiatan", $data);
     }
@@ -167,6 +174,19 @@ class Update_kegiatan extends Telescoope_Controller
         $post = $this->input->post();
         $jadwal_kegiatan_id = $this->input->post('jadwal_kegiatan_id');
         $tgl_kegiatan = $this->input->post('tgl_kegiatan');
+        $sesi_1 = $this->input->post('sesi_1');
+        $sesi_2 = $this->input->post('sesi_2');
+        $sesi_3 = $this->input->post('sesi_3');
+        $sesi_4 = $this->input->post('sesi_4');
+        $sesi_5 = $this->input->post('sesi_5');
+        $sesi_6 = $this->input->post('sesi_6');
+
+        $sesi = [$sesi_1];
+        if ($sesi_2 !== '') array_push($sesi, $sesi_2);
+        if ($sesi_3 !== '') array_push($sesi, $sesi_3);
+        if ($sesi_4 !== '') array_push($sesi, $sesi_4);
+        if ($sesi_5 !== '') array_push($sesi, $sesi_5);
+        if ($sesi_6 !== '') array_push($sesi, $sesi_6);
 
         if (!empty($_FILES['foto_registrasi']['name'])) {
             $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fregistrasi_' . date('Ymdhis') . '_' . $_FILES['foto_registrasi']['name'];
@@ -220,8 +240,8 @@ class Update_kegiatan extends Telescoope_Controller
         $this->db->trans_begin();
 
         $data = array(
-            "jadwal_kegiatan_id" => $post['jadwal_kegiatan_id'],
-            "tgl_kegiatan" => $post['tgl_kegiatan'],
+            "jadwal_kegiatan_id" => $jadwal_kegiatan_id,
+            "tgl_kegiatan" => $tgl_kegiatan,
             'foto_registrasi' => isset($uploadFotoRegistrasi['file_name']) ? $uploadFotoRegistrasi['file_name'] : '',
             'foto_pengarahan' => isset($uploadFotoPengarahan['file_name']) ? $uploadFotoPengarahan['file_name'] : '',
             'foto_kegiatan_lain' => isset($uploadFotoKegiatanLain['file_name']) ? $uploadFotoKegiatanLain['file_name'] : '',
@@ -229,6 +249,11 @@ class Update_kegiatan extends Telescoope_Controller
             'created_by' => $this->data['userdata']['employee_id'],
             'created_at' => date('Y-m-d H:i:s'),
         );
+
+        foreach ($sesi as $index => $value) {
+            $index = $index + 1;
+            $data['sesi_' . $index] = $value;
+        }
 
         $simpan = $this->db->insert('update_harian_kegiatan', $data);
 
