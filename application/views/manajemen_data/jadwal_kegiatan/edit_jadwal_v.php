@@ -3,12 +3,12 @@
 <!-- jquery validate-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
-<form action="<?php echo site_url('manajemen_data/jadwal_kegiatan/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+<form action="<?php echo site_url('manajemen_data/jadwal_kegiatan/submit_update'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Tambah Data Jadwal Kegiatan</h5>
+                    <h5 class="card-title mb-0">Edit Data Jadwal Kegiatan</h5>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
@@ -17,11 +17,11 @@
                         </div>
                         <div class="col-lg-3">       
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Aktif" required>
+                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Aktif" <?php echo $get_jadwal['status_kegiatan'] == 'Aktif' ? 'checked' : ''; ?> required>
                                 <label class="form-check-label">Aktif</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Tidak Aktif" required>
+                                <input class="form-check-input" type="radio" name="status_kegiatan" value="Tidak Aktif" <?php echo $get_jadwal['status_kegiatan'] == 'Tidak Aktif' ? 'checked' : ''; ?> required>
                                 <label class="form-check-label">Tidak Aktif</label>
                             </div>
                         </div>
@@ -32,7 +32,8 @@
                             <label class="form-label">Nama Kegiatan</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="text" class="form-control" name="nama_kegiatan" placeholder="Nama Kegiatan" required>
+                            <input type="text" class="form-control" name="nama_kegiatan" placeholder="Nama Kegiatan" value="<?php echo $get_jadwal['nama_kegiatan']; ?>" required>
+                            <input type="hidden" name="id" value="<?php echo $get_jadwal['id']; ?>" readonly>
                         </div>
                     </div>     
 
@@ -41,10 +42,10 @@
                             <label class="form-label">Tanggal Mulai/Selesai</label>
                         </div>
                         <div class="col-lg-4">
-                            <input type="date" class="form-control" name="tgl_mulai" title="Tanggal Mulai" required>
+                            <input type="date" class="form-control" name="tgl_mulai" title="Tanggal Mulai" value="<?php echo $get_jadwal['tgl_mulai']; ?>" required>
                         </div>
                         <div class="col-lg-4">
-                            <input type="date" class="form-control" name="tgl_selesai" title="Tanggal Selesai" required>                            
+                            <input type="date" class="form-control" name="tgl_selesai" title="Tanggal Selesai" value="<?php echo $get_jadwal['tgl_selesai']; ?>" required>                            
                         </div>
                     </div>                
 
@@ -53,7 +54,7 @@
                             <label class="form-label">Tahun</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="number" class="form-control" min="2010" max="9999" name="tahun" placeholder="Tahun Kegiatan" required>
+                            <input type="number" class="form-control" min="2010" max="9999" name="tahun" placeholder="Tahun Kegiatan" value="<?php echo $get_jadwal['tahun']; ?>" required>
                         </div>
                     </div>     
 
@@ -64,8 +65,10 @@
                         <div class="col-lg-4">
                             <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" required>
                                 <option value="">Pilih Lokasi</option>
-                                <?php foreach($get_lokasi as $v) { ?>
-                                    <option value="<?php echo $v['id']; ?>"><?php echo $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
+                                <?php foreach ($get_lokasi as $v) { ?>
+                                    <option value="<?php echo $v['id']; ?>" <?php echo $v['id'] == $get_jadwal['lokasi_skd_id'] ? 'selected' : ''; ?>>
+                                        <?php echo $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?>
+                                    </option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -76,7 +79,7 @@
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-9">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"><?php echo $get_jadwal['catatan']; ?></textarea>
                         </div>
                     </div>                    
                 </div>
