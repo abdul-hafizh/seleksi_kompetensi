@@ -42,14 +42,12 @@ class Penerimaan_barang_m extends CI_Model {
 		$this->db->join('pengiriman_barang pnb', 'pnb.id = pb.pengiriman_id', 'left');
 		$this->db->join('pengiriman_detail pnd', 'pnd.pengiriman_id = pnb.id AND pnd.barang_id = pd.barang_id', 'left');
 		$this->db->join('adm_barang', 'adm_barang.id = pd.barang_id');
-		$this->db->where('pd.penerimaan_id', $id);
-		$this->db->group_by('pd.barang_id');
-	
+		
 		if (!empty($id)) {
 			$this->db->where('pd.penerimaan_id', $id);
 		}
-	
-		$this->db->group_by('barang_id');
+		
+		$this->db->group_by('pd.barang_id');
 	
 		return $this->db->get();
 	}

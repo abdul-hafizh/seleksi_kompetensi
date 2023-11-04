@@ -15,7 +15,7 @@
     </div>
 <?php } $this->session->unset_userdata('message'); ?>
 
-<form action="<?php echo site_url('penerimaan_barang/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+<form action="<?php echo site_url('uji_fungsi_barang/submit_data'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -41,7 +41,7 @@
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-8">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
+                            <textarea class="form-control" name="catatan_uji" rows="3" placeholder="Catatan"></textarea>
                         </div>
                     </div>                    
                 </div>
@@ -64,11 +64,13 @@
                                     <th>Kode Barang</th>
                                     <th>Nama Barang</th>
                                     <th>Satuan</th>
-                                    <th>Jumlah Kirim</th>
                                     <th>Jumlah Terima</th>
                                     <th>Jumlah Rusak</th>
                                     <th>Jumlah Terpasang</th>
-                                    <th>Foto Terima </th>
+                                    <th>Status Baik</th>
+                                    <th>Status Tidak Baik</th>
+                                    <th>Catatan</th>
+                                    <th>Foto Terima</th>
                                     <th style="display:none">Barang ID </th>
                                 </tr>
                             </thead>
@@ -107,32 +109,40 @@
             }
         });        
 
-        $("#penerimaan_id").on("change", function () {			
+        $("#penerimaan_id").on("change", function () {
             let penerimaan_id = $("#penerimaan_id").val();
-            var url_file = '<?php echo base_url('uploads/perencanaan/');?>';
+            var url_file = '<?php echo base_url("uploads/perencanaan/"); ?>';
             $.ajax({
-                url: "<?php echo site_url('uji_fungsi_barang/get_barang');?>",
+                url: '<?php echo site_url("uji_fungsi_barang/get_barang"); ?>',
                 data: { penerimaan_id: penerimaan_id },
                 method: "POST",
                 dataType: "json",
                 success: function (data) {
                     var rows = '';
 
-                    $.each(data, function (i, item) {  
-                        console.log(item); 
-						rows+= '<tr>';
-                            rows+= '<td>' + (i + 1) + '</td>';
-                            rows+= '<td>' + item.kode_barang_id + '</td>';
-                            rows+= '<td>' + item.nama_barang + '</td>';
-                            rows+= '<td>' + item.satuan + '</td>';
-                            rows+= '<td>' + item.jumlah_kirim + '</td>';
-                            rows+= '<td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" placeholder="Jumlah Terima" required></td>';
-                            rows+= '<td><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" placeholder="Jumlah Rusak" required></td>';
-                            rows+= '<td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" required></td>';
-                            rows+= '<td><a href="#" class="btn btn-sm btn-info">Upload Foto</a></td>';
-                            rows+= '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';
-                        rows+= '</tr>';
-					});
+                    $.each(data, function (i, item) {
+                        console.log(item);
+                        rows += '<tr>';
+                        rows += '<td>' + (i + 1) + '</td>';
+                        rows += '<td>' + item.kode_barang_id + '</td>';
+                        rows += '<td>' + item.nama_barang + '</td>';
+                        rows += '<td>' + item.satuan + '</td>';
+                        rows += '<td>' + item.jumlah_terima + '</td>';
+                        rows += '<td>' + item.jumlah_rusak + '</td>';
+                        rows += '<td>' + item.jumlah_terpasang + '</td>';
+                        rows += '<td><input id="status_baik" name="status_baik[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Baik" required></td>';
+                        rows += '<td><input id="status_tidak" name="status_tidak[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Tidak Baik" required></td>';                        
+                        rows += '<td><input id="catatan" name="catatan[]" type="text" class="form-control" placeholder="Catatan"></td>';
+                        rows += '<td>';
+                        rows += '<div class="avatar-group">';
+                        rows += '<a href="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" target="_blank" class="avatar-group-item" data-img="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">';
+                        rows += '<img src="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" alt="" class="rounded-circle avatar-xxs">';
+                        rows += '</a>';
+                        rows += '</div>';
+                        rows += '</td>';
+                        rows += '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';
+                        rows += '</tr>';
+                    });
 
                     $('#show-barang').html(rows);
                 },
@@ -141,6 +151,5 @@
                 },
             });
         });
-
     })
 </script>

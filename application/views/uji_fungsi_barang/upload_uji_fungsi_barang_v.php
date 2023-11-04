@@ -67,6 +67,7 @@
                                 <th>Status Tidak Baik</th>
                                 <th>Catatan</th>
                                 <th>Foto Terima</th>
+                                <th>Uplaod Foto</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,6 +90,16 @@
                                             </a>
                                         </div>
                                     </td>
+                                    <td class="text-center">
+                                        <?php if($v['kelompok'] != 'Non-IT') { ?>
+                                        <div class="btn-group">
+                                            <a href="<?php echo site_url('uji_fungsi_barang/detail_foto/' . $v['id_detail']); ?>" class="btn btn-sm btn-success">Upload</a>                                                                                        
+                                        </div>
+                                        <?php } else { ?>
+                                            ---
+                                        <?php } ?>
+                                    </td>
+
                                 </tr>
                             <?php } ?>
                         </tbody>                            

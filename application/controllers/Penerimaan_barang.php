@@ -107,12 +107,20 @@ class Penerimaan_barang extends Telescoope_Controller
         $data = array();
         
         foreach($result as $v) {   
+
+            $cek_integrasi = $this->db->select('id')->from('uji_penerimaan_barang')->where('penerimaan_id', $v['id'])->get()->num_rows();
             
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                         <a href="' .  site_url('penerimaan_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                         <a href="' .  site_url('penerimaan_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
+
+            if($cek_integrasi > 0) {
+                $action = '<div class="btn-group" role="group">
+                    <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                </div>';
+            }
             
             $data[] = array(                                
                 "kode_penerimaan" => $v['kode_penerimaan'],
