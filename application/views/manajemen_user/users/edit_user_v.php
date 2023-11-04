@@ -53,6 +53,18 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
+                            <div class="col-lg-3">
+                                <label class="form-label label-control">&nbsp;</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="d-inline-flex gap-2 border border-dashed p-2 mb-2 w-75">
+                                    <a href="<?php echo base_url('uploads/users/' . $get_employee['file_ktp']); ?>" target="_blank" class="bg-light rounded p-1">
+                                        <img src="<?php echo base_url('uploads/users/' . $get_employee['file_ktp']); ?>" alt="" class="img-fluid d-block" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Email</label>
                             <div class="col-md-9">
                                 <input type="email" class="form-control col-lg-7" name="email" value="<?php echo $get_employee['email'];?>">                                
@@ -79,8 +91,8 @@
                             <div class="col-md-9">
                                 <select class="select-single" name="provinsi" id="provinsi" required>
                                     <option value="">Pilih Provinsi</option>
-                                    <?php foreach($provinsi as $v) { ?>
-                                        <option value="<?php echo $v['location_id']; ?>" <?php echo $get_employee['provinsi'] == $v['province_name'] ? "selected" : "" ?>><?php echo $v['province_name']; ?></option>
+                                    <?php foreach($get_provinsi as $v) { ?>
+                                        <option value="<?php echo $v['location_id']; ?>" <?php echo $get_employee['province_id'] == $v['location_id'] ? "selected" : "" ?>><?php echo $v['province_name']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -88,10 +100,10 @@
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Kabupaten</label>
                             <div class="col-md-9">
-                                <select class="select-single" name="kabupaten" id="kabupaten" disabled>
+                                <select class="select-single" name="kabupaten" id="kabupaten">
                                     <option value="">Pilih Kabupaten</option>
-                                    <?php foreach($kabupaten as $v) { ?>
-                                        <option value="<?php echo $v['location_id']; ?>" <?php echo $get_employee['kabupaten'] == $v['regency_name'] ? "selected" : "" ?>><?php echo $v['regency_name']; ?></option>
+                                    <?php foreach($get_kabupaten as $v) { ?>
+                                        <option value="<?php echo $v['location_id']; ?>" <?php echo $get_employee['regency_id'] == $v['location_id'] ? "selected" : "" ?>><?php echo $v['regency_name']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -99,8 +111,11 @@
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Titik Lokasi</label>
                             <div class="col-md-9">
-                                <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" disabled required>
+                                <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" required>
                                     <option value="">Pilih Lokasi</option>
+                                    <?php foreach($get_lokasi as $v) { ?>
+                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_lokasi'] . ' | ' . $v['nama_lokasi']; ?></option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>

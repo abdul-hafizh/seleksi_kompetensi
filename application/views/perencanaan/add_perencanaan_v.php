@@ -70,6 +70,7 @@
                                     <th>Satuan</th>
                                     <th>Jumlah</th>
                                     <th>Foto</th>
+                                    <th style="display:none">Barang ID </th>
                                 </tr>
                             </thead>
                             <tbody id="show-barang"></tbody>                            
@@ -158,7 +159,7 @@
                             rows+= '<td>' + item.satuan + '</td>';
                             rows+= '<td><input id="jumlah" name="jumlah[]" type="number" min="0" class="form-control" placeholder="Jumlah" required></td>';
                             rows+= '<td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control"></td>';
-                            rows+= '<input id="barang_id" name="barang_id[]" type="hidden" value="' + item.id + '">';
+                            rows+= '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.id + '"></td>';
                         rows+= '</tr>';
 					});
 

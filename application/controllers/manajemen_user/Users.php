@@ -9,7 +9,7 @@ class Users extends Telescoope_Controller
     {
         parent::__construct();
 
-        $this->load->model(array("Administration_m","Provinsi_m","Lokasi_skd_m"));
+        $this->load->model(array("Administration_m","Provinsi_m","Kabupaten_m","Lokasi_skd_m"));
 
         $this->data['date_format'] = "h:i A | d M Y";
 
@@ -78,7 +78,10 @@ class Users extends Telescoope_Controller
     public function update($id){
         $data = array();
         $data['get_pos'] = $this->Administration_m->getNewPos()->result_array();  
+        $data['get_provinsi'] = $this->Provinsi_m->getProvinsi()->result_array();
+        $data['get_kabupaten'] = $this->Kabupaten_m->getKabupaten()->result_array();
         $data['get_employee'] = $this->Administration_m->employee_view($id)->row_array();
+        $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi("", $data['get_employee']['lokasi_user'])->result_array();
 
         $this->template("manajemen_user/users/edit_user_v", "Edit SDM", $data);
     }

@@ -109,8 +109,9 @@ class Penerimaan_barang extends Telescoope_Controller
         foreach($result as $v) {   
             
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('penerimaan_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
-                        <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
+                        <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="' .  site_url('penerimaan_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('penerimaan_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
             
             $data[] = array(                                
@@ -252,5 +253,26 @@ class Penerimaan_barang extends Telescoope_Controller
         $data = $this->Pengiriman_barang_m->getDetailKirim($pengiriman_id)->result_array();
         
         echo json_encode($data);
+    }
+
+    public function delete($id) {
+        $this->db->trans_begin();
+
+        $this->db->where('id', $id);
+        $this->db->delete('penerimaan_barang');
+
+        $this->db->where('penerimaan_id', $id);
+        $this->db->delete('penerimaan_detail');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->setMessage("Gagal hapus data.");
+            redirect(site_url('penerimaan_barang'));
+
+        } else {
+            $this->db->trans_commit();
+            $this->setMessage("Berhasil hapus data.");
+            redirect(site_url('penerimaan_barang'));
+        }
     }
 }

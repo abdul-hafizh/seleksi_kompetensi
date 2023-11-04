@@ -97,11 +97,20 @@ class Pengiriman_barang extends Telescoope_Controller
         $data = array();
         
         foreach($result as $v) {               
+
+            $cek_integrasi = $this->db->select('pengiriman_barang.id')->from('pengiriman_barang')->join('penerimaan_barang', 'pengiriman_barang.id = penerimaan_barang.pengiriman_id', 'right')->where('pengiriman_barang.id', $v['id'])->get()->num_rows();
             
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('pengiriman_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
-                        <a href="' .  site_url('pengiriman_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
+                        <a href="' .  site_url('pengiriman_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="' .  site_url('pengiriman_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('pengiriman_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
+            
+            if($cek_integrasi > 0) {
+                $action = '<div class="btn-group" role="group">
+                    <a href="' .  site_url('pengiriman_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                </div>';
+            }
             
             $data[] = array(                                
                 "kode_pengiriman" => $v['kode_pengiriman'],
@@ -239,5 +248,26 @@ class Pengiriman_barang extends Telescoope_Controller
         $data = $this->Perencanaan_m->getDetail($perencanaan_id)->result_array();
 
         echo json_encode($data);
+    }
+
+    public function delete($id) {
+        $this->db->trans_begin();
+
+        $this->db->where('id', $id);
+        $this->db->delete('pengiriman_barang');
+
+        $this->db->where('pengiriman_id', $id);
+        $this->db->delete('pengiriman_detail');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->setMessage("Gagal hapus data.");
+            redirect(site_url('pengiriman_barang'));
+
+        } else {
+            $this->db->trans_commit();
+            $this->setMessage("Berhasil hapus data.");
+            redirect(site_url('pengiriman_barang'));
+        }
     }
 }
