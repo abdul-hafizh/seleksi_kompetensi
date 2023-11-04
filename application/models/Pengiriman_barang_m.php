@@ -34,7 +34,7 @@ class Pengiriman_barang_m extends CI_Model {
 
 	}
 
-	public function getDetailKirim($id = ''){
+	public function getDetailKirim($id = '', $pr = '', $br = ''){
 		$this->db->select('pd.*, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn, pb.perencanaan_id');
 		$this->db->from('pengiriman_detail pd');
 		$this->db->join('pengiriman_barang as pb', 'pb.id = pd.pengiriman_id', 'left');
@@ -43,6 +43,14 @@ class Pengiriman_barang_m extends CI_Model {
 	
 		if (!empty($id)) {
 			$this->db->where('pb.id', $id);
+		}
+
+		if (!empty($pr)) {
+			$this->db->where('pb.perencanaan_id', $pr);
+		}
+
+		if (!empty($br)) {
+			$this->db->where('pd.barang_id', $br);
 		}
 	
 		$this->db->group_by('pd.id');

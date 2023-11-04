@@ -341,25 +341,38 @@ class Pengiriman_barang extends Telescoope_Controller
         echo json_encode($data);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $this->db->trans_begin();
-
-        $this->db->where('id', $id);
-        $this->db->delete('pengiriman_barang');
-
-        $this->db->where('pengiriman_id', $id);
-        $this->db->delete('pengiriman_detail');
 
         $pr_id = $this->db->where('id', $id)->get('pengiriman_barang')->row()->perencanaan_id;
 
-        $updateData = array(
-            "jumlah_terkirim" => 0,
-            'updated_by' => $this->data['userdata']['employee_id'],
-            'updated_at' => date('Y-m-d H:i:s'),
-        );
+        $barang_get = $this->db->where('perencanaan_id', $pr_id)->get('perencanaan_detail')->result_array();
+        
+        foreach($barang_get as $v) {            
+            
+            $pr_get = $this->Pengiriman_barang_m->getDetailKirim($id, $v['perencanaan_id'], $v['barang_id'])->result_array();
 
-        $this->db->where('perencanaan_id', $pr_id);
-        $update = $this->db->update('perencanaan_detail', $updateData);
+            foreach($pr_get as $res) {
+                $updateData = array(
+                    "jumlah_terkirim" => $v['jumlah_terkirim'] - $res['jumlah_kirim'],
+                    'updated_by' => $this->data['userdata']['employee_id'],
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+
+                $this->db->where('perencanaan_id', $v['perencanaan_id']);
+                $this->db->where('barang_id', $res['barang_id']);
+                $update = $this->db->update('perencanaan_detail', $updateData);
+            }
+        }
+        
+        $this->db->where('pengiriman_id', $id);
+        $hapus_detail = $this->db->delete('pengiriman_detail');
+
+        if($hapus_detail) {
+            $this->db->where('id', $id);
+            $this->db->delete('pengiriman_barang');
+        }        
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
