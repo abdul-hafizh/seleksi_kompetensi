@@ -14,7 +14,7 @@ class Update_kegiatan_m extends CI_Model
 	public function getUpdateKegiatan($id = '', $lokasi = '')
 	{
 
-		$this->db->select('uhk.*, jk.kode_kegiatan');
+		$this->db->select('uhk.*, jk.kode_kegiatan, lok.nama_lokasi');
 
 		$this->db->from('update_harian_kegiatan as uhk');
 		$this->db->join('jadwal_kegiatan as jk', 'uhk.jadwal_kegiatan_id = jk.id', 'inner');

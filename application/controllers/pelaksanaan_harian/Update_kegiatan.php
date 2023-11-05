@@ -159,19 +159,29 @@ class Update_kegiatan extends Telescoope_Controller
         $this->template("pelaksanaan_harian/update_kegiatan/add_update_kegiatan_v", "Tambah Update Kegiatan", $data);
     }
 
-    // public function detail($id)
-    // {
-    //     $data = array();
-    //     $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
-    //     $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
+    public function detail($id)
+    {
+        $data = array();
+        $data['detail'] = $this->Update_kegiatan_m->getUpdateKegiatan($id)->row_array();
 
-    //     $this->template("pelaksanaan_harian/update_kegiatan/detail_update_kegiatan_v", "Detail Penerimaan Barang", $data);
-    // }
+        $this->template("pelaksanaan_harian/update_kegiatan/detail_update_kegiatan_v", "Detail Update Kegiatan", $data);
+    }
+
+    public function update($id)
+    {
+        $data = array();
+        $lokasi = $this->data['userdata']['lokasi_user'];
+        $data['get_jadwal_kegiatan'] = $this->Update_kegiatan_m->getJadwalKegiatan($lokasi)->result_array();
+        $data['selected'] = $this->Update_kegiatan_m->getUpdateKegiatan($id)->row_array();
+
+        $this->template("pelaksanaan_harian/update_kegiatan/edit_update_kegiatan_v", "Detail Update Kegiatan", $data);
+    }
 
     public function submit()
     {
 
         $post = $this->input->post();
+        $id = $this->input->post('id');
         $jadwal_kegiatan_id = $this->input->post('jadwal_kegiatan_id');
         $tgl_kegiatan = $this->input->post('tgl_kegiatan');
         $sesi_1 = $this->input->post('sesi_1');
@@ -239,23 +249,45 @@ class Update_kegiatan extends Telescoope_Controller
 
         $this->db->trans_begin();
 
-        $data = array(
-            "jadwal_kegiatan_id" => $jadwal_kegiatan_id,
-            "tgl_kegiatan" => $tgl_kegiatan,
-            'foto_registrasi' => isset($uploadFotoRegistrasi['file_name']) ? $uploadFotoRegistrasi['file_name'] : '',
-            'foto_pengarahan' => isset($uploadFotoPengarahan['file_name']) ? $uploadFotoPengarahan['file_name'] : '',
-            'foto_kegiatan_lain' => isset($uploadFotoKegiatanLain['file_name']) ? $uploadFotoKegiatanLain['file_name'] : '',
-            'video_kegiatan' => isset($uploadVideoKegiatan['file_name']) ? $uploadVideoKegiatan['file_name'] : '',
-            'created_by' => $this->data['userdata']['employee_id'],
-            'created_at' => date('Y-m-d H:i:s'),
-        );
+        if (isset($id)) {
+            $data = array(
+                "jadwal_kegiatan_id" => $jadwal_kegiatan_id,
+                "tgl_kegiatan" => $tgl_kegiatan,
+                'updated_by' => $this->data['userdata']['employee_id'],
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+    
+            foreach ($sesi as $index => $value) {
+                $index = $index + 1;
+                $data['sesi_' . $index] = $value;
+            }
 
-        foreach ($sesi as $index => $value) {
-            $index = $index + 1;
-            $data['sesi_' . $index] = $value;
+            if (isset($uploadFotoRegistrasi['file_name'])) $data['foto_registrasi'] = $uploadFotoRegistrasi['file_name'];
+            if (isset($uploadFotoPengarahan['file_name'])) $data['foto_pengarahan'] = $uploadFotoPengarahan['file_name'];
+            if (isset($uploadFotoKegiatanLain['file_name'])) $data['foto_kegiatan_lain'] = $uploadFotoKegiatanLain['file_name'];
+            if (isset($uploadVideoKegiatan['file_name'])) $data['video_kegiatan'] = $uploadVideoKegiatan['file_name'];
+
+            $this->db->where('id', $id);
+            $simpan = $this->db->update('update_harian_kegiatan', $data);
+        } else {
+            $data = array(
+                "jadwal_kegiatan_id" => $jadwal_kegiatan_id,
+                "tgl_kegiatan" => $tgl_kegiatan,
+                'foto_registrasi' => isset($uploadFotoRegistrasi['file_name']) ?: '',
+                'foto_pengarahan' => isset($uploadFotoPengarahan['file_name']) ? $uploadFotoPengarahan['file_name'] : '',
+                'foto_kegiatan_lain' => isset($uploadFotoKegiatanLain['file_name']) ? $uploadFotoKegiatanLain['file_name'] : '',
+                'video_kegiatan' => isset($uploadVideoKegiatan['file_name']) ? $uploadVideoKegiatan['file_name'] : '',
+                'created_by' => $this->data['userdata']['employee_id'],
+                'created_at' => date('Y-m-d H:i:s'),
+            );
+    
+            foreach ($sesi as $index => $value) {
+                $index = $index + 1;
+                $data['sesi_' . $index] = $value;
+            }
+
+            $simpan = $this->db->insert('update_harian_kegiatan', $data);
         }
-
-        $simpan = $this->db->insert('update_harian_kegiatan', $data);
 
         if ($simpan) {
             if ($this->db->trans_status() === FALSE) {
@@ -270,13 +302,5 @@ class Update_kegiatan extends Telescoope_Controller
         } else {
             $this->renderMessage("error");
         }
-    }
-
-    public function get_barang()
-    {
-        $pengiriman_id = $this->input->post('pengiriman_id', true);
-        $data = $this->Pengiriman_barang_m->getDetail($pengiriman_id)->result_array();
-
-        echo json_encode($data);
     }
 }
