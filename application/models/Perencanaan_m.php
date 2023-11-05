@@ -50,11 +50,18 @@ class Perencanaan_m extends CI_Model
 	public function getTotalPerencanaan($provinsi = '', $kabupaten = '', $kode_lokasi_skd = '', $jenis = '', $kelompok = '')
 	{
 
+		$user = $this->session->userdata();
+		$user_pos = $user['adm_pos_id'];
+
 		$this->db->select('sum(perencanaan_detail.jumlah) as jumlah_perencanaan')
 			->join('lokasi_skd', 'perencanaan.kode_lokasi_skd=lokasi_skd.id', 'left')
 			->join('ref_locations', 'lokasi_skd.lokasi_id=ref_locations.location_id', 'left')
 			->join('perencanaan_detail', 'perencanaan.id=perencanaan_detail.perencanaan_id', 'left')
 			->join('adm_barang', 'adm_barang.id=perencanaan_detail.barang_id', 'left');
+
+		if ($user_pos > 2) {
+			$this->db->where('lokasi_skd.id', $user['lokasi_skd_id']);
+		}
 
 		if (!empty($provinsi)) {
 
@@ -82,39 +89,45 @@ class Perencanaan_m extends CI_Model
 
 	public function getListBarang($provinsi = '', $kabupaten = '', $kode_lokasi_skd = '', $jenis = '', $kelompok = '')
 	{
+		$user = $this->session->userdata();
+		$user_pos = $user['adm_pos_id'];
 
-		$this->db->select('ref_locations.province_name,ref_locations.regency_name, lokasi_skd.nama_lokasi, adm_barang.nama_barang, perencanaan_detail.jumlah, pengiriman_detail.jumlah_kirim, penerimaan_detail.jumlah_terima, penerimaan_detail.jumlah_terpasang')
+		$query = $this->db->select('ref_locations.province_name,ref_locations.regency_name, lokasi_skd.nama_lokasi, adm_barang.nama_barang, perencanaan_detail.jumlah, pengiriman_detail.jumlah_kirim, penerimaan_detail.jumlah_terima, penerimaan_detail.jumlah_terpasang')
 			->join('lokasi_skd', 'perencanaan.kode_lokasi_skd=lokasi_skd.id', 'left')
 			->join('ref_locations', 'lokasi_skd.lokasi_id=ref_locations.location_id', 'left')
 			->join('perencanaan_detail', 'perencanaan.id=perencanaan_detail.perencanaan_id', 'left')
 			->join('adm_barang', 'adm_barang.id=perencanaan_detail.barang_id', 'left')
 			->join('pengiriman_barang', 'pengiriman_barang.perencanaan_id=perencanaan.id', 'left')
 			->join('pengiriman_detail', 'pengiriman_detail.pengiriman_id=pengiriman_barang.id and pengiriman_detail.barang_id=adm_barang.id', 'left')
-			->join('penerimaan_barang', 'penerimaan_barang.pengiriman_id=perencanaan.id', 'left')
+			->join('penerimaan_barang', 'penerimaan_barang.pengiriman_id=pengiriman_barang.id', 'left')
 			->join('penerimaan_detail', 'penerimaan_detail.penerimaan_id=penerimaan_barang.id and penerimaan_detail.barang_id=adm_barang.id', 'left');
+
+		if ($user_pos > 2) {
+			$query->where('lokasi_skd.id', $user['lokasi_skd_id']);
+		}
 
 		if (!empty($provinsi)) {
 
-			$this->db->where('ref_locations.province_id', $provinsi);
+			$query->where('ref_locations.province_id', $provinsi);
 		}
 
 		if (!empty($kabupaten)) {
 
-			$this->db->where('ref_locations.regency_id', $kabupaten);
+			$query->where('ref_locations.regency_id', $kabupaten);
 		}
 		if (!empty($kode_lokasi_skd)) {
 
-			$this->db->where('lokasi_skd.id', $kode_lokasi_skd);
+			$query->where('lokasi_skd.id', $kode_lokasi_skd);
 		}
 		if (!empty($jenis)) {
 
-			$this->db->where('adm_barang.kelompok', $jenis);
+			$query->where('adm_barang.kelompok', $jenis);
 		}
 		if (!empty($kelompok)) {
 
-			$this->db->where('adm_barang.jenis_alat', $kelompok);
+			$query->where('adm_barang.jenis_alat', $kelompok);
 		}
-		return $this->db->get('perencanaan');
+		return $query->get('perencanaan');
 	}
 
 	public function get_jenis_barang()
