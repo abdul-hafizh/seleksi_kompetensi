@@ -273,7 +273,7 @@ class Update_kegiatan extends Telescoope_Controller
             $data = array(
                 "jadwal_kegiatan_id" => $jadwal_kegiatan_id,
                 "tgl_kegiatan" => $tgl_kegiatan,
-                'foto_registrasi' => isset($uploadFotoRegistrasi['file_name']) ?: '',
+                'foto_registrasi' => isset($uploadFotoRegistrasi['file_name']) ? $uploadFotoRegistrasi['file_name'] : '',
                 'foto_pengarahan' => isset($uploadFotoPengarahan['file_name']) ? $uploadFotoPengarahan['file_name'] : '',
                 'foto_kegiatan_lain' => isset($uploadFotoKegiatanLain['file_name']) ? $uploadFotoKegiatanLain['file_name'] : '',
                 'video_kegiatan' => isset($uploadVideoKegiatan['file_name']) ? $uploadVideoKegiatan['file_name'] : '',
