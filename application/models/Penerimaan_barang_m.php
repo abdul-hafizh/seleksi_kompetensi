@@ -54,14 +54,20 @@ class Penerimaan_barang_m extends CI_Model
 
 	public function getTotalPenerimaan($provinsi = '', $kabupaten = '', $kode_lokasi_skd = '', $jenis = '', $kelompok = '')
 	{
+		$user = $this->session->userdata();
+		$user_pos = $user['adm_pos_id'];
 
 		$this->db->select('sum(penerimaan_detail.jumlah_terima) as jumlah_terima, sum(penerimaan_detail.jumlah_terpasang) as jumlah_terpasang')
 			->join('penerimaan_barang', 'penerimaan_detail.penerimaan_id=penerimaan_barang.id', 'left')
-			//->join('pengiriman_barang', 'penerimaan_barang.pengiriman_id=pengiriman_barang.id', 'left')
-			->join('perencanaan', 'penerimaan_barang.pengiriman_id=perencanaan.id', 'left')
+			->join('pengiriman_barang', 'penerimaan_barang.pengiriman_id=pengiriman_barang.id', 'left')
+			->join('perencanaan', 'pengiriman_barang.perencanaan_id=perencanaan.id', 'left')
 			->join('lokasi_skd', 'perencanaan.kode_lokasi_skd=lokasi_skd.id', 'left')
 			->join('ref_locations', 'lokasi_skd.lokasi_id=ref_locations.location_id', 'left')
 			->join('adm_barang', 'adm_barang.id=penerimaan_detail.barang_id', 'left');
+
+		if ($user_pos > 2) {
+			$this->db->where('lokasi_skd.id', $user['lokasi_skd_id']);
+		}
 
 		if (!empty($provinsi)) {
 

@@ -77,6 +77,8 @@ class Pengiriman_barang_m extends CI_Model
 
 	public function getTotalPengiriman($provinsi = '', $kabupaten = '', $kode_lokasi_skd = '', $jenis = '', $kelompok = '')
 	{
+		$user = $this->session->userdata();
+		$user_pos = $user['adm_pos_id'];
 
 		$this->db->select('sum(pengiriman_detail.jumlah_kirim) as jumlah_kirim')
 			->join('pengiriman_barang', 'pengiriman_detail.pengiriman_id=pengiriman_barang.id', 'left')
@@ -85,6 +87,9 @@ class Pengiriman_barang_m extends CI_Model
 			->join('ref_locations', 'lokasi_skd.lokasi_id=ref_locations.location_id', 'left')
 			->join('adm_barang', 'adm_barang.id=pengiriman_detail.barang_id', 'left');;
 
+		if ($user_pos > 2) {
+			$this->db->where('lokasi_skd.id', $user['lokasi_skd_id']);
+		}
 		if (!empty($provinsi)) {
 
 			$this->db->where('ref_locations.province_id', $provinsi);

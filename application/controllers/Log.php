@@ -75,8 +75,10 @@ class Log extends Telescoope_Controller
 			if (!empty($data)) {
 				if ($emp['status'] == 2) {
 					$first_pos = $this->db->where("employee_id", $data['employeeid'])->order_by('is_main_job', 'desc')->get("vw_adm_pos")->row()->pos_id;
+					$data_user = $this->db->where("id", $data['employeeid'])->get("adm_employee")->row_array();
 					$this->session->set_userdata(do_hash("ROLE"), $first_pos);
 					$this->session->set_userdata(do_hash(SESSION_PREFIX), $data['id']);
+					$this->session->set_userdata($data_user);
 				} else {
 					$this->setMessage("Maaf, akun Anda belum aktif.", "Error");
 				}
@@ -300,22 +302,5 @@ class Log extends Telescoope_Controller
 		}
 
 		redirect(site_url("log/in"));
-	}
-
-	public function get_data_dashboard()
-	{
-		$provinsi = $this->input->post('provinsi', true);
-		$kabupaten = $this->input->post('kabupaten', true);
-		$kode_lokasi_skd = $this->input->post('kode_lokasi_skd', true);
-		$jenis = $this->input->post('jenis', true);
-		$kelompok = $this->input->post('kelompok', true);
-		$total_perencanaan = $this->Perencanaan_m->getTotalPerencanaan($provinsi, $kabupaten, $kode_lokasi_skd, $jenis, $kelompok);
-		$total_pengiriman = $this->Pengiriman_barang_m->getTotalPengiriman($provinsi, $kabupaten, $kode_lokasi_skd, $jenis, $kelompok);
-		$total_diterima = $this->Penerimaan_barang_m->getTotalPenerimaan($provinsi, $kabupaten, $kode_lokasi_skd, $jenis, $kelompok);
-		$data['total_perencanaan'] = (!empty($total_perencanaan)) ? $total_perencanaan : 0;
-		$data['total_pengiriman'] = (!empty($total_pengiriman)) ? $total_pengiriman : 0;
-		$data['total_penerimaan'] = (!empty($total_diterima->jumlah_terima)) ? $total_diterima->jumlah_terima : 0;
-		$data['total_terinstall'] = (!empty($total_diterima->jumlah_terpasang)) ? $total_diterima->jumlah_terpasang : 0;
-		echo json_encode($data);
 	}
 }
