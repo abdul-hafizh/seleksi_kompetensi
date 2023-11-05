@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <form class="form-bordered" method="post" action="<?php echo site_url('pelaksanaan_harian/update_kegiatan/submit'); ?>" enctype="multipart/form-data">
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Jadwal Kegiatan</label>
+                            <label class="col-md-3 label-control">Titik Lokasi</label>
                             <div class="col-md-9">
                                 <select class="select-single" name="jadwal_kegiatan_id" id="jadwal_kegiatan_id" required>
                                     <option value="" disabled selected>Titik Lokasi</option>
