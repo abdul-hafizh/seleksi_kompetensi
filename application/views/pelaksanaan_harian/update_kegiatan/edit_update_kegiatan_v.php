@@ -5,18 +5,21 @@
     <div class="col-lg-8 col-12">
         <div class="card">
             <div class="card-header border-bottom pb-2">
-                <h4 class="card-title">Form Update Kegiatan</h4>
+                <h4 class="card-title">Edit Update Kegiatan</h4>
             </div>
             <div class="card-content">
                 <div class="card-body">
                     <form class="form-bordered" method="post" action="<?php echo site_url('pelaksanaan_harian/update_kegiatan/submit'); ?>" enctype="multipart/form-data">
+                        <input type="hidden" class="form-control" name="id" value="<?php echo $selected['id']; ?>">
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Titik Lokasi</label>
                             <div class="col-md-9">
                                 <select class="select-single" name="jadwal_kegiatan_id" id="jadwal_kegiatan_id" required>
                                     <option value="" disabled selected>Titik Lokasi</option>
-                                    <?php foreach ($get_jadwal_kegiatan as $v) { ?>
-                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_kegiatan'] . " • " . $v['nama_lokasi']; ?></option>
+                                    <?php foreach ($get_jadwal_kegiatan as $detail) { ?>
+                                        <option value="<?php echo $detail['id']; ?>" selected="<?php echo $selected['id'] == $detail['id']; ?>">
+                                            <?php echo $detail['kode_kegiatan'] . " • " . $detail['nama_lokasi']; ?>
+                                        </option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -25,35 +28,35 @@
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Tanggal Kegiatan</label>
                             <div class="col-md-3">
-                                <input type="date" class="form-control" name="tgl_kegiatan" title="Tanggal Kegiatan" required>
+                                <input type="date" class="form-control" name="tgl_kegiatan" title="Tanggal Kegiatan" value="<?php echo $selected['tgl_kegiatan']; ?>" required>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Upload Foto Registrasi</label>
+                            <label class="col-md-3 label-control">Upload Foto Registrasi <span class="text-muted">(Opsional)</span></label>
                             <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="foto_registrasi" placeholder="Foto Registrasi">
+                                <input type="file" class="form-control col-lg-7" name="foto_registrasi" placeholder="Foto Registrasi" <?php isset($selected['id']) ? "" : "required" ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Upload Foto Pengarahan</label>
+                            <label class="col-md-3 label-control">Upload Foto Pengarahan <span class="text-muted">(Opsional)</span></label>
                             <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="foto_pengarahan" placeholder="Foto Pengarahan">
+                                <input type="file" class="form-control col-lg-7" name="foto_pengarahan" placeholder="Foto Pengarahan" <?php isset($selected['id']) ? "" : "required" ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Upload Foto Kegiatan Lain</label>
+                            <label class="col-md-3 label-control">Upload Foto Kegiatan Lain <span class="text-muted">(Opsional)</span></label>
                             <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="foto_kegiatan_lain" placeholder="Foto Kegiatan Lain">
+                                <input type="file" class="form-control col-lg-7" name="foto_kegiatan_lain" placeholder="Foto Kegiatan Lain" <?php isset($selected['id']) ? "" : "required" ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Upload Video Kegiatan</label>
+                            <label class="col-md-3 label-control">Upload Video Kegiatan <span class="text-muted">(Opsional)</span></label>
                             <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="video_kegiatan" placeholder="Video Kegiatan">
+                                <input type="file" class="form-control col-lg-7" name="video_kegiatan" placeholder="Video Kegiatan" <?php isset($selected['id']) ? "" : "required" ?>>
                             </div>
                         </div>
 
@@ -67,42 +70,42 @@
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-1</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_1" placeholder="" required>
+                                <input type="number" class="form-control col-lg-7" name="sesi_1" placeholder="" value="<?php echo $selected['sesi_1']; ?>" required>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-2</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_2" placeholder="">
+                                <input type="number" class="form-control col-lg-7" name="sesi_2" placeholder="" value="<?php echo $selected['sesi_2']; ?>">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-3</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_3" placeholder="">
+                                <input type="number" class="form-control col-lg-7" name="sesi_3" placeholder="" value="<?php echo $selected['sesi_3']; ?>">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-4</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_4" placeholder="">
+                                <input type="number" class="form-control col-lg-7" name="sesi_4" placeholder="" value="<?php echo $selected['sesi_4']; ?>">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-5</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_5" placeholder="">
+                                <input type="number" class="form-control col-lg-7" name="sesi_5" placeholder="" value="<?php echo $selected['sesi_5']; ?>">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-6</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_6" placeholder="">
+                                <input type="number" class="form-control col-lg-7" name="sesi_6" placeholder="" value="<?php echo $selected['sesi_6']; ?>">
                             </div>
                         </div>
 
