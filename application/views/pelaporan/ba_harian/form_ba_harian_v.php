@@ -3,12 +3,12 @@
 <!-- jquery validate-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
-<form action="<?php echo site_url('pelaksanaan_harian/update_barang/submit_datav2'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+<form action="<?php echo site_url('pelaporan/ba_harian/export'); ?>" method="post" id="basic-form" enctype="multipart/form-data" target="_blank">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Tambah Update Barang</h5>
+                    <h5 class="card-title mb-0">Pelaporan Berita Acara Harian</h5>
                 </div>
                 <div class="card-body">
                     <div class="form-group row mb-2">
@@ -32,57 +32,16 @@
                             <input type="date" class="form-control" name="tgl_update" placeholder="Tanggal Update" required>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Catatan</label>
-                        </div>
-                        <div class="col-lg-8">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Data Barang</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3 p-3">
-                        <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Kode Barang</th>
-                                    <th>Nama Barang</th>
-                                    <th>Jumlah</th>
-                                    <th>Satuan</th>
-                                    <th>Status Ada</th>
-                                    <th>Status Tidak Ada</th>
-                                    <th>Kondisi Baik</th>
-                                    <th>Kondisi Tidak Baik</th>
-                                    <th>Foto Terima </th>
-                                    <th style="display:none">Barang ID </th>
-                                </tr>
-                            </thead>
-                            <tbody id="show-barang"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="row mt-2">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah Anda yakin?');">Konfirmasi</button>
+                        <button type="submit" class="btn btn-primary">Export PDF</button>
                     </div>
                 </div>
             </div>

@@ -56,12 +56,25 @@ class Update_barang_m extends CI_Model
 		return $this->db->get();
 	}
 
-	public function get_UpdateBarangExist($perencanaan_id, $tgl_update_harian)
+	public function get_UpdateBarangExist($perencanaan_id, $tgl_update_harian, $id = null)
 	{
 		$this->db->select('uhb.*');
 		$this->db->where('uhb.perencanaan_id', $perencanaan_id);
 		$this->db->where('uhb.tgl_update_harian', $tgl_update_harian);
+		if (isset($id)) {
+			$this->db->where('uhb.id !=', $id);
+		}
+
 		$this->db->from('update_harian_barang uhb');
 		return $this->db->get('update_harian_barang');
+	}
+
+	public function get_UpdateBarangDetail($id = '')
+	{
+		$this->db->select('pd.*, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn');
+		$this->db->where('pd.update_barang_id', $id);
+		$this->db->join('adm_barang', 'adm_barang.id = pd.barang_id', 'left');
+
+		return $this->db->get('update_harian_barang_detail pd');
 	}
 }
