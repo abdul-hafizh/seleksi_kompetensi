@@ -231,8 +231,8 @@
                                     <th>Provinsi</th>
                                     <th>Kabupaten</th>
                                     <th>Titik Lokasi</th>
-                                    <th>Alamat</th>
                                     <th>Nama</th>
+                                    <th>Alamat</th>
                                     <th>No Telpon</th>
                                     <th>Posisi</th>
                                 </tr>
