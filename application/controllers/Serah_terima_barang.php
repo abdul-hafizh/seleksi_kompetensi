@@ -101,7 +101,7 @@ class Serah_terima_barang extends Telescoope_Controller
         foreach($result as $v) {   
             
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('serah_terima_barang/upload_foto/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('serah_terima_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                         <a href="' .  site_url('serah_terima_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
             
@@ -135,19 +135,12 @@ class Serah_terima_barang extends Telescoope_Controller
     }
 
     public function update($id){
-        $data = array();        
-        
-        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $data = array();                
+        $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi()->result_array();
+        $data['get_row'] = $this->Serah_terima_barang_m->getDismantle($id)->row_array();
+        $data['get_foto'] = $this->Serah_terima_barang_m->getDetail($id)->result_array();
 
-        $data['get_uji'] = $this->Serah_terima_barang_m->getUji($id)->row_array();
-        $data['get_detail'] = $this->Serah_terima_barang_m->getDetail($id)->result_array();
-        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();        
-
-        if($position) {
-            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
-        }
-
-        $this->template("serah_terima_barang/detail_serah_terima_barang_v", "Detail Serah Terima Barang", $data);
+        $this->template("serah_terima_barang/edit_serah_terima_barang_v", "Edit Serah Terima Barang", $data);
     }
 
     public function submit_data(){
@@ -231,80 +224,43 @@ class Serah_terima_barang extends Telescoope_Controller
         redirect(site_url('serah_terima_barang'));        
     }
 
-    public function submit_update_detail_foto(){
+    public function submit_update(){
 
         $post = $this->input->post(); 
-        $foto_exist = $post['foto_exist'];
-        $catatan_foto = $post['catatan_foto'];
-        $detail_foto_id = $post['detail_foto_id'];
+        $keterangan = $post['keterangan'];
 
         if (count($post) == 0) {
             $this->setMessage("Isi data dengan benar.");
-            redirect(site_url('serah_terima_barang/detail_foto/' . $post['detail_id']));
+            redirect(site_url('serah_terima_barang'));
         }
 
         $this->db->trans_begin();
-        
-        $dir = './uploads/' . $this->data['dir'];        
 
-        if (!empty($foto_exist)) {
-            $data_insert = array();
-        
-            foreach ($foto_exist as $key => $v) {
-                
-                $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
-                
-                if (!empty($file_name)) {
-                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_detail_barang_' . date('His') . '_' . $file_name;
-                    $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
-                    $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
-                    $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
-                    $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
+        $data = array(
+            "lokasi_skd_id" => $post['lokasi_skd_id'],
+            'nama_penerima' => $post['nama_penerima'],
+            'nama_penyedia' => $post['nama_penyedia'],
+            'tgl_kegiatan' => $post['tgl_kegiatan'],
+            'jabatan' => $post['jabatan'],
+            'nip' => $post['nip'],
+            'alamat_kegiatan' => $post['alamat_kegiatan'],
+            'catatan' => $post['catatan'],
+            'updated_by' => $this->data['userdata']['employee_id'],
+            'updated_at' => date('Y-m-d H:i:s')
+        );
 
-                    if ($this->upload->do_upload('file')) {
-                        $uploadKtp = $this->upload->data();
-                        $data_insert[] = array(
-                            'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
-                            'catatan_foto' => $catatan_foto[$key],
-                            'detail_foto_id' => $detail_foto_id[$key],
-                        );
-                    }
-                } else {
-                    $data_insert[] = array(
-                        'file_path' => $foto_exist[$key],
-                        'catatan_foto' => $catatan_foto[$key],
-                        'detail_foto_id' => $detail_foto_id[$key],
-                    );
-                }
-            }     
-            
-            foreach ($data_insert as $insert_data) {
-                $data_update = array(
-                    'foto_barang' => $insert_data['file_path'],
-                    'catatan_foto' => $insert_data['catatan_foto'],
-                    'updated_by' => $this->data['userdata']['employee_id'],
-                    'updated_at' => date('Y-m-d H:i:s')
-                );
+        $this->db->where('id', $post['id_dismantle']);
+        $update = $this->db->update('serah_terima', $data);        
         
-                $this->db->where('id', $insert_data['detail_foto_id']);
-                $update = $this->db->update('uji_detail_foto', $data_update);
-            }
-        }
-        
-        if($update){
-            if ($this->db->trans_status() === FALSE)  {
-                $this->setMessage("Failed save data.");
-                $this->db->trans_rollback();
-            } else {
-                $this->setMessage("Success save data.");
-                $this->db->trans_commit();
-            }            
-
-            redirect(site_url('serah_terima_barang/upload_foto/' . $post['uji_penerimaan_id']));
-        
+        if ($this->db->trans_status() === FALSE)  {
+            $this->setMessage("Failed update data.");
+            $this->db->trans_rollback();
         } else {
-            $this->renderMessage("error");
-        }
+            $this->setMessage("Success update data.");
+            $this->db->trans_commit();
+        }            
+
+        redirect(site_url('serah_terima_barang'));        
     }
 
     public function delete($id) {
