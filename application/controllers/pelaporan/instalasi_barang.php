@@ -74,4 +74,28 @@ class Instalasi_barang extends Telescoope_Controller
             redirect(site_url('pelaporan/instalasi_barang'));
         }
     }
+
+    public function download()
+    {
+        $post = $this->input->get();
+        $penerimaan_id = $post['penerimaan_id'];
+        $tgl_terima = $post['tgl_terima'];
+
+        $instalasi_barang = $this->Penerimaan_barang_m->get_InstalasiBarangExist($penerimaan_id, $tgl_terima)->row_array();
+        if (isset($instalasi_barang)) {
+            $instalasi_barang_detail = $this->Penerimaan_barang_m->get_InstalasiBarangDetail($instalasi_barang['id'])->result_array();
+            $data = array();
+            $data['instalasi_barang'] = $instalasi_barang;
+            $data['instalasi_barang_detail'] = $instalasi_barang_detail;
+
+            $this->load->library('pdf');
+            $this->pdf->setPaper('A4', 'potrait');
+            $this->pdf->filename = "laporan_instalasi_barang.pdf";
+            $this->pdf->set_option('isRemoteEnabled', true);
+            $this->pdf->load_view('pelaporan/instalasi_barang/export_pdf', $data, true);
+        } else {
+            $this->setMessage("Data instalasi barang tidak ditemukan.");
+            redirect(site_url('pelaporan/instalasi_barang'));
+        }
+    }
 }

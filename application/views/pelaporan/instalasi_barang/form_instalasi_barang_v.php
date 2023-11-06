@@ -29,7 +29,7 @@
                             <label class="form-label">Tanggal Terima</label>
                         </div>
                         <div class="col-lg-3">
-                            <input type="date" class="form-control" name="tgl_terima" placeholder="Tanggal Terima" required>
+                            <input type="date" class="form-control" name="tgl_terima" id="tgl_terima" placeholder="Tanggal Terima" required>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Export PDF</button>
+                        <button id="btnDownload" type="button" class="btn btn-danger">Download</button>
+                        <button type="submit" class="btn btn-primary">Preview</button>
                     </div>
                 </div>
             </div>
@@ -67,5 +68,14 @@
             }
         });
 
+        $("#btnDownload").click(function() {
+            let tgl_terima = $("#tgl_terima").val();
+            let penerimaan_id = $("#penerimaan_id").val();
+            if (tgl_terima && penerimaan_id) {
+                window.location.href = '<?php echo site_url("pelaporan/instalasi_barang/download"); ?>?penerimaan_id=' + penerimaan_id + '&tgl_terima=' + tgl_terima
+            } else {
+                alert('Kode penerimmaan dan tanggal terima harap di isi!')
+            }
+        })
     })
 </script>

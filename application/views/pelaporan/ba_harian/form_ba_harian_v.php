@@ -29,7 +29,7 @@
                             <label class="form-label">Tanggal Update</label>
                         </div>
                         <div class="col-lg-3">
-                            <input type="date" class="form-control" name="tgl_update" placeholder="Tanggal Update" required>
+                            <input id="tgl_update" type="date" class="form-control" name="tgl_update" placeholder="Tanggal Update" required>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Export PDF</button>
+                        <button id="btnDownload" type="button" class="btn btn-danger">Download</button>
+                        <button type="submit" class="btn btn-primary">Preview</button>
                     </div>
                 </div>
             </div>
@@ -66,45 +67,16 @@
                 }
             }
         });
-
-        $("#perencanaan_id").on("change", function() {
-            let perencanaan_id = $("#perencanaan_id").val();
-            var url_file = '<?php echo base_url('uploads/perencanaan/'); ?>';
-            $.ajax({
-                url: "<?php echo site_url('pelaksanaan_harian/update_barang/get_perencanaan'); ?>",
-                data: {
-                    perencanaan_id: perencanaan_id
-                },
-                method: "POST",
-                dataType: "json",
-                success: function(data) {
-                    var rows = '';
-
-                    $.each(data, function(i, item) {
-                        console.log(item);
-                        rows += '<tr>';
-                        rows += '<td>' + (i + 1) + '</td>';
-                        rows += '<td>' + item.kode_barang_id + '</td>';
-                        rows += '<td>' + item.nama_barang + '</td>';
-                        rows += '<td>' + item.jumlah + '</td>';
-                        rows += '<td>' + item.satuan + '</td>';
-                        rows += '<td><input id="status_ada#' + item.barang_id + '" name="status_ada#' + item.barang_id + '" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
-                        rows += '<td><input id="status_tidak_ada#' + item.barang_id + '" name="status_tidak_ada#' + item.barang_id + '" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
-                        rows += '<td><input id="kondisi_baik#' + item.barang_id + '" name="kondisi_baik#' + item.barang_id + '" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
-                        rows += '<td><input id="kondisi_tidak_baik#' + item.barang_id + '" name="kondisi_tidak_baik#' + item.barang_id + '" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
-                        rows += '<td><input id="foto_barang#' + item.barang_id + '" name="foto_barang#' + item.barang_id + '" type="file" class="form-control" required></td>';
-                        rows += '<td style="display:none"><input id="jumlah_barang#' + item.barang_id + '" name="jumlah_barang#' + item.barang_id + '" type="number" value="' + item.jumlah + '"><input id="barang_id#' + item.barang_id + '" name="barang_id#' + item.barang_id + '" type="number" value="' + item.barang_id + '"></td>';
-                        rows += '</tr>';
-                    });
-
-                    $('#show-barang').html(rows);
-                },
-                error: function(xhr, status, error) {
-                    console.log(error)
-                    alert('Gagal ambil data barang.');
-                },
-            });
-        });
-
+    })
+</script>
+<script>
+    $("#btnDownload").click(function(){
+        let tgl_update =$("#tgl_update").val();
+        let perencanaan_id=$("#perencanaan_id").val();
+        if(tgl_update && perencanaan_id){
+            window.location.href='<?php echo site_url("pelaporan/ba_harian/download"); ?>?perencanaan_id='+perencanaan_id+'&tgl_update='+tgl_update
+        }else{
+            alert('Perencanaan dan tanggal update harap di isi!')
+        }
     })
 </script>

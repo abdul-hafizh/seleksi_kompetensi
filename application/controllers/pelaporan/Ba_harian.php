@@ -74,4 +74,28 @@ class BA_harian extends Telescoope_Controller
             redirect(site_url('pelaporan/ba_harian'));
         }
     }
+
+    public function download()
+    {
+        $post = $this->input->get();
+        $perencanaan_id = $post['perencanaan_id'];
+        $tgl_update = $post['tgl_update'];
+
+        $update_barang = $this->Update_barang_m->get_UpdateBarangExist($perencanaan_id, $tgl_update)->row_array();
+        if (isset($update_barang)) {
+            $update_barang_detail = $this->Update_barang_m->get_UpdateBarangDetail($update_barang['id'])->result_array();
+            $data = array();
+            $data['update_barang'] = $update_barang;
+            $data['update_barang_detail'] = $update_barang_detail;
+
+            $this->load->library('pdf');
+            $this->pdf->setPaper('A4', 'potrait');
+            $this->pdf->filename = "laporan_berita_acara_harian.pdf";
+            $this->pdf->set_option('isRemoteEnabled', true);
+            $this->pdf->load_view('pelaporan/ba_harian/export_pdf', $data, true);
+        } else {
+            $this->setMessage("Data tidak ditemukan.");
+            redirect(site_url('pelaporan/ba_harian'));
+        }
+    }
 }
