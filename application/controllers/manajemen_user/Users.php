@@ -55,7 +55,7 @@ class Users extends Telescoope_Controller
 
     public function index(){
         $data = array();
-        $data['get_employee'] = $this->Administration_m->employee_view()->result_array();      
+        $data['get_employee'] = $this->Administration_m->employee_view()->result_array();
 
         $this->template("manajemen_user/users/list_user_v", "Data SDM", $data);
     }

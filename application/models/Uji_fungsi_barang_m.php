@@ -22,7 +22,7 @@ class Uji_fungsi_barang_m extends CI_Model {
 
 		if(!empty($lokasi)){
 
-			$this->db->where('lokasi_skd.lokasi_id', $lokasi);
+			$this->db->where('lokasi_skd.id', $lokasi);
 
 		}
 
@@ -65,7 +65,7 @@ class Uji_fungsi_barang_m extends CI_Model {
 	}
 
 	public function getDetailFotoUploaded($id = '') {
-		$this->db->select('foto_barang');
+		$this->db->select('id, foto_barang, catatan_foto, created_at');
 		$this->db->from('uji_detail_foto');		
 		
 		if (!empty($id)) {

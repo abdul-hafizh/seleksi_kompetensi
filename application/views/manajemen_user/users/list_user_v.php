@@ -40,6 +40,9 @@
                                 <th>Email</th>
                                 <th>Telepon</th>
                                 <th>Posisi</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
+                                <th>Titik Lokasi</th>
                                 <th>KTP</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -53,6 +56,9 @@
                                     <td><?php echo $v['email'];?></td>
                                     <td><?php echo $v['phone'];?></td>
                                     <td><?php echo $v['pos_name'];?></td>
+                                    <td><?php echo $v['province_name'];?></td>
+                                    <td><?php echo $v['regency_name'];?></td>
+                                    <td><?php echo $v['nama_lokasi'];?></td>
                                     <td>
                                         <div class="avatar-group">
                                             <a href="<?php echo base_url('uploads/users/' . $v['file_ktp']); ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/users/' . $v['file_ktp']); ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto KTP">

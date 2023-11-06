@@ -31,7 +31,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
             mkdir($dir, 0777, true);
         }
 
-        $config['allowed_types'] = '*';
+        $config['allowed_types'] = 'jpg|jpeg|png|gif';
         $config['overwrite'] = false;
         $config['max_size'] = 3064;
         $config['upload_path'] = $dir;
@@ -85,7 +85,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $result = $this->Uji_fungsi_barang_m->getUji()->result_array();
 
         if($position) {
-            $result = $this->Uji_fungsi_barang_m->getUji("", $this->data['userdata']['lokasi_user'])->result_array();
+            $result = $this->Uji_fungsi_barang_m->getUji("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
 
         if (!empty($search)) {
@@ -98,7 +98,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $count = $this->Uji_fungsi_barang_m->getUji()->num_rows();
 
         if($position) {
-            $count = $this->Uji_fungsi_barang_m->getUji("", $this->data['userdata']['lokasi_user'])->num_rows();
+            $count = $this->Uji_fungsi_barang_m->getUji("", $this->data['userdata']['lokasi_skd_id'])->num_rows();
         }
 
         $totalRecords = $count;
@@ -144,7 +144,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();        
 
         if($position) {
-            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_user'])->result_array();
+            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
         
         $this->template("uji_fungsi_barang/add_uji_fungsi_barang_v", "Tambah Uji Fungsi Barang", $data);
@@ -160,7 +160,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();        
 
         if($position) {
-            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_user'])->result_array();
+            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
 
         $this->template("uji_fungsi_barang/detail_uji_fungsi_barang_v", "Detail Uji Fungsi Barang", $data);
@@ -173,10 +173,10 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $data['get_uji'] = $this->Uji_fungsi_barang_m->getUji($id)->row_array();
         $data['get_detail'] = $this->Uji_fungsi_barang_m->getDetail($id)->result_array();
-        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();        
+        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
 
         if($position) {
-            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_user'])->result_array();
+            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
 
         $this->template("uji_fungsi_barang/upload_uji_fungsi_barang_v", "Detail Uji Fungsi Barang", $data);
@@ -276,9 +276,10 @@ class Uji_fungsi_barang extends Telescoope_Controller
     public function submit_detail_foto(){
 
         $post = $this->input->post(); 
+        $catatan_foto = $post['catatan_foto'];
 
         if (count($post) == 0) {
-            $this->setMessage("Isi data dengan Benar.");
+            $this->setMessage("Isi data dengan benar.");
             redirect(site_url('uji_fungsi_barang/detail_foto/' . $post['detail_id']));
         }
 
@@ -306,16 +307,18 @@ class Uji_fungsi_barang extends Telescoope_Controller
                 if ($this->upload->do_upload('file')) {
                     $uploadKtp = $this->upload->data();
                     $data_insert[] = array(
-                        'file_path' => $uploadKtp['file_name'],
+                        'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
+                        'catatan_foto' => $catatan_foto[$key],
                     );
                 }
             }     
             
-            foreach ($data_insert as $insert_data) {                                
+            foreach ($data_insert as $insert_data) {
                 $data = array(
                     "uji_header_id" => $post['uji_penerimaan_id'],
                     "uji_detail_id" => $post['detail_id'],
                     'foto_barang' => $insert_data['file_path'],
+                    'catatan_foto' => $insert_data['catatan_foto'],
                     'created_by' => $this->data['userdata']['employee_id'],
                     'created_at' => date('Y-m-d H:i:s'),
                 );
@@ -324,7 +327,83 @@ class Uji_fungsi_barang extends Telescoope_Controller
             }
         }                    
         
-        if($simpan){                                
+        if($simpan){
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Failed save data.");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Success save data.");
+                $this->db->trans_commit();
+            }            
+
+            redirect(site_url('uji_fungsi_barang/upload_foto/' . $post['uji_penerimaan_id']));
+        
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
+    public function submit_update_detail_foto(){
+
+        $post = $this->input->post(); 
+        $foto_exist = $post['foto_exist'];
+        $catatan_foto = $post['catatan_foto'];
+        $detail_foto_id = $post['detail_foto_id'];
+
+        if (count($post) == 0) {
+            $this->setMessage("Isi data dengan benar.");
+            redirect(site_url('uji_fungsi_barang/detail_foto/' . $post['detail_id']));
+        }
+
+        $this->db->trans_begin();
+        
+        $dir = './uploads/' . $this->data['dir'];        
+
+        if (!empty($foto_exist)) {
+            $data_insert = array();
+        
+            foreach ($foto_exist as $key => $v) {
+                
+                $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
+                
+                if (!empty($file_name)) {
+                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_detail_barang_' . date('His') . '_' . $file_name;
+                    $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
+                    $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
+                    $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
+                    $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
+
+                    if ($this->upload->do_upload('file')) {
+                        $uploadKtp = $this->upload->data();
+                        $data_insert[] = array(
+                            'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
+                            'catatan_foto' => $catatan_foto[$key],
+                            'detail_foto_id' => $detail_foto_id[$key],
+                        );
+                    }
+                } else {
+                    $data_insert[] = array(
+                        'file_path' => $foto_exist[$key],
+                        'catatan_foto' => $catatan_foto[$key],
+                        'detail_foto_id' => $detail_foto_id[$key],
+                    );
+                }
+            }     
+            
+            foreach ($data_insert as $insert_data) {
+                $data_update = array(
+                    'foto_barang' => $insert_data['file_path'],
+                    'catatan_foto' => $insert_data['catatan_foto'],
+                    'updated_by' => $this->data['userdata']['employee_id'],
+                    'updated_at' => date('Y-m-d H:i:s')
+                );
+        
+                $this->db->where('id', $insert_data['detail_foto_id']);
+                $update = $this->db->update('uji_detail_foto', $data_update);
+            }
+        }
+        
+        if($update){
             if ($this->db->trans_status() === FALSE)  {
                 $this->setMessage("Failed save data.");
                 $this->db->trans_rollback();

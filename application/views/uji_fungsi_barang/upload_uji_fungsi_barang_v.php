@@ -91,15 +91,19 @@
                                         </div>
                                     </td>
                                     <td class="text-center">
+                                        <?php $cek_exist = $this->db->select('id')->from('uji_detail_foto')->where('uji_detail_id', $v['id_detail'])->get()->num_rows(); ?>
                                         <?php if($v['kelompok'] != 'Non-IT') { ?>
-                                        <div class="btn-group">
-                                            <a href="<?php echo site_url('uji_fungsi_barang/detail_foto/' . $v['id_detail']); ?>" class="btn btn-sm btn-success">Upload</a>                                                                                        
+                                            <div class="btn-group">
+                                            <?php if($cek_exist > 0) { ?>
+                                                <a href="<?php echo site_url('uji_fungsi_barang/detail_foto/' . $v['id_detail']); ?>" class="btn btn-sm btn-info">Lihat Foto</a>
+                                            <?php } else { ?>
+                                                <a href="<?php echo site_url('uji_fungsi_barang/detail_foto/' . $v['id_detail']); ?>" class="btn btn-sm btn-success">Upload</a>
+                                            <?php } ?>
                                         </div>
                                         <?php } else { ?>
                                             ---
                                         <?php } ?>
                                     </td>
-
                                 </tr>
                             <?php } ?>
                         </tbody>                            

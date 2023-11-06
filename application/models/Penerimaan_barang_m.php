@@ -23,7 +23,7 @@ class Penerimaan_barang_m extends CI_Model
 
 		if (!empty($lokasi)) {
 
-			$this->db->where('lokasi_skd.lokasi_id', $lokasi);
+			$this->db->where('lokasi_skd.id', $lokasi);
 		}
 
 		$this->db->join('pengiriman_barang as pb', 'pb.id = penerimaan_barang.pengiriman_id', 'left');

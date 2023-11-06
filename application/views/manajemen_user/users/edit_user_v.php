@@ -76,6 +76,12 @@
                                 <input type="text" maxlength="25" class="form-control col-lg-7" name="phone" onkeypress="return onlyNumber(event)" value="<?php echo $get_employee['phone'];?>" required>                                
                             </div>
                         </div>   
+                        <div class="form-group row mb-3">
+                            <label class="col-md-3 label-control">Alamat</label>
+                            <div class="col-md-9">
+                                <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" required><?php echo $get_employee['alamat'];?></textarea>
+                            </div>
+                        </div>
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Status</label>
                             <div class="col-md-9">
@@ -108,7 +114,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row mb-2">
+                        <div class="form-group row last mb-2">
                             <label class="col-md-3 label-control">Titik Lokasi</label>
                             <div class="col-md-9">
                                 <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" required>
@@ -118,13 +124,7 @@
                                     <?php } ?>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group row last mb-3">
-                            <label class="col-md-3 label-control">Alamat</label>
-                            <div class="col-md-9">
-                                <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" required><?php echo $get_employee['alamat'];?></textarea>
-                            </div>
-                        </div>                       
+                        </div>                        
                         <div class="text-right">
                             <a href="<?php echo site_url('employee');?>" class="btn btn-secondary"><i class="ft-chevrons-left mr-1"></i>Kembali</a>
                             <button type="submit" class="btn btn-info" onclick="return confirm('Apakah Anda yakin simpan data ini?');"><i class="ft-check-square mr-1"></i>Update</button>

@@ -85,7 +85,7 @@ class Penerimaan_barang extends Telescoope_Controller
         $result = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
 
         if($position) {
-            $result = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_user'])->result_array();
+            $result = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
 
         if (!empty($search)) {
@@ -98,7 +98,7 @@ class Penerimaan_barang extends Telescoope_Controller
         $count = $this->Penerimaan_barang_m->getPenerimaan_barang()->num_rows();
 
         if($position) {
-            $count = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_user'])->num_rows();
+            $count = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->num_rows();
         }
 
         $totalRecords = $count;
@@ -153,7 +153,7 @@ class Penerimaan_barang extends Telescoope_Controller
         $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang()->result_array();        
 
         if($position) {
-            $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang("", $this->data['userdata']['lokasi_user'])->result_array();
+            $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
         
         $this->template("penerimaan_barang/add_penerimaan_barang_v", "Tambah Penerimaan Barang", $data);
@@ -332,7 +332,7 @@ class Penerimaan_barang extends Telescoope_Controller
                                 'jumlah_terpasang' => $jumlah_terpasang[$key],
                                 'barang_id' => $barang_id[$key],
                                 'detail_id' => $detail_id[$key],
-                                'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',                            
+                                'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
                             );
                         }
                     } else {
