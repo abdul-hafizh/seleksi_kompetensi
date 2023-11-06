@@ -23,7 +23,7 @@ class Pengiriman_barang_m extends CI_Model
 
 		if (!empty($lokasi)) {
 
-			$this->db->where('lokasi_skd.lokasi_id', $lokasi);
+			$this->db->where('lokasi_skd.id', $lokasi);
 		}
 
 		$this->db->join('perencanaan as pr', 'pr.id = pengiriman_barang.perencanaan_id', 'left');

@@ -23,7 +23,7 @@ class Penerimaan_barang_m extends CI_Model
 
 		if (!empty($lokasi)) {
 
-			$this->db->where('lokasi_skd.lokasi_id', $lokasi);
+			$this->db->where('lokasi_skd.id', $lokasi);
 		}
 
 		$this->db->join('pengiriman_barang as pb', 'pb.id = penerimaan_barang.pengiriman_id', 'left');
@@ -91,5 +91,23 @@ class Penerimaan_barang_m extends CI_Model
 			$this->db->where('adm_barang.jenis_alat', $kelompok);
 		}
 		return $this->db->get('penerimaan_detail')->row();
+	}
+
+	public function get_InstalasiBarangExist($penerimaan_id, $tgl_terima)
+	{
+		$this->db->select('pb.*');
+		$this->db->where('pb.id', $penerimaan_id);
+		$this->db->where('pb.tgl_terima', $tgl_terima);
+		$this->db->from('penerimaan_barang pb');
+		return $this->db->get();
+	}
+
+	public function get_InstalasiBarangDetail($id = '')
+	{
+		$this->db->select('pd.*, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn');
+		$this->db->where('pd.penerimaan_id', $id);
+		$this->db->join('adm_barang', 'adm_barang.id = pd.barang_id', 'left');
+
+		return $this->db->get('penerimaan_detail pd');
 	}
 }

@@ -1,5 +1,7 @@
 <!--datatable css-->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+<!-- select2 css-->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <!--datatable responsive css-->
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
@@ -15,6 +17,34 @@
         </button>
     </div>
 <?php } $this->session->unset_userdata('message'); ?>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Filter Data</h4>
+            </div>
+            <div class="card-body">
+                <div class="row gy-4">
+                    <div class="col-xxl-3 col-md-6">
+                        <select class="select-single" name="titik_lokasi" id="titik_lokasi">
+                            <option value="">Pilih Titik Lokasi</option>
+                            <?php foreach($get_tilok as $v) { ?>
+                                <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_lokasi'] . ' | ' . $v['nama_lokasi']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-xxl-2 col-md-6">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-block btn-primary btn-sm" id="dt_cari" name="button" title="Cari Data">Cari Data</button>
+                            <button type="button" class="btn btn-block btn-warning btn-sm" id="dt_reset" name="button" title="Reset">Reset</button>
+                        </div>
+                    </div>
+                </div>                
+            </div>                
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-12">
@@ -35,40 +65,18 @@
                     <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
-                                <th>No</th>
                                 <th>Nama Lengkap</th>
                                 <th>Email</th>
                                 <th>Telepon</th>
                                 <th>Posisi</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
+                                <th>Titik Lokasi</th>
                                 <th>KTP</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php $no=1; foreach($get_employee as $v) { ?>
-                                <tr>
-                                    <td class="text-center"><?php echo $no++;?></td>
-                                    <td><?php echo $v['fullname'];?></td>
-                                    <td><?php echo $v['email'];?></td>
-                                    <td><?php echo $v['phone'];?></td>
-                                    <td><?php echo $v['pos_name'];?></td>
-                                    <td>
-                                        <div class="avatar-group">
-                                            <a href="<?php echo base_url('uploads/users/' . $v['file_ktp']); ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/users/' . $v['file_ktp']); ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto KTP">
-                                                <img src="<?php echo base_url('uploads/users/' . $v['file_ktp']); ?>" alt="" class="rounded-circle avatar-xxs">
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td><?php echo $v['status'] == 2 ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-danger">Tidak Aktif</span>'; ?></td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="<?php echo site_url('manajemen_user/users/update/' . $v['id']);?>" class="btn btn-sm btn-warning">Edit</a>
-                                        </div>                                        
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>                            
                     </table>
                 </div>
             </div>
@@ -87,8 +95,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
+<!--select2 cdn-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>    
     $(document).ready(function () {
-        $("#data-form").DataTable();
+        $(".select-single").select2();
+
+        $('#dt_cari').click(function() {
+            table.ajax.reload();
+        });
+
+        $('#dt_reset').click(function() {
+            location.reload();
+        });
+
+        var table = $("#data-form").DataTable({             
+            'processing': true,
+            'serverSide': true,
+            'serverMethod': 'POST',
+            'ajax': {
+                'url':'<?php echo site_url('manajemen_user/users/get_data');?>',
+                "type": "POST",
+                "data": function(d){                    
+                    d.s_titik_lokasi = $('#titik_lokasi').val();
+                },
+            },
+            scrollX: !0,
+            'columns': [
+                { data: 'fullname' },
+                { data: 'email' },
+                { data: 'phone' },
+                { data: 'pos_name' },
+                { data: 'province_name' },
+                { data: 'regency_name' },
+                { data: 'nama_lokasi' },
+                { data: 'file_ktp' },
+                { data: 'status' },
+                { data: 'action' },
+            ]            
+        });
     })
 </script>

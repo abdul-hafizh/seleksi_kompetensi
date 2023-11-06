@@ -331,12 +331,17 @@ class Administration_m extends CI_Model
 		return $this->db->get("vw_user_access");
 	}
 
-	public function employee_view($id = "")
+	public function employee_view($id = "", $tilok = "")
 	{
 
 		if (!empty($id)) {
 
 			$this->db->where("id", $id);
+		}
+
+		if (!empty($tilok)) {
+
+			$this->db->where("lokasi_skd_id", $tilok);
 		}
 
 		return $this->db->get("vw_employee");
