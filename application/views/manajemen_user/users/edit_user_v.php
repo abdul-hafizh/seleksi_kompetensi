@@ -120,7 +120,7 @@
                                 <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" required>
                                     <option value="">Pilih Lokasi</option>
                                     <?php foreach($get_lokasi as $v) { ?>
-                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_lokasi'] . ' | ' . $v['nama_lokasi']; ?></option>
+                                        <option value="<?php echo $v['id']; ?>" <?php echo $get_employee['lokasi_skd_id'] == $v['id'] ? "selected" : "" ?>><?php echo $v['kode_lokasi'] . ' | ' . $v['nama_lokasi']; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>

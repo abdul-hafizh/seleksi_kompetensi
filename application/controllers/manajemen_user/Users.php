@@ -31,7 +31,7 @@ class Users extends Telescoope_Controller
             mkdir($dir, 0777, true);
         }
 
-        $config['allowed_types'] = '*';
+        $config['allowed_types'] = 'jpg|jpeg|png|gif';
         $config['overwrite'] = false;
         $config['max_size'] = 3064;
         $config['upload_path'] = $dir;
@@ -51,13 +51,97 @@ class Users extends Telescoope_Controller
         if(empty($sess)){
             redirect(site_url('log/in'));
         }
-    }
+    }    
 
     public function index(){
         $data = array();
-        $data['get_employee'] = $this->Administration_m->employee_view()->result_array();
+        $data['get_tilok'] = $this->Lokasi_skd_m->getLokasi()->result_array();
 
         $this->template("manajemen_user/users/list_user_v", "Data SDM", $data);
+    }
+
+    public function get_data()
+    {
+        $post = $this->input->post();
+
+        $draw = $post['draw'];
+        $row = $post['start'];
+        $rowperpage = $post['length'];
+        $search = $post['search']['value'];
+        $columnIndex = $post['order'][0]['column'];
+        $columnName = $post['columns'][$columnIndex]['data'];
+        $tilok = isset($post['s_titik_lokasi']) ? $post['s_titik_lokasi'] : "";
+
+        if (!empty($search)) {
+            $this->db->group_start();
+            $this->db->like('fullname', $search);
+            $this->db->or_like('email', $search);
+            $this->db->or_like('phone', $search);
+            $this->db->or_like('pos_name', $search);
+            $this->db->or_like('province_name', $search);
+            $this->db->or_like('regency_name', $search);
+            $this->db->or_like('nama_lokasi', $search);
+            $this->db->group_end();
+        }
+
+        $this->db->limit($rowperpage, $row);
+
+        $result = $this->Administration_m->employee_view("", $tilok)->result_array();
+
+        if (!empty($search)) {
+            $this->db->group_start();
+            $this->db->like('fullname', $search);
+            $this->db->or_like('email', $search);
+            $this->db->or_like('phone', $search);
+            $this->db->or_like('pos_name', $search);
+            $this->db->or_like('province_name', $search);
+            $this->db->or_like('regency_name', $search);
+            $this->db->or_like('nama_lokasi', $search);
+            $this->db->group_end();
+        }
+
+        $count = $this->Administration_m->employee_view("", $tilok)->num_rows();
+
+        $totalRecords = $count;
+        $totalRecordwithFilter = $count;
+
+        $data = array();
+
+        foreach ($result as $v) {
+
+            $action = '<div class="btn-group" role="group">
+                        <a href="' . site_url('manajemen_user/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                    </div>';
+
+            $file_ktp = '<div class="avatar-group">
+                            <a href="' . base_url('uploads/users/' . $v['file_ktp']) . '" target="_blank" class="avatar-group-item" data-img="' . base_url('uploads/users/' . $v['file_ktp']) . '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto KTP">
+                                <img src="' . base_url('uploads/users/' . $v['file_ktp']) . '" alt="" class="rounded-circle avatar-xxs">
+                            </a>
+                        </div>';
+            
+            $data[] = array(
+                "fullname" => $v['fullname'],
+                "email" => $v['email'],
+                "phone" => $v['phone'],
+                "pos_name" => $v['pos_name'],
+                "province_name" => $v['province_name'],
+                "regency_name" => $v['regency_name'],
+                "nama_lokasi" => $v['nama_lokasi'],
+                "file_ktp" => $file_ktp,
+                "status" => $v['status'] == 2 ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-danger">Tidak Aktif</span>',
+                "action" => $action
+            );
+        }
+
+        ## Response
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordwithFilter,
+            "aaData" => $data
+        );
+
+        echo json_encode($response);
     }
 
     public function add(){
