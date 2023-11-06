@@ -95,8 +95,7 @@ class Update_barang extends Telescoope_Controller
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('pelaksanaan_harian/update_barang/edit/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
                         <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
-                        <a href="' .  site_url('pelaksanaan_harian/update_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger">Delete</a>
-                    </div>';
+                        <a href="' .  site_url('pelaksanaan_harian/update_barang/delete/' . $v['id']) . '" onclick=\'return confirm("Apakah anda yakin?")\' class="btn btn-sm btn-danger">Delete</a></div>';
 
             $data[] = array(
                 "kode_perencanaan" => $v['kode_perencanaan'],
