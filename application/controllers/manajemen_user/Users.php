@@ -110,7 +110,7 @@ class Users extends Telescoope_Controller
         foreach ($result as $v) {
 
             $action = '<div class="btn-group" role="group">
-                        <a href="' . site_url('manajemen_user/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' . site_url('manajemen_user/users/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                     </div>';
 
             $file_ktp = '<div class="avatar-group">
