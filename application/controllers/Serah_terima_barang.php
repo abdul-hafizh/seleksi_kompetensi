@@ -228,6 +228,8 @@ class Serah_terima_barang extends Telescoope_Controller
 
         $post = $this->input->post(); 
         $keterangan = $post['keterangan'];
+        $detail_id = $post['detail_id'];
+        $foto_exist = $post['foto_exist'];
 
         if (count($post) == 0) {
             $this->setMessage("Isi data dengan benar.");
@@ -250,7 +252,54 @@ class Serah_terima_barang extends Telescoope_Controller
         );
 
         $this->db->where('id', $post['id_dismantle']);
-        $update = $this->db->update('serah_terima', $data);        
+        $update = $this->db->update('serah_terima', $data);
+
+        $dir = './uploads/' . $this->data['dir'];
+
+        if (!empty($detail_id)) {
+            $data_insert = array();
+        
+            foreach ($detail_id as $key => $v) {
+                
+                $file_name = isset($_FILES['foto_kegiatan']['name'][$key]) ? $_FILES['foto_kegiatan']['name'][$key] : '';
+
+                if (!empty($file_name)) {
+                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
+                    $_FILES['file']['type'] = $_FILES['foto_kegiatan']['type'][$key];
+                    $_FILES['file']['tmp_name'] = $_FILES['foto_kegiatan']['tmp_name'][$key];
+                    $_FILES['file']['error'] = $_FILES['foto_kegiatan']['error'][$key];
+                    $_FILES['file']['size'] = $_FILES['foto_kegiatan']['size'][$key];
+        
+                    if ($this->upload->do_upload('file')) {
+                        $uploadKtp = $this->upload->data();
+                        $data_insert[] = array(
+                            'keterangan' => $keterangan[$key],
+                            'detail_id' => $detail_id[$key],
+                            'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
+                        );
+                    }
+                } else {
+                    $data_insert[] = array(
+                        'keterangan' => $keterangan[$key],
+                        'detail_id' => $detail_id[$key],
+                        'file_path' => $foto_exist[$key],
+                    );
+                }            
+            }     
+            
+            foreach ($data_insert as $insert_data) {
+                $detail = array(
+                    "serah_terima_id" => $post['id_dismantle'],
+                    'foto_kegiatan' => $insert_data['file_path'],
+                    'keterangan' => $insert_data['keterangan'],
+                    'updated_by' => $this->data['userdata']['employee_id'],
+                    'updated_at' => date('Y-m-d H:i:s')
+                );            
+
+                $this->db->where('id', $insert_data['detail_id']);
+                $simpan_detail = $this->db->update('serah_terima_foto', $detail);
+            }
+        }
         
         if ($this->db->trans_status() === FALSE)  {
             $this->setMessage("Failed update data.");

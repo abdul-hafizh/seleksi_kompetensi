@@ -34,7 +34,7 @@ class Serah_terima_barang_m extends CI_Model {
 
 	public function getDetail($id = ''){
 
-        $this->db->select('st.*, rl.*, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, stf.foto_kegiatan, stf.keterangan');
+        $this->db->select('st.*, rl.*, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, stf.foto_kegiatan, stf.keterangan, stf.id as detail_id');
 
 		if(!empty($id)){
 

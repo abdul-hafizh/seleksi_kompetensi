@@ -110,13 +110,16 @@
                     <h5 class="card-title mb-0">Foto/Dokumentasi</h5>
                 </div>
                 <div class="card-body">
-                    <div class="row mb-3">
+                    <!-- <div class="row mb-3">
                         <div class="col-md-2 col-sm-12">
                             <button type="button" class="btn btn-sm btn-info" id="tambah-foto"><i class="las la-plus-square"></i> Tambah Foto</button>
                         </div>
-                    </div>
+                    </div> -->
+                    
+                    <div class="row" id="form-foto"></div>
+
                     <?php $no=1; foreach($get_foto as $v) { ?>                        
-                        <div class="row mb-3">
+                        <div class="row my-3 foto-doc">
                             <div class="col-md-2 col-sm-12">
                                 <h6>Foto ke - <?php echo $no; ?></h6>
                                 <div class="d-flex align-items-center">
@@ -137,12 +140,12 @@
                                 <div class="p-3">
                                     <label class="form-label">Keterangan Foto ke - <?php echo $no; ?></label>
                                     <input id="keterangan" name="keterangan[]" type="text" class="form-control" placeholder="Keterangan Foto ke - <?php echo $no; ?>" value="<?php echo $v['keterangan']; ?>">
+                                    <input id="foto_exist" name="foto_exist[]" type="hidden" value="<?php echo $v['foto_kegiatan']; ?>">
+                                    <input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['detail_id']; ?>">
                                 </div>
                             </div>
                         </div>
                     <?php $no++; } ?>
-
-                    <div class="row" id="form-foto"></div>
                 </div>
             </div>
         </div>
@@ -166,6 +169,9 @@
 
 <script>    
     $(document).ready(function () {        
+
+        var jml = $('.foto-doc').length;
+
         $(".select-single").select2();
 
         $("#basic-form").validate({
@@ -175,27 +181,27 @@
             }
         });
 
-        $("#tambah-foto").click(function() {
-            var newRow = '<div class="row mt-3" id="form-foto">' +
-                    '<div class="col-md-2 col-sm-12">' +
-                        '<label class="form-label">Upload Foto ke - ' + ($('div[id^="form-foto"]').length + 2) + '</label>' +
-                    '</div>' +
-                    '<div class="col-md-3 col-sm-12">' +
-                        '<input name="foto_kegiatan[]" type="file" class="form-control" required>' +
-                    '</div>' +
-                    '<div class="col-md-4 col-sm-12">' +
-                        '<input name="keterangan[]" type="text" class="form-control" placeholder="Keterangan Foto ke - ' + ($('div[id^="form-foto"]').length + 2) + '">' +
-                    '</div>' +
-                    '<div class="col-md-2 col-sm-12">' +
-                        '<button class="btn btn-sm btn-danger hapus-foto"><i class="las la-trash-alt"></i> Hapus Foto</button>' +
-                    '</div>' +
-                '</div>';
+        // $("#tambah-foto").click(function() {
+        //     var newRow = '<div class="row mt-3" id="form-foto">' +
+        //             '<div class="col-md-2 col-sm-12">' +
+        //                 '<label class="form-label">Upload Foto ke - ' + ($('div[id^="form-foto"]').length + jml) + '</label>' +
+        //             '</div>' +
+        //             '<div class="col-md-3 col-sm-12">' +
+        //                 '<input name="foto_kegiatan[]" type="file" class="form-control" required>' +
+        //             '</div>' +
+        //             '<div class="col-md-4 col-sm-12">' +
+        //                 '<input name="keterangan[]" type="text" class="form-control" placeholder="Keterangan Foto ke - ' + ($('div[id^="form-foto"]').length + jml) + '">' +
+        //             '</div>' +
+        //             '<div class="col-md-2 col-sm-12">' +
+        //                 '<button class="btn btn-sm btn-danger hapus-foto"><i class="las la-trash-alt"></i> Hapus Foto</button>' +
+        //             '</div>' +
+        //         '</div>';
 
-            $("#form-foto:last").after(newRow);
-        });
+        //     $("#form-foto:last").after(newRow);
+        // });
 
-        $(document).on('click', '.hapus-foto', function() {
-            $(this).closest('.row').remove();
-        });
+        // $(document).on('click', '.hapus-foto', function() {
+        //     $(this).closest('.row').remove();
+        // });
     })
 </script>
