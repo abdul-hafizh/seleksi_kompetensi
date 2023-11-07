@@ -78,6 +78,15 @@ class Instalasi_barang extends Telescoope_Controller
                 11 => 'November',
                 12 => 'Desember',
             ];
+            $data['day_list'] = [
+                'Sun' => 'Minggu',
+                'Mon' => 'Senin',
+                'Tue' => 'Selasa',
+                'Wed' => 'Rabu',
+                'Thu' => 'Kamis',
+                'Fri' => 'Jumat',
+                'Sat' => 'Sabtu',
+            ];
 
             // $this->template("pelaporan/instalasi_barang/export_pdf", "Data Update Kegiatan", $data);
 
@@ -118,6 +127,15 @@ class Instalasi_barang extends Telescoope_Controller
                 10 => 'Oktober',
                 11 => 'November',
                 12 => 'Desember',
+            ];
+            $data['day_list'] = [
+                'Sun' => 'Minggu',
+                'Mon' => 'Senin',
+                'Tue' => 'Selasa',
+                'Wed' => 'Rabu',
+                'Thu' => 'Kamis',
+                'Fri' => 'Jumat',
+                'Sat' => 'Sabtu',
             ];
 
             $this->load->library('pdf');
