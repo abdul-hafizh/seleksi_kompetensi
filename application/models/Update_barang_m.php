@@ -58,9 +58,12 @@ class Update_barang_m extends CI_Model
 
 	public function get_UpdateBarangExist($perencanaan_id, $tgl_update_harian, $id = null)
 	{
-		$this->db->select('uhb.*');
+		$this->db->select('uhb.*, skd.nama_lokasi, skd.alamat, ref.province_name');
 		$this->db->where('uhb.perencanaan_id', $perencanaan_id);
 		$this->db->where('uhb.tgl_update_harian', $tgl_update_harian);
+		$this->db->join('perencanaan p', 'p.id = uhb.perencanaan_id', 'left');
+		$this->db->join('lokasi_skd skd', 'skd.id = p.kode_lokasi_skd', 'left');
+		$this->db->join('ref_locations ref', 'ref.location_id = skd.lokasi_id', 'left');
 		if (isset($id)) {
 			$this->db->where('uhb.id !=', $id);
 		}
