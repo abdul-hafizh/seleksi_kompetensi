@@ -76,7 +76,7 @@
                                     <th>Jumlah Kirim</th>
                                     <th>Jumlah Terima</th>
                                     <th>Jumlah Rusak</th>
-                                    <th>Jumlah Terpasang</th>
+                                    <th style="display:none">Jumlah Terpasang</th>
                                     <th>Foto Terima </th>
                                     <th style="display:none">Barang ID </th>
                                 </tr>
@@ -135,10 +135,10 @@
                             rows+= '<td>' + item.nama_barang + '</td>';
                             rows+= '<td>' + item.satuan + '</td>';
                             rows+= '<td>' + item.jumlah_kirim + '</td>';
-                            rows+= '<td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" placeholder="Jumlah Terima" required></td>';
-                            rows+= '<td><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" placeholder="Jumlah Rusak" required></td>';
-                            rows+= '<td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" required></td>';
-                            rows+= '<td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" required></td>';
+                            rows+= '<td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" value="' + item.jumlah_kirim + '" placeholder="Jumlah Terima" required></td>';
+                            rows+= '<td><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" value="0" placeholder="Jumlah Rusak" required></td>';
+                            rows+= '<td style="display:none"><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" value="' + item.jumlah_kirim + '" placeholder="Jumlah Terpasang"></td>';
+                            rows+= '<td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control"></td>';
                             rows+= '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';
                         rows+= '</tr>';
 					});

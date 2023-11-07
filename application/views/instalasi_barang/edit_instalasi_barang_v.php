@@ -13,7 +13,7 @@
     </div>
 <?php } $this->session->unset_userdata('message'); ?>
 
-<form action="<?php echo site_url('penerimaan_barang/submit_update'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+<form action="<?php echo site_url('instalasi_barang/submit_update'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -92,13 +92,12 @@
                                     <th>Satuan</th>
                                     <th>Jumlah Kirim</th>
                                     <th>Jumlah Terima</th>
-                                    <th>Jumlah Rusak</th>
-                                    <th style="display:none">Jumlah Terpasang</th>
+                                    <th style="display:none">Jumlah Rusak</th>
+                                    <th>Jumlah Terpasang</th>
                                     <th>Foto Terima </th>
-                                    <th>Uplaod Foto </th>
+                                    <th>Foto Terpasang </th>
                                     <th style="display:none">Barang ID </th>
                                     <th style="display:none">Detail ID </th>
-                                    <th style="display:none">Foto ID </th>
                                 </tr>
                             </thead>
                             <tbody id="show-barang">
@@ -110,8 +109,8 @@
                                         <td><?php echo $v['satuan'];?></td>
                                         <td><?php echo $v['jumlah_kirim'];?></td>
                                         <td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" placeholder="Jumlah Terima" value="<?php echo $v['jumlah_terima'];?>" readonly></td>
-                                        <td><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" placeholder="Jumlah Rusak" value="<?php echo $v['jumlah_rusak'];?>" readonly></td>
-                                        <td style="display:none"><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" value="<?php echo $v['jumlah_terpasang'];?>" readonly></td>
+                                        <td style="display:none"><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" placeholder="Jumlah Rusak" value="<?php echo $v['jumlah_rusak'];?>" readonly></td>
+                                        <td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" value="<?php echo $v['jumlah_terpasang'];?>" readonly></td>
                                         <td>
                                             <div class="avatar-group">
                                                 <a href="<?php echo base_url('uploads/penerimaan_barang/' . $v['foto_barang']); ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/penerimaan_barang/' . $v['foto_barang']); ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
@@ -119,10 +118,25 @@
                                                 </a>
                                             </div>
                                         </td>
-                                        <td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control"></td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <input id="foto_barang_terpasang" name="foto_barang_terpasang[]" type="file" class="form-control">
+                                                </div>
+                                                <?php if(isset($v['foto_barang_terpasang'])) { ?>
+                                                    <div class="col-md-2">
+                                                        <div class="avatar-group">
+                                                        <a href="<?php echo base_url('uploads/instalasi_barang/' . $v['foto_barang_terpasang']); ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/instalasi_barang/' . $v['foto_barang_terpasang']); ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
+                                                            <img src="<?php echo base_url('uploads/instalasi_barang/' . $v['foto_barang_terpasang']); ?>" alt="" class="rounded-circle avatar-xxs">
+                                                        </a>
+                                                        </div>
+                                                    </div>
+                                                    <input id="foto_terpasang_exist" name="foto_terpasang_exist[]" type="hidden" value="<?php echo $v['foto_barang_terpasang'];?>">
+                                                <?php } ?>
+                                            </div>
+                                        </td>
                                         <td style="display:none"><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
                                         <td style="display:none"><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
-                                        <td style="display:none"><input id="foto_exist" name="foto_exist[]" type="hidden" value="<?php echo $v['foto_barang'];?>"></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>                            

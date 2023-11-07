@@ -21,13 +21,8 @@
         <div class="card">
             <div class="card-header border-bottom pb-2">
                 <div class="float-start">
-                    <h5 class="card-title mb-0">Data Penerimaan Barang</h5>
+                    <h5 class="card-title mb-0">Data Instalasi Barang</h5>
                 </div>
-                <?php if($cek_data < 1 && $job_title == 'KOORDINATOR') { ?>
-                <div class="float-end">
-                    <a href="<?php echo site_url('penerimaan_barang/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Penerimaan Barang</a>
-                </div>
-                <?php } ?>
             </div>
             <div class="card-content">
                 <div class="card-body">
@@ -70,7 +65,7 @@
             'serverSide': true,
             'serverMethod': 'POST',
             'ajax': {
-                'url':'<?php echo site_url('penerimaan_barang/get_data');?>',
+                'url':'<?php echo site_url('instalasi_barang/get_data');?>',
                 "type": "POST",
                 "data": function(d){                    
                     // d.s_provinsi = $('#provinsi_src').val();

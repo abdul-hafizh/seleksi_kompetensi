@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Penerimaan_barang extends Telescoope_Controller
+class Instalasi_barang extends Telescoope_Controller
 {
 
     var $data;
@@ -21,7 +21,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $userdata = $this->Administration_m->getLogin();
 
-        $this->data['dir'] = 'penerimaan_barang';
+        $this->data['dir'] = 'instalasi_barang';
 
         $this->data['controller_name'] = $this->uri->segment(1);
 
@@ -60,17 +60,7 @@ class Penerimaan_barang extends Telescoope_Controller
     public function index(){
         $data = array();
 
-        $position = $this->Administration_m->getPosition("KOORDINATOR");
-        $cek_integrasi = $this->db->select('id')->from('penerimaan_barang')->where('created_by', $this->data['userdata']['employee_id'])->get()->num_rows();
-
-        $data['cek_data'] = 0;    
-        $data['job_title'] = $this->data['userdata']['job_title'];
-        
-        if($position) {
-            $data['cek_data'] = $cek_integrasi;
-        }
-
-        $this->template("penerimaan_barang/list_penerimaan_barang_v", "Data Penerimaan Barang", $data);
+        $this->template("instalasi_barang/list_instalasi_barang_v", "Data Instalasi Barang", $data);
     }
 
     public function get_data(){
@@ -124,14 +114,14 @@ class Penerimaan_barang extends Telescoope_Controller
             $cek_integrasi = $this->db->select('id')->from('uji_penerimaan_barang')->where('penerimaan_id', $v['id'])->get()->num_rows();
             
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
-                        <a href="' .  site_url('penerimaan_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="' .  site_url('penerimaan_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
+                        <a href="' .  site_url('instalasi_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="' .  site_url('instalasi_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('instalasi_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
 
             if($cek_integrasi > 0) {
                 $action = '<div class="btn-group" role="group">
-                    <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                    <a href="' .  site_url('instalasi_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                 </div>';
             }
             
@@ -156,21 +146,7 @@ class Penerimaan_barang extends Telescoope_Controller
         );
         
         echo json_encode($response);
-    }
-    
-    public function add(){
-        $data = array();        
-
-        $position = $this->Administration_m->getPosition("KOORDINATOR");
-
-        $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang()->result_array();        
-
-        if($position) {
-            $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
-        }
-        
-        $this->template("penerimaan_barang/add_penerimaan_barang_v", "Tambah Penerimaan Barang", $data);
-    }
+    }    
 
     public function update($id){
         $data = array();        
@@ -186,7 +162,7 @@ class Penerimaan_barang extends Telescoope_Controller
             $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
         }        
         
-        $this->template("penerimaan_barang/edit_penerimaan_barang_v", "Edit Penerimaan Barang", $data);
+        $this->template("instalasi_barang/edit_instalasi_barang_v", "Edit Instalasi Barang", $data);
     }
 
     public function detail($id){
@@ -194,112 +170,7 @@ class Penerimaan_barang extends Telescoope_Controller
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
         $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
 
-        $this->template("penerimaan_barang/detail_penerimaan_barang_v", "Detail Penerimaan Barang", $data);
-    }
-
-    public function submit_data(){
-
-        $post = $this->input->post(); 
-        $jumlah_terima = $this->input->post('jumlah_terima');
-        $jumlah_rusak = $this->input->post('jumlah_rusak');
-        $barang_id = $this->input->post('barang_id');
-
-        if (count($post) == 0) {
-            $this->setMessage("Isi data dengan Benar.");
-            redirect(site_url('penerimaan_barang/add'));
-        }
-
-        $this->db->trans_begin();
-
-        $cek_integrasi = $this->db->select('id')->from('penerimaan_barang')->where('pengiriman_id', $post['pengiriman_id'])->get()->num_rows();
-
-        if ($cek_integrasi > 0) {
-            $this->setMessage("Data pengiriman sudah pernah diinput.");
-            redirect(site_url('penerimaan_barang'));
-        }
-
-        $data = array(
-            "pengiriman_id" => $post['pengiriman_id'],
-            "tgl_terima" => $post['tgl_terima'],
-            'status' => 'Pending',
-            'catatan' => $post['catatan'],
-            'created_by' => $this->data['userdata']['employee_id'],
-            'created_at' => date('Y-m-d H:i:s'),
-        );
-
-        $simpan = $this->db->insert('penerimaan_barang', $data);
-        
-        if($simpan){        
-            
-            $insert_id = $this->db->insert_id();
-
-            $id = strval($insert_id); 
-            $res = str_repeat('0', 5 - strlen($id)).$id;   
-
-            $this->db->set('kode_penerimaan', 'PRM.' . $res)->where('id', $insert_id)->update('penerimaan_barang');
-
-            $dir = './uploads/' . $this->data['dir'];
-
-            if (!empty($jumlah_terima)) {
-                $data_insert = array();
-            
-                foreach ($jumlah_terima as $key => $v) {
-                    
-                    $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
-
-                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_terima_' . date('His') . '_' . $file_name;
-                    $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
-                    $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
-                    $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
-                    $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
-            
-                    if ($this->upload->do_upload('file')) {
-                        $uploadBarang = $this->upload->data();
-                        $data_insert[] = array(
-                            'jumlah_terima' => $jumlah_terima[$key],
-                            'jumlah_rusak' => $jumlah_rusak[$key],
-                            'barang_id' => $barang_id[$key],
-                            'file_path' => isset($uploadBarang['file_name']) ? $uploadBarang['file_name'] : '',
-                        );
-                    } else {
-                        $data_insert[] = array(
-                            'jumlah_terima' => $jumlah_terima[$key],
-                            'jumlah_rusak' => $jumlah_rusak[$key],
-                            'barang_id' => $barang_id[$key],
-                            'detail_id' => $detail_id[$key],
-                            'file_path' => '',
-                        );
-                    } 
-                }     
-                
-                foreach ($data_insert as $insert_data) {
-                    $detail = array(
-                        "penerimaan_id" => $insert_id,
-                        "barang_id" => $insert_data['barang_id'],
-                        "jumlah_terima" => $insert_data['jumlah_terima'],
-                        "jumlah_rusak" => $insert_data['jumlah_rusak'],
-                        "jumlah_terpasang" => $insert_data['jumlah_terima'],
-                        'foto_barang' => $insert_data['file_path'],
-                        'created_by' => $this->data['userdata']['employee_id'],
-                        'created_at' => date('Y-m-d H:i:s'),
-                    );            
-                    $simpan_detail = $this->db->insert('penerimaan_detail', $detail);
-                }
-            }            
-
-            if ($this->db->trans_status() === FALSE)  {
-                $this->setMessage("Failed save data.");
-                $this->db->trans_rollback();
-            } else {
-                $this->setMessage("Success save data.");
-                $this->db->trans_commit();
-            }            
-
-            redirect(site_url('penerimaan_barang'));
-        
-        } else {
-            $this->renderMessage("error");
-        }
+        $this->template("instalasi_barang/detail_instalasi_barang_v", "Detail Instalasi Barang", $data);
     }
 
     public function submit_update(){
@@ -310,7 +181,7 @@ class Penerimaan_barang extends Telescoope_Controller
         $jumlah_terpasang = $this->input->post('jumlah_terpasang');
         $barang_id = $this->input->post('barang_id');
         $detail_id = $this->input->post('detail_id');
-        $foto_exist = $this->input->post('foto_exist');
+        $foto_exist = $this->input->post('foto_barang_terpasang');
 
         $this->db->trans_begin();
 
@@ -335,14 +206,14 @@ class Penerimaan_barang extends Telescoope_Controller
             
                 foreach ($jumlah_terima as $key => $v) {
                     
-                    $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
+                    $file_name = isset($_FILES['foto_barang_terpasang']['name'][$key]) ? $_FILES['foto_barang_terpasang']['name'][$key] : '';
 
                     if (!empty($file_name)) {
                         $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
-                        $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
-                        $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
-                        $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
-                        $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
+                        $_FILES['file']['type'] = $_FILES['foto_barang_terpasang']['type'][$key];
+                        $_FILES['file']['tmp_name'] = $_FILES['foto_barang_terpasang']['tmp_name'][$key];
+                        $_FILES['file']['error'] = $_FILES['foto_barang_terpasang']['error'][$key];
+                        $_FILES['file']['size'] = $_FILES['foto_barang_terpasang']['size'][$key];
             
                         if ($this->upload->do_upload('file')) {
                             $uploadBarang = $this->upload->data();
@@ -374,7 +245,7 @@ class Penerimaan_barang extends Telescoope_Controller
                         "jumlah_terima" => $insert_data['jumlah_terima'],
                         "jumlah_rusak" => $insert_data['jumlah_rusak'],
                         "jumlah_terpasang" => $insert_data['jumlah_terpasang'],
-                        'foto_barang' => $insert_data['file_path'],
+                        'foto_barang_terpasang' => $insert_data['file_path'],
                         'updated_by' => $this->data['userdata']['employee_id'],
                         'updated_at' => date('Y-m-d H:i:s'),
                     );            
@@ -392,7 +263,7 @@ class Penerimaan_barang extends Telescoope_Controller
                 $this->db->trans_commit();
             }            
 
-            redirect(site_url('penerimaan_barang'));
+            redirect(site_url('instalasi_barang'));
         
         } else {
             $this->renderMessage("error");
@@ -419,12 +290,12 @@ class Penerimaan_barang extends Telescoope_Controller
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             $this->setMessage("Gagal hapus data.");
-            redirect(site_url('penerimaan_barang'));
+            redirect(site_url('instalasi_barang'));
 
         } else {
             $this->db->trans_commit();
             $this->setMessage("Berhasil hapus data.");
-            redirect(site_url('penerimaan_barang'));
+            redirect(site_url('instalasi_barang'));
         }
     }
 }
