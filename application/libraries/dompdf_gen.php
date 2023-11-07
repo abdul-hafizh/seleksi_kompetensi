@@ -25,7 +25,7 @@ class Dompdf_gen {
 		require_once APPPATH.'third_party/dompdf/dompdf_config.inc.php';
 		
 		$pdf = new DOMPDF();
-		
+		$pdf->options->setChroot(__DIR__);
 		$CI =& get_instance();
 		$CI->dompdf = $pdf;
 		
