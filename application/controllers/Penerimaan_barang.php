@@ -266,7 +266,6 @@ class Penerimaan_barang extends Telescoope_Controller
                             'jumlah_terima' => $jumlah_terima[$key],
                             'jumlah_rusak' => $jumlah_rusak[$key],
                             'barang_id' => $barang_id[$key],
-                            'detail_id' => $detail_id[$key],
                             'file_path' => '',
                         );
                     } 
