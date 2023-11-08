@@ -33,7 +33,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $config['allowed_types'] = '*';
         $config['overwrite'] = false;
-        $config['max_size'] = 3064;
+        $config['max_size'] = 5120;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 

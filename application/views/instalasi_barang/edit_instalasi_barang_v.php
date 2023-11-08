@@ -116,7 +116,7 @@
                                                 <?php
                                                     $foto_barang = $v['foto_barang'];
                                                     $image_url = base_url('uploads/penerimaan_barang/' . $foto_barang);
-                                                    if (empty($foto_barang) || !file_exists($image_url)) { $image_url = base_url('assets/images/noimage.jpeg'); }
+                                                    if (empty($foto_barang)) { $image_url = base_url('assets/images/noimage.jpeg'); }
                                                 ?>
                                                 <a href="<?php echo $image_url; ?>" target="_blank" class="avatar-group-item" data-img="<?php echo $image_url; ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
                                                     <img src="<?php echo $image_url; ?>" alt="" class="rounded-circle avatar-xxs">
