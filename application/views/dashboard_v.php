@@ -8,246 +8,241 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 
-
-<div class="row project-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row mb-3">
-                        <div class="col-lg-4">
-                            <select class="select-single dashboardOption" name="provinsi" id="provinsi">
-                                <option value="">Pilih Provinsi</option>
-                                <?php foreach ($get_provinsi as $v) { ?>
-                                    <option value="<?php echo $v['location_id']; ?>"><?php echo $v['province_name']; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <select class="select-single dashboardOption" name="kabupaten" id="kabupaten" disabled>
-                                <option value="">Pilih Kabupaten</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <select class="select-single dashboardOption" name="kode_lokasi_skd" id="kode_lokasi_skd" disabled>
-                                <option value="">Pilih Lokasi</option>
-                            </select>
-                        </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <select class="select-single dashboardOption" name="provinsi" id="provinsi">
+                            <option value="">Pilih Provinsi</option>
+                            <?php foreach ($get_provinsi as $v) { ?>
+                                <option value="<?php echo $v['location_id']; ?>"><?php echo $v['province_name']; ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-lg-4">
-                            <select class="select-single dashboardOption" name="jenis" id="jenis">
-                                <option value="">Pilih Jenis</option>
-                                <?php foreach ($get_jenis as $v) { ?>
-                                    <option value="<?php echo $v['kelompok']; ?>"><?php echo $v['kelompok']; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <select class="select-single dashboardOption" name="kelompok" id="kelompok" disabled>
-                                <option value="">Pilih Kelompok</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <a href="javascript:;" class="btn btn-sm btn-danger" id="reset">Reset</a>
-                        </div>
+                    <div class="col-lg-4">
+                        <select class="select-single dashboardOption" name="kabupaten" id="kabupaten" disabled>
+                            <option value="">Pilih Kabupaten</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <select class="select-single dashboardOption" name="kode_lokasi_skd" id="kode_lokasi_skd" disabled>
+                            <option value="">Pilih Lokasi</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <select class="select-single dashboardOption" name="jenis" id="jenis">
+                            <option value="">Pilih Jenis</option>
+                            <?php foreach ($get_jenis as $v) { ?>
+                                <option value="<?php echo $v['kelompok']; ?>"><?php echo $v['kelompok']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <select class="select-single dashboardOption" name="kelompok" id="kelompok" disabled>
+                            <option value="">Pilih Kelompok</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <a href="javascript:;" class="btn btn-sm btn-danger" id="reset">Reset</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="row">
-        <div class="col-xl-3">
-            <div class="card card-animate">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-soft-primary text-primary rounded-2 fs-2">
-                                <i data-feather="target" class="text-primary"></i>
-                            </span>
-                        </div>
-                        <div class="flex-grow-1 overflow-hidden ms-3">
-                            <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Target Perencanaan</p>
-                            <div class="d-flex align-items-center mb-3">
-                                <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value target_perencanaan">0</span></h4>
-                            </div>
-                            <p class="text-muted text-truncate mb-0">Item</p>
-                        </div>
+<div class="row">
+    <div class="col-xl-3">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-soft-primary text-primary rounded-2 fs-2">
+                            <i data-feather="target" class="text-primary"></i>
+                        </span>
                     </div>
-                </div><!-- end card body -->
-            </div>
-        </div><!-- end col -->
-
-        <div class="col-xl-3">
-            <div class="card card-animate">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-soft-warning text-warning rounded-2 fs-2">
-                                <i data-feather="truck" class="text-warning"></i>
-                            </span>
+                    <div class="flex-grow-1 overflow-hidden ms-3">
+                        <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Target Perencanaan</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value target_perencanaan">0</span></h4>
                         </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="text-uppercase fw-medium text-muted mb-3">Terkirim</p>
-                            <div class="d-flex align-items-center mb-3">
-                                <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value terkirim" id="terkirim">0</span></h4>
-                            </div>
-                            <p class="text-muted mb-0">Item</p>
-                        </div>
+                        <p class="text-muted text-truncate mb-0">Item</p>
                     </div>
-                </div><!-- end card body -->
-            </div>
-        </div><!-- end col -->
-
-        <div class="col-xl-3">
-            <div class="card card-animate">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-soft-success text-success rounded-2 fs-2">
-                                <i data-feather="package" class="text-success"></i>
-                            </span>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="text-uppercase fw-medium text-muted mb-3">Diterima</p>
-                            <div class="d-flex align-items-center mb-3">
-                                <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value diterima">0</span></h4>
-                            </div>
-                            <p class="text-muted mb-0">Item</p>
-                        </div>
-                    </div>
-                </div><!-- end card body -->
-            </div>
-        </div><!-- end col -->
-
-        <div class="col-xl-3">
-            <div class="card card-animate">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="avatar-sm flex-shrink-0">
-                            <span class="avatar-title bg-soft-info text-info rounded-2 fs-2">
-                                <i data-feather="thumbs-up" class="text-info"></i>
-                            </span>
-                        </div>
-                        <div class="flex-grow-1 overflow-hidden ms-3">
-                            <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Ter-Install</p>
-                            <div class="d-flex align-items-center mb-3">
-                                <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value terinstall">0</span></h4>
-                            </div>
-                            <p class="text-muted text-truncate mb-0">Item</p>
-                        </div>
-                    </div>
-                </div><!-- end card body -->
-            </div>
-        </div><!-- end col -->
-    </div><!-- end row -->
-
-    <div class="row">
-        <!-- Pie Chart starts -->
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Perencanaan VS Terkirim</h4>
-                </div><!-- end card header -->
-
-                <div class="card-body">
-                    <div id="pie_perencanaan_terkirim" class="apex-charts" dir="ltr"></div>
-                </div><!-- end card-body -->
-            </div><!-- end card -->
+                </div>
+            </div><!-- end card body -->
         </div>
+    </div><!-- end col -->
 
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Terkirim VS Diterima</h4>
-                </div>
-                <div class="card-content">
-                    <div class="card-body">
-                        <div id="pie_terkirim_diterima" class="apex-charts"></div>
+    <div class="col-xl-3">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-soft-warning text-warning rounded-2 fs-2">
+                            <i data-feather="truck" class="text-warning"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <p class="text-uppercase fw-medium text-muted mb-3">Terkirim</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value terkirim" id="terkirim">0</span></h4>
+                        </div>
+                        <p class="text-muted mb-0">Item</p>
                     </div>
                 </div>
-            </div>
+            </div><!-- end card body -->
         </div>
+    </div><!-- end col -->
 
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Diterima VS Ter-Instal</h4>
-                </div>
-                <div class="card-content">
-                    <div class="card-body">
-                        <div id="pie_diterima_terinstall" class="apex-charts"></div>
+    <div class="col-xl-3">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-soft-success text-success rounded-2 fs-2">
+                            <i data-feather="package" class="text-success"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <p class="text-uppercase fw-medium text-muted mb-3">Diterima</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value diterima">0</span></h4>
+                        </div>
+                        <p class="text-muted mb-0">Item</p>
                     </div>
                 </div>
-            </div>
+            </div><!-- end card body -->
         </div>
-        <!-- Pie Chart ends -->
-    </div>
+    </div><!-- end col -->
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Data Barang</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3 p-3">
-                        <table id="datatable" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Provinsi</th>
-                                    <th>Kabupaten</th>
-                                    <th>Titik Lokasi</th>
-                                    <th>Nama Barang</th>
-                                    <th>Rencana</th>
-                                    <th>Kirim</th>
-                                    <th>Terima</th>
-                                    <th>Install</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+    <div class="col-xl-3">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-soft-info text-info rounded-2 fs-2">
+                            <i data-feather="thumbs-up" class="text-info"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden ms-3">
+                        <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Ter-Install</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value terinstall">0</span></h4>
+                        </div>
+                        <p class="text-muted text-truncate mb-0">Item</p>
                     </div>
                 </div>
-            </div>
+            </div><!-- end card body -->
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Data SDM</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3 p-3">
-                        <table id="datatable_user" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Provinsi</th>
-                                    <th>Kabupaten</th>
-                                    <th>Titik Lokasi</th>
-                                    <th>Alamat</th>
-                                    <th>Nama</th>
-                                    <th>No Telpon</th>
-                                    <th>Posisi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+    </div><!-- end col -->
 </div><!-- end row -->
+
+<div class="row">
+    <!-- Pie Chart starts -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Perencanaan VS Terkirim</h4>
+            </div><!-- end card header -->
+
+            <div class="card-body">
+                <div id="pie_perencanaan_terkirim" class="apex-charts" dir="ltr"></div>
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Terkirim VS Diterima</h4>
+            </div>
+            <div class="card-content">
+                <div class="card-body">
+                    <div id="pie_terkirim_diterima" class="apex-charts"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Diterima VS Ter-Instal</h4>
+            </div>
+            <div class="card-content">
+                <div class="card-body">
+                    <div id="pie_diterima_terinstall" class="apex-charts"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pie Chart ends -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Data Barang</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3 p-3">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
+                                <th>Titik Lokasi</th>
+                                <th>Nama Barang</th>
+                                <th>Rencana</th>
+                                <th>Kirim</th>
+                                <th>Terima</th>
+                                <th>Install</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Data SDM</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3 p-3">
+                    <table id="datatable_user" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
+                                <th>Titik Lokasi</th>
+                                <th>Alamat</th>
+                                <th>Nama</th>
+                                <th>No Telpon</th>
+                                <th>Posisi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- apexcharts -->
 <script src="<?php echo base_url(); ?>assets/libs/apexcharts/apexcharts.min.js"></script>
