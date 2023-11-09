@@ -122,6 +122,12 @@ class Penerimaan_barang extends Telescoope_Controller
         foreach($result as $v) {   
 
             $cek_integrasi = $this->db->select('id')->from('uji_penerimaan_barang')->where('penerimaan_id', $v['id'])->get()->num_rows();
+
+            $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approved</span>';
+
+            if($position) {
+                $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
+            }
             
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
@@ -129,7 +135,7 @@ class Penerimaan_barang extends Telescoope_Controller
                         <a href="' .  site_url('penerimaan_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
 
-            if($cek_integrasi > 0) {
+            if($v['status'] == 'Approved') {
                 $action = '<div class="btn-group" role="group">
                     <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                 </div>';
@@ -142,7 +148,7 @@ class Penerimaan_barang extends Telescoope_Controller
                 "regency_name" => $v['regency_name'],
                 "nama_lokasi" => $v['kode_lokasi'] . ' | ' . $v['nama_lokasi'],
                 "tgl_terima" => $v['tgl_terima'],
-                "status" => $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approve</span>',
+                "status" => $status,
                 "action" => $action
             );
         }

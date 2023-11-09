@@ -130,13 +130,18 @@
                         rows += '<td>' + item.jumlah_terima + '</td>';
                         rows += '<td>' + item.jumlah_rusak + '</td>';
                         rows += '<td>' + item.jumlah_terpasang + '</td>';
-                        rows += '<td><input id="status_baik" name="status_baik[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Baik" required></td>';
-                        rows += '<td><input id="status_tidak" name="status_tidak[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Tidak Baik" required></td>';                        
+                        rows += '<td><input id="status_baik" name="status_baik[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Baik" value="' + item.jumlah_terima + '" required></td>';
+                        rows += '<td><input id="status_tidak" name="status_tidak[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Tidak Baik" value="0" required></td>';
                         rows += '<td><input id="catatan" name="catatan[]" type="text" class="form-control" placeholder="Catatan"></td>';
                         rows += '<td>';
                         rows += '<div class="avatar-group">';
-                        rows += '<a href="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" target="_blank" class="avatar-group-item" data-img="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">';
-                        rows += '<img src="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" alt="" class="rounded-circle avatar-xxs">';
+                        if (item.foto_barang) {
+                            rows += '<a href="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" target="_blank" class="avatar-group-item" data-img="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">';
+                            rows += '<img src="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" alt="" class="rounded-circle avatar-xxs">';
+                        } else {
+                            rows += '<a href="<?php echo base_url('assets/images/noimage.jpeg')?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('assets/images/noimage.jpeg')?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">';
+                            rows += '<img src="<?php echo base_url('assets/images/noimage.jpeg')?>" alt="" class="rounded-circle avatar-xxs">';
+                        }
                         rows += '</a>';
                         rows += '</div>';
                         rows += '</td>';

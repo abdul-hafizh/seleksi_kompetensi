@@ -52,7 +52,7 @@
                             <div class="col-lg-3">       
                                 <select class="form-control" name="status" required>
                                     <option value="Pending" <?php echo $get_penerimaan['status'] == 'Pending' ? ' selected' : ''; ?> >Pending</option>
-                                    <option value="Approve" <?php echo $get_penerimaan['status'] == 'Approve' ? ' selected' : ''; ?>>Approve</option>
+                                    <option value="Approved" <?php echo $get_penerimaan['status'] == 'Approved' ? ' selected' : ''; ?>>Approved</option>
                                 </select>
                             </div>
                         </div>    

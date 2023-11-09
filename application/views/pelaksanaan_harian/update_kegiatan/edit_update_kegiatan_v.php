@@ -34,21 +34,42 @@
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Registrasi <span class="text-muted">(Opsional)</span></label>
-                            <div class="col-md-9">
+                            <div class="col-md-1">
+                                <div class="avatar-group">
+                                    <a href="<?php echo base_url('uploads/update_kegiatan/' . $selected['foto_registrasi']) ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/update_kegiatan/' . $selected['foto_registrasi']) ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top">
+                                        <img src="<?php echo base_url('uploads/update_kegiatan/' . $selected['foto_registrasi']) ?>" class="rounded-circle avatar-xxs">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
                                 <input type="file" class="form-control col-lg-7" name="foto_registrasi" placeholder="Foto Registrasi" <?php isset($selected['id']) ? "" : "required" ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Pengarahan <span class="text-muted">(Opsional)</span></label>
-                            <div class="col-md-9">
+                            <div class="col-md-1">
+                                <div class="avatar-group">
+                                    <a href="<?php echo base_url('uploads/update_kegiatan/' . $selected['foto_pengarahan']) ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/update_kegiatan/' . $selected['foto_pengarahan']) ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top">
+                                        <img src="<?php echo base_url('uploads/update_kegiatan/' . $selected['foto_pengarahan']) ?>" class="rounded-circle avatar-xxs">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
                                 <input type="file" class="form-control col-lg-7" name="foto_pengarahan" placeholder="Foto Pengarahan" <?php isset($selected['id']) ? "" : "required" ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Kegiatan Lain <span class="text-muted">(Opsional)</span></label>
-                            <div class="col-md-9">
+                            <div class="col-md-1">
+                                <div class="avatar-group">
+                                    <a href="<?php echo base_url('uploads/update_kegiatan/' . $selected['foto_kegiatan_lain']) ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/update_kegiatan/' . $selected['foto_kegiatan_lain']) ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top">
+                                        <img src="<?php echo base_url('uploads/update_kegiatan/' . $selected['foto_kegiatan_lain']) ?>" class="rounded-circle avatar-xxs">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
                                 <input type="file" class="form-control col-lg-7" name="foto_kegiatan_lain" placeholder="Foto Kegiatan Lain" <?php isset($selected['id']) ? "" : "required" ?>>
                             </div>
                         </div>

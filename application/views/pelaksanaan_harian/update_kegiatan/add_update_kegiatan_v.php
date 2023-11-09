@@ -32,28 +32,28 @@
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Registrasi</label>
                             <div class="col-md-6">
-                                <input type="file" multiple accept="image/*" class="form-control col-lg-7" name="foto_registrasi[]" placeholder="Foto Registrasi">
+                                <input type="file" multiple accept="image/*" class="form-control col-lg-7" name="foto_registrasi" placeholder="Foto Registrasi">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Pengarahan</label>
                             <div class="col-md-6">
-                                <input type="file" multiple accept="image/*" class="form-control col-lg-7" name="foto_pengarahan[]" placeholder="Foto Pengarahan">
+                                <input type="file" multiple accept="image/*" class="form-control col-lg-7" name="foto_pengarahan" placeholder="Foto Pengarahan">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Kegiatan Lain</label>
                             <div class="col-md-6">
-                                <input type="file" multiple accept="image/*" class="form-control col-lg-7" name="foto_kegiatan_lain[]" placeholder="Foto Kegiatan Lain">
+                                <input type="file" multiple accept="image/*" class="form-control col-lg-7" name="foto_kegiatan_lain" placeholder="Foto Kegiatan Lain">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Video Kegiatan</label>
                             <div class="col-md-6">
-                                <input type="file" multiple accept="video/*" class="form-control col-lg-7" name="video_kegiatan[]" placeholder="Video Kegiatan">
+                                <input type="file" multiple accept="video/*" class="form-control col-lg-7" name="video_kegiatan" placeholder="Video Kegiatan">
                             </div>
                         </div>
 
