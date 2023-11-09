@@ -231,11 +231,13 @@ class Uji_fungsi_barang extends Telescoope_Controller
                 $simpan = $this->db->insert('uji_penerimaan_barang', $data);
             } else {
                 $this->setMessage("Tanggal kegiatan sudah ada.");
+                $this->db->trans_rollback();
                 redirect(site_url('uji_fungsi_barang/add'));    
             }
 
         } else {
             $this->setMessage("Tanggal kegiatan harus sesuai Jadwal.");
+            $this->db->trans_rollback();
             redirect(site_url('uji_fungsi_barang/add'));
         }        
         
@@ -309,6 +311,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         if ($cek_integrasi > 0) {
             $this->setMessage("Data foto sudah pernah diinput.");
+            $this->db->trans_rollback();
             redirect(site_url('uji_fungsi_barang/upload_foto/' . $post['uji_penerimaan_id']));
         }
 
