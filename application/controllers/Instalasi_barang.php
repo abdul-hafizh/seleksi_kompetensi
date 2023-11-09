@@ -187,7 +187,7 @@ class Instalasi_barang extends Telescoope_Controller
         $jumlah_terpasang = $this->input->post('jumlah_terpasang');
         $barang_id = $this->input->post('barang_id');
         $detail_id = $this->input->post('detail_id');
-        $foto_exist = $this->input->post('foto_barang_terpasang');
+        $foto_exist = $this->input->post('foto_terpasang_exist');
 
         $this->db->trans_begin();
 

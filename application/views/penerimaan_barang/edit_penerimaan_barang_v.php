@@ -126,7 +126,7 @@
                                             </div>
                                         </td>
                                         <td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="<?php echo $no;?>"></td>
-                                        <td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 100px; max-height: 100px;"></td>
+                                        <td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 50px; max-height: 50px;"></td>
                                         <td style="display:none"><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
                                         <td style="display:none"><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
                                         <td style="display:none"><input id="foto_exist" name="foto_exist[]" type="hidden" value="<?php echo $v['foto_barang'];?>"></td>

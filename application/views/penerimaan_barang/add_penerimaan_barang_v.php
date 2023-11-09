@@ -141,7 +141,7 @@
                         rows += '<td style="display:none"><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" value="' + item.jumlah_kirim + '" placeholder="Jumlah Terpasang"></td>';
                         rows += '<td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="' + i + '"></td>';
                         rows += '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';                        
-                        rows += '<td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 100px; max-height: 100px;"></td>';
+                        rows += '<td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 50px; max-height: 50px;"></td>';
                         rows += '</tr>';
                     });
 
