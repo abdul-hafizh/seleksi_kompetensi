@@ -23,9 +23,11 @@
                 <div class="float-start">
                     <h5 class="card-title mb-0">Data Uji Fungsi Barang</h5>
                 </div>
+                <?php if($job_title == 'KOORDINATOR') { ?>
                 <div class="float-end">
                     <a href="<?php echo site_url('uji_fungsi_barang/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Uji Fungsi Barang</a>
                 </div>
+                <?php } ?>
             </div>
             <div class="card-content">
                 <div class="card-body">

@@ -173,6 +173,8 @@ class Penerimaan_barang extends Telescoope_Controller
 
         if($position) {
             $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
+        } else {
+            $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
         }
         
         $this->template("penerimaan_barang/add_penerimaan_barang_v", "Tambah Penerimaan Barang", $data);

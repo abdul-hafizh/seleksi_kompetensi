@@ -21,6 +21,13 @@
                 </div>
 
                 <div class="form-group row mb-2">
+                    <label class="col-md-2 label-control">Tanggal Kegiatan</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" value="<?php echo $get_uji['jadwal_kegiatan']; ?>" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2">
                     <label class="col-md-2 label-control">Penerimaan</label>
                     <div class="col-md-8">
                         <select class="select-single" name="penerimaan_id" id="penerimaan_id" disabled>

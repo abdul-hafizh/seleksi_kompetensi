@@ -14,7 +14,7 @@ class Penerimaan_barang_m extends CI_Model
 	public function getPenerimaan_barang($id = '', $lokasi = '')
 	{
 
-		$this->db->select('penerimaan_barang.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, pb.kode_pengiriman');
+		$this->db->select('penerimaan_barang.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.id as lokasi_skd_detail, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, lokasi_skd.alamat, pb.kode_pengiriman');
 
 		if (!empty($id)) {
 

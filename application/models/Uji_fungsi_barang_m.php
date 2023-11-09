@@ -12,7 +12,7 @@ class Uji_fungsi_barang_m extends CI_Model {
 
 	public function getUji($id = '', $lokasi = ''){
 
-        $this->db->select('pbg.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, pb.kode_pengiriman, upb.kode_uji, upb.id as id_uji, upb.catatan_uji');
+        $this->db->select('pbg.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, pb.kode_pengiriman, upb.kode_uji, upb.id as id_uji, upb.jadwal_kegiatan, upb.catatan_uji');
 
 		if(!empty($id)){
 
@@ -35,7 +35,7 @@ class Uji_fungsi_barang_m extends CI_Model {
 		return $this->db->get('uji_penerimaan_barang upb');
 	}	
 
-	public function getDetail($id = '') {
+	public function getDetail($id = '', $kelompok = '') {
 		$this->db->select('ab.kode_barang_id, ab.nama_barang, ab.merek, ab.satuan, ab.jenis_alat, ab.kelompok, ab.sn, pd.jumlah_terima, pd.jumlah_rusak, pd.jumlah_terpasang, pd.foto_barang, upd.status_baik, upd.status_tidak, upd.catatan, upd.id as id_detail');
 		$this->db->from('uji_penerimaan_detail as upd');
 		$this->db->join('uji_penerimaan_barang as upb', 'upb.id = upd.uji_penerimaan_id', 'left');
@@ -45,6 +45,10 @@ class Uji_fungsi_barang_m extends CI_Model {
 		
 		if (!empty($id)) {
 			$this->db->where('upb.id', $id);
+		}		
+
+		if (!empty($kelompok)) {
+			$this->db->where('ab.kelompok !=', $kelompok);
 		}		
 		
 		return $this->db->get();
