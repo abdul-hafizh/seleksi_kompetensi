@@ -96,6 +96,7 @@
                                     <th style="display:none">Jumlah Terpasang</th>
                                     <th>Foto Terima </th>
                                     <th>Uplaod Foto </th>
+                                    <th>Preview</th>
                                     <th style="display:none">Barang ID </th>
                                     <th style="display:none">Detail ID </th>
                                     <th style="display:none">Foto ID </th>
@@ -104,7 +105,7 @@
                             <tbody id="show-barang">
                                 <?php $no=1; foreach($get_detail as $v) { ?>
                                     <tr>
-                                        <td class="text-center"><?php echo $no++;?></td>
+                                        <td class="text-center"><?php echo $no; ?></td>
                                         <td><?php echo $v['kode_barang_id'];?></td>
                                         <td><?php echo $v['nama_barang'];?></td>
                                         <td><?php echo $v['satuan'];?></td>
@@ -124,12 +125,13 @@
                                                 </a>
                                             </div>
                                         </td>
-                                        <td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control"></td>
+                                        <td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="<?php echo $no;?>"></td>
+                                        <td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 100px; max-height: 100px;"></td>
                                         <td style="display:none"><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
                                         <td style="display:none"><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
                                         <td style="display:none"><input id="foto_exist" name="foto_exist[]" type="hidden" value="<?php echo $v['foto_barang'];?>"></td>
                                     </tr>
-                                <?php } ?>
+                                <?php $no++ ;} ?>
                             </tbody>                            
                         </table>                    
                     </div>                      
@@ -157,6 +159,24 @@
             invalidHandler: function(event, validator) {            
                 var errors = validator.numberOfInvalids();
                 if (errors) { window.scrollTo({top: 0}); }
+            }
+        });
+
+        $("#show-barang").on("change", 'input[name="foto_barang[]"]', function () {
+            var fileInput = $(this);
+            var rowIndex = fileInput.data("row");
+            var imagePreview = fileInput.closest('tr').find('.image-preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.attr('src', '');
             }
         });
     })

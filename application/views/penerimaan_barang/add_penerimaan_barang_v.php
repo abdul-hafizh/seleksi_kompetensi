@@ -79,6 +79,7 @@
                                     <th style="display:none">Jumlah Terpasang</th>
                                     <th>Foto Terima </th>
                                     <th style="display:none">Barang ID </th>
+                                    <th>Preview </th>
                                 </tr>
                             </thead>
                             <tbody id="show-barang"></tbody>                            
@@ -116,7 +117,7 @@
             }
         });        
 
-        $("#pengiriman_id").on("change", function () {			
+        $("#pengiriman_id").on("change", function () {
             let pengiriman_id = $("#pengiriman_id").val();
             var url_file = '<?php echo base_url('uploads/perencanaan/');?>';
             $.ajax({
@@ -127,21 +128,22 @@
                 success: function (data) {
                     var rows = '';
 
-                    $.each(data, function (i, item) {  
-                        console.log(item); 
-						rows+= '<tr>';
-                            rows+= '<td>' + (i + 1) + '</td>';
-                            rows+= '<td>' + item.kode_barang_id + '</td>';
-                            rows+= '<td>' + item.nama_barang + '</td>';
-                            rows+= '<td>' + item.satuan + '</td>';
-                            rows+= '<td>' + item.jumlah_kirim + '</td>';
-                            rows+= '<td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" value="' + item.jumlah_kirim + '" placeholder="Jumlah Terima" required></td>';
-                            rows+= '<td><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" value="0" placeholder="Jumlah Rusak" required></td>';
-                            rows+= '<td style="display:none"><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" value="' + item.jumlah_kirim + '" placeholder="Jumlah Terpasang"></td>';
-                            rows+= '<td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control"></td>';
-                            rows+= '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';
-                        rows+= '</tr>';
-					});
+                    $.each(data, function (i, item) {
+                        console.log(item);
+                        rows += '<tr>';
+                        rows += '<td>' + (i + 1) + '</td>';
+                        rows += '<td>' + item.kode_barang_id + '</td>';
+                        rows += '<td>' + item.nama_barang + '</td>';
+                        rows += '<td>' + item.satuan + '</td>';
+                        rows += '<td>' + item.jumlah_kirim + '</td>';
+                        rows += '<td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" value="' + item.jumlah_kirim + '" placeholder="Jumlah Terima" required></td>';
+                        rows += '<td><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" value="0" placeholder="Jumlah Rusak" required></td>';
+                        rows += '<td style="display:none"><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" value="' + item.jumlah_kirim + '" placeholder="Jumlah Terpasang"></td>';
+                        rows += '<td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="' + i + '"></td>';
+                        rows += '<td style="display:none"><input id="barang_id" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';                        
+                        rows += '<td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 100px; max-height: 100px;"></td>';
+                        rows += '</tr>';
+                    });
 
                     $('#show-barang').html(rows);
                 },
@@ -149,6 +151,24 @@
                     alert('Gagal ambil data barang.');
                 },
             });
+        });
+
+        $("#show-barang").on("change", 'input[name="foto_barang[]"]', function () {
+            var fileInput = $(this);
+            var rowIndex = fileInput.data("row");
+            var imagePreview = fileInput.closest('tr').find('.image-preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.attr('src', '');
+            }
         });
 
     })
