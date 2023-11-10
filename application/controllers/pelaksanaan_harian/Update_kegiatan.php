@@ -42,11 +42,14 @@ class Update_kegiatan extends Telescoope_Controller
 
         $sess = $this->session->userdata(do_hash(SESSION_PREFIX));
 
-        $position1 = $this->Administration_m->getPosition("ADMINISTRATOR");
-        $position2 = $this->Administration_m->getPosition("PUSAT");
-        $position3 = $this->Administration_m->getPosition("KOORDINATOR");
+        $cek_menu = $this->db->select('ajm.*')
+        ->from('adm_jobtitle_menu ajm')
+        ->join('adm_menu am', 'ajm.menu_id = am.menuid', 'left')
+        ->where(['jobtitle' => $this->data['userdata']['job_title'], 'url_path' => $this->data['dir']])
+        ->get()
+        ->num_rows();
 
-        if (!$position1 && !$position2 && !$position3) {
+        if($cek_menu < 1){
             $this->noAccess("Anda tidak memiliki hak akses untuk halaman ini.");
         }
 
@@ -153,8 +156,13 @@ class Update_kegiatan extends Telescoope_Controller
     public function add()
     {
         $data = array();
-        $lokasi = $this->data['userdata']['lokasi_user'];
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $lokasi = $this->data['userdata']['lokasi_skd_id'];
         $data['get_jadwal_kegiatan'] = $this->Update_kegiatan_m->getJadwalKegiatan($lokasi)->result_array();
+
+        if(!$position) {            
+            $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
+        }
 
         $this->template("pelaksanaan_harian/update_kegiatan/add_update_kegiatan_v", "Tambah Update Kegiatan", $data);
     }
@@ -170,9 +178,14 @@ class Update_kegiatan extends Telescoope_Controller
     public function update($id)
     {
         $data = array();
-        $lokasi = $this->data['userdata']['lokasi_user'];
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $lokasi = $this->data['userdata']['lokasi_skd_id'];
         $data['get_jadwal_kegiatan'] = $this->Update_kegiatan_m->getJadwalKegiatan($lokasi)->result_array();
         $data['selected'] = $this->Update_kegiatan_m->getUpdateKegiatan($id)->row_array();
+
+        if(!$position) {            
+            $this->noAccess("Hanya koordinator yang dapat melakukan ubah data.");
+        }
 
         $this->template("pelaksanaan_harian/update_kegiatan/edit_update_kegiatan_v", "Detail Update Kegiatan", $data);
     }

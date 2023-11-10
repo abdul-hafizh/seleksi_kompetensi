@@ -2,7 +2,7 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <div class="row">
-    <div class="col-lg-8 col-12">
+    <div class="col-lg-9 col-12">
         <div class="card">
             <div class="card-header border-bottom pb-2">
                 <h4 class="card-title">Form Update Kegiatan</h4>
@@ -12,7 +12,7 @@
                     <form class="form-bordered" method="post" action="<?php echo site_url('pelaksanaan_harian/update_kegiatan/submit'); ?>" enctype="multipart/form-data">
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Titik Lokasi</label>
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <select class="select-single" name="jadwal_kegiatan_id" id="jadwal_kegiatan_id" required>
                                     <option value="" disabled selected>Titik Lokasi</option>
                                     <?php foreach ($get_jadwal_kegiatan as $v) { ?>
@@ -31,76 +31,63 @@
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Registrasi</label>
-                            <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="foto_registrasi" placeholder="Foto Registrasi">
+                            <div class="col-md-6">
+                                <input type="file" multiple accept="image/*" class="form-control col-lg-7" name="foto_registrasi" placeholder="Foto Registrasi">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Pengarahan</label>
-                            <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="foto_pengarahan" placeholder="Foto Pengarahan">
+                            <div class="col-md-6">
+                                <input type="file" multiple accept="image/*" class="form-control col-lg-7" name="foto_pengarahan" placeholder="Foto Pengarahan">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Kegiatan Lain</label>
-                            <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="foto_kegiatan_lain" placeholder="Foto Kegiatan Lain">
+                            <div class="col-md-6">
+                                <input type="file" multiple accept="image/*" class="form-control col-lg-7" name="foto_kegiatan_lain" placeholder="Foto Kegiatan Lain">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Video Kegiatan</label>
-                            <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="video_kegiatan" placeholder="Video Kegiatan">
+                            <div class="col-md-6">
+                                <input type="file" multiple accept="video/*" class="form-control col-lg-7" name="video_kegiatan" placeholder="Video Kegiatan">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Jumlah Peserta :</label>
-                            <div class="col-md-9">
-                                &nbsp;
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-1</label>
+                            <label class="col-md-1 label-control" style="text-align: right; padding-top: 8px;">Sesi-1</label>
                             <div class="col-md-2">
                                 <input type="number" class="form-control col-lg-7" name="sesi_1" placeholder="" required>
                             </div>
-                        </div>
-
-                        <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-2</label>
-                            <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_2" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-3</label>
-                            <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_3" placeholder="">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-4</label>
+                            <label class="col-md-1 label-control" style="text-align: right; padding-top: 8px;">Sesi-4</label>
                             <div class="col-md-2">
                                 <input type="number" class="form-control col-lg-7" name="sesi_4" placeholder="">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-5</label>
+                            <div class="col-md-3"></div>
+                            <label class="col-md-1 label-control" style="text-align: right; padding-top: 8px;">Sesi-2</label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control col-lg-7" name="sesi_2" placeholder="">
+                            </div>
+                            <label class="col-md-1 label-control" style="text-align: right; padding-top: 8px;">Sesi-5</label>
                             <div class="col-md-2">
                                 <input type="number" class="form-control col-lg-7" name="sesi_5" placeholder="">
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-6</label>
+                            <div class="col-md-3"></div>
+                            <label class="col-md-1 label-control" style="text-align: right; padding-top: 8px;">Sesi-3</label>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control col-lg-7" name="sesi_3" placeholder="">
+                            </div>
+                            <label class="col-md-1 label-control" style="text-align: right; padding-top: 8px;">Sesi-6</label>
                             <div class="col-md-2">
                                 <input type="number" class="form-control col-lg-7" name="sesi_6" placeholder="">
                             </div>

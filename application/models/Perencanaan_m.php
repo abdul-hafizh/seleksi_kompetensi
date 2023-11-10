@@ -11,14 +11,19 @@ class Perencanaan_m extends CI_Model
 		$this->load->helper('security');
 	}
 
-	public function getPerencanaan($id = '')
+	public function getPerencanaan($id = '', $lokasi = '')
 	{
-
-		$this->db->select('perencanaan.*, ref_locations.*, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi');
+		$this->db->select('perencanaan.*, ref_locations.*, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, lokasi_skd.alamat');
 
 		if (!empty($id)) {
 
 			$this->db->where('perencanaan.id', $id);
+		}
+
+		if(!empty($lokasi)){
+
+			$this->db->where('lokasi_skd.id', $lokasi);
+
 		}
 
 		$this->db->join('lokasi_skd', 'lokasi_skd.id = perencanaan.kode_lokasi_skd', 'left');

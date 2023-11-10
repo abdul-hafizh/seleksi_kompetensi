@@ -23,9 +23,11 @@
                 <div class="float-start">
                     <h5 class="card-title mb-0">Data Penerimaan Barang</h5>
                 </div>
+                <?php if($cek_data < 1 && $job_title == 'KOORDINATOR') { ?>
                 <div class="float-end">
                     <a href="<?php echo site_url('penerimaan_barang/add');?>" class="btn btn-primary btn-sm"><i class="ri-add-line align-middle me-1"></i> Tambah Penerimaan Barang</a>
                 </div>
+                <?php } ?>
             </div>
             <div class="card-content">
                 <div class="card-body">
@@ -38,7 +40,7 @@
                                 <th>Nama Kabupaten</th>
                                 <th>Nama Lokasi</th>
                                 <th>Tanggal Terima</th>
-                                <th>Catatan</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -84,7 +86,7 @@
                 { data: 'regency_name' }, 
                 { data: 'nama_lokasi' }, 
                 { data: 'tgl_terima' },
-                { data: 'catatan' },
+                { data: 'status' },
                 { data: 'action' },
             ]            
         });

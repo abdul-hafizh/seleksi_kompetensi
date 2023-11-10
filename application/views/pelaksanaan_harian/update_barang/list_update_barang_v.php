@@ -30,12 +30,15 @@ $this->session->unset_userdata('message'); ?>
             </div>
             <div class="card-content">
                 <div class="card-body">
-                    <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                    <table id="data-form" class="table table-bordered dt-responsive table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Kode Perencanaan</th>
+                                <th>Kode Penerimaan</th>
+                                <th>Nama Provinsi</th>
+                                <th>Nama Kabupaten</th>
+                                <th>Nama Lokasi</th>
+                                <th>Tanggal Terima</th>
                                 <th>Tanggal Update</th>
-                                <th>Catatan</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -74,18 +77,14 @@ $this->session->unset_userdata('message'); ?>
                 },
             },
             scrollX: !0,
-            'columns': [{
-                    data: 'kode_perencanaan'
-                },
-                {
-                    data: 'tgl_update_harian'
-                },
-                {
-                    data: 'catatan'
-                },
-                {
-                    data: 'action'
-                },
+            'columns': [
+                { data: 'kode_penerimaan' }, 
+                { data: 'province_name' }, 
+                { data: 'regency_name' }, 
+                { data: 'nama_lokasi' }, 
+                { data: 'tgl_terima' },
+                { data: 'tgl_update' },
+                { data: 'action' },
             ]
         });
     })

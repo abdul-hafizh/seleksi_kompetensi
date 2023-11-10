@@ -63,12 +63,84 @@ class BA_harian extends Telescoope_Controller
             $data = array();
             $data['update_barang'] = $update_barang;
             $data['update_barang_detail'] = $update_barang_detail;
+            $data['month_list'] = [
+                0 => '',
+                1 => 'Januari',
+                2 => 'Februari',
+                3 => 'Maret',
+                4 => 'April',
+                5 => 'Mei',
+                6 => 'Juni',
+                7 => 'Juli',
+                8 => 'Agustus',
+                9 => 'September',
+                10 => 'Oktober',
+                11 => 'November',
+                12 => 'Desember',
+            ];
+            $data['day_list'] = [
+                'Sun' => 'Minggu',
+                'Mon' => 'Senin',
+                'Tue' => 'Selasa',
+                'Wed' => 'Rabu',
+                'Thu' => 'Kamis',
+                'Fri' => 'Jumat',
+                'Sat' => 'Sabtu',
+            ];
 
             $this->load->library('pdf');
             $this->pdf->setPaper('A4', 'potrait');
             $this->pdf->filename = "laporan_berita_acara_harian.pdf";
             $this->pdf->set_option('isRemoteEnabled', true);
             $this->pdf->load_view('pelaporan/ba_harian/export_pdf', $data);
+        } else {
+            $this->setMessage("Data tidak ditemukan.");
+            redirect(site_url('pelaporan/ba_harian'));
+        }
+    }
+
+    public function download()
+    {
+        $post = $this->input->get();
+        $perencanaan_id = $post['perencanaan_id'];
+        $tgl_update = $post['tgl_update'];
+
+        $update_barang = $this->Update_barang_m->get_UpdateBarangExist($perencanaan_id, $tgl_update)->row_array();
+        if (isset($update_barang)) {
+            $update_barang_detail = $this->Update_barang_m->get_UpdateBarangDetail($update_barang['id'])->result_array();
+            $data = array();
+            $data['update_barang'] = $update_barang;
+            $data['update_barang_detail'] = $update_barang_detail;
+            $data['month_list'] = [
+                0 => '',
+                1 => 'Januari',
+                2 => 'Februari',
+                3 => 'Maret',
+                4 => 'April',
+                5 => 'Mei',
+                6 => 'Juni',
+                7 => 'Juli',
+                8 => 'Agustus',
+                9 => 'September',
+                10 => 'Oktober',
+                11 => 'November',
+                12 => 'Desember',
+            ];
+            $data['day_list'] = [
+                'Sun' => 'Minggu',
+                'Mon' => 'Senin',
+                'Tue' => 'Selasa',
+                'Wed' => 'Rabu',
+                'Thu' => 'Kamis',
+                'Fri' => 'Jumat',
+                'Sat' => 'Sabtu',
+            ];
+
+            $this->load->library('pdf');
+            $this->pdf->setPaper('A4', 'potrait');
+            $this->pdf->filename = "laporan_berita_acara_harian.pdf";
+            $this->pdf->set_option('isRemoteEnabled', true);
+            $this->pdf->load_view('pelaporan/ba_harian/export_pdf', $data, true);
         } else {
             $this->setMessage("Data tidak ditemukan.");
             redirect(site_url('pelaporan/ba_harian'));

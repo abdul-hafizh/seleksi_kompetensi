@@ -62,7 +62,7 @@
                         <div class="col-lg-9">
                             <textarea class="form-control" name="alamat" rows="3" placeholder="Alamat" required></textarea>
                         </div>
-                    </div>                 
+                    </div>
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
@@ -71,7 +71,7 @@
                         <div class="col-lg-9">
                             <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"></textarea>
                         </div>
-                    </div>                    
+                    </div>   
                 </div>
             </div>
         </div>
@@ -80,7 +80,7 @@
     <div class="row mt-2">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-body">                    
+                <div class="card-body">   
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah Anda yakin?');">Konfirmasi</button>
                     </div>

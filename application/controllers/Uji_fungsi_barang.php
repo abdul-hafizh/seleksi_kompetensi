@@ -33,7 +33,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $config['allowed_types'] = 'jpg|jpeg|png|gif';
         $config['overwrite'] = false;
-        $config['max_size'] = 3064;
+        $config['max_size'] = 5120;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -41,11 +41,14 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $sess = $this->session->userdata(do_hash(SESSION_PREFIX));
 
-        $position1 = $this->Administration_m->getPosition("ADMINISTRATOR");
-        $position2 = $this->Administration_m->getPosition("PUSAT");
-        $position3 = $this->Administration_m->getPosition("KOORDINATOR");
+        $cek_menu = $this->db->select('ajm.*')
+        ->from('adm_jobtitle_menu ajm')
+        ->join('adm_menu am', 'ajm.menu_id = am.menuid', 'left')
+        ->where(['jobtitle' => $this->data['userdata']['job_title'], 'url_path' => $this->data['dir']])
+        ->get()
+        ->num_rows();
 
-        if(!$position1 && !$position2 && !$position3){
+        if($cek_menu < 1){
             $this->noAccess("Anda tidak memiliki hak akses untuk halaman ini.");
         }
 
@@ -56,6 +59,8 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
     public function index(){
         $data = array();
+
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         $this->template("uji_fungsi_barang/list_uji_fungsi_barang_v", "Data Uji Fungsi Barang", $data);
     }
@@ -120,7 +125,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
                 "regency_name" => $v['regency_name'],
                 "nama_lokasi" => $v['kode_lokasi'] . ' | ' . $v['nama_lokasi'],
                 "tgl_terima" => $v['tgl_terima'],
-                "tgl_uji" => $v['created_at'],
+                "tgl_uji" => $v['jadwal_kegiatan'],
                 "action" => $action
             );
         }
@@ -144,7 +149,9 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();        
 
         if($position) {
-            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
+            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->row_array();
+        } else {
+            $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
         }
         
         $this->template("uji_fungsi_barang/add_uji_fungsi_barang_v", "Tambah Uji Fungsi Barang", $data);
@@ -172,7 +179,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $position = $this->Administration_m->getPosition("KOORDINATOR");
 
         $data['get_uji'] = $this->Uji_fungsi_barang_m->getUji($id)->row_array();
-        $data['get_detail'] = $this->Uji_fungsi_barang_m->getDetail($id)->result_array();
+        $data['get_detail'] = $this->Uji_fungsi_barang_m->getDetail($id, 'Non-IT')->result_array();
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
 
         if($position) {
@@ -192,6 +199,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
     public function submit_data(){
 
+        $simpan = false;
         $post = $this->input->post(); 
         $catatan = $this->input->post('catatan');
         $status_baik = $this->input->post('status_baik');
@@ -205,21 +213,33 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $this->db->trans_begin();
 
-        $cek_integrasi = $this->db->select('id')->from('uji_penerimaan_barang')->where('penerimaan_id', $post['penerimaan_id'])->get()->num_rows();
+        $cek_data = $this->db->select('*')->from('jadwal_kegiatan')->where('lokasi_skd_id', $post['lokasi_skd_id'])->get()->row_array();
 
-        if ($cek_integrasi > 0) {
-            $this->setMessage("Data uji fungsi barang sudah pernah diinput.");
-            redirect(site_url('uji_fungsi_barang'));
-        }
+        if ($post['jadwal_kegiatan'] >= $cek_data['tgl_mulai'] && $post['jadwal_kegiatan'] <= $cek_data['tgl_selesai']) {
 
-        $data = array(
-            "penerimaan_id" => $post['penerimaan_id'],
-            'catatan_uji' => $post['catatan_uji'],
-            'created_by' => $this->data['userdata']['employee_id'],
-            'created_at' => date('Y-m-d H:i:s'),
-        );
+            $cek_num = $this->db->select('id')->from('uji_penerimaan_barang')->where('jadwal_kegiatan', $post['jadwal_kegiatan'])->where('penerimaan_id', $post['penerimaan_id'])->get()->num_rows();
 
-        $simpan = $this->db->insert('uji_penerimaan_barang', $data);
+            if($cek_num < 1) {                
+                $data = array(
+                    "penerimaan_id" => $post['penerimaan_id'],
+                    'jadwal_kegiatan' => $post['jadwal_kegiatan'],
+                    'catatan_uji' => $post['catatan_uji'],
+                    'created_by' => $this->data['userdata']['employee_id'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                );
+        
+                $simpan = $this->db->insert('uji_penerimaan_barang', $data);
+            } else {
+                $this->setMessage("Tanggal kegiatan sudah ada.");
+                $this->db->trans_rollback();
+                redirect(site_url('uji_fungsi_barang/add'));    
+            }
+
+        } else {
+            $this->setMessage("Tanggal kegiatan harus sesuai Jadwal.");
+            $this->db->trans_rollback();
+            redirect(site_url('uji_fungsi_barang/add'));
+        }        
         
         if($simpan){        
             
@@ -291,6 +311,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         if ($cek_integrasi > 0) {
             $this->setMessage("Data foto sudah pernah diinput.");
+            $this->db->trans_rollback();
             redirect(site_url('uji_fungsi_barang/upload_foto/' . $post['uji_penerimaan_id']));
         }
 

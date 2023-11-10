@@ -14,7 +14,7 @@ class Penerimaan_barang_m extends CI_Model
 	public function getPenerimaan_barang($id = '', $lokasi = '')
 	{
 
-		$this->db->select('penerimaan_barang.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, pb.kode_pengiriman');
+		$this->db->select('penerimaan_barang.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.id as lokasi_skd_detail, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, lokasi_skd.alamat, pb.kode_pengiriman, pr.id as pr_id');
 
 		if (!empty($id)) {
 
@@ -95,10 +95,14 @@ class Penerimaan_barang_m extends CI_Model
 
 	public function get_InstalasiBarangExist($penerimaan_id, $tgl_terima)
 	{
-		$this->db->select('pb.*');
+		$this->db->select('pb.*, skd.nama_lokasi, skd.alamat, ref.province_name');
 		$this->db->where('pb.id', $penerimaan_id);
 		$this->db->where('pb.tgl_terima', $tgl_terima);
 		$this->db->from('penerimaan_barang pb');
+		$this->db->join('pengiriman_barang pbr', 'pbr.id = pb.pengiriman_id', 'left');
+		$this->db->join('perencanaan p', 'p.id = pbr.perencanaan_id', 'left');
+		$this->db->join('lokasi_skd skd', 'skd.id = p.kode_lokasi_skd', 'left');
+		$this->db->join('ref_locations ref', 'ref.location_id = skd.lokasi_id', 'left');
 		return $this->db->get();
 	}
 

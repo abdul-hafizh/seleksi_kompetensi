@@ -33,7 +33,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $config['allowed_types'] = '*';
         $config['overwrite'] = false;
-        $config['max_size'] = 3064;
+        $config['max_size'] = 5120;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -41,11 +41,14 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $sess = $this->session->userdata(do_hash(SESSION_PREFIX));
 
-        $position1 = $this->Administration_m->getPosition("ADMINISTRATOR");
-        $position2 = $this->Administration_m->getPosition("PUSAT");
-        $position3 = $this->Administration_m->getPosition("KOORDINATOR");
+        $cek_menu = $this->db->select('ajm.*')
+        ->from('adm_jobtitle_menu ajm')
+        ->join('adm_menu am', 'ajm.menu_id = am.menuid', 'left')
+        ->where(['jobtitle' => $this->data['userdata']['job_title'], 'url_path' => $this->data['dir']])
+        ->get()
+        ->num_rows();
 
-        if(!$position1 && !$position2 && !$position3){
+        if($cek_menu < 1){
             $this->noAccess("Anda tidak memiliki hak akses untuk halaman ini.");
         }
 
@@ -56,6 +59,16 @@ class Penerimaan_barang extends Telescoope_Controller
 
     public function index(){
         $data = array();
+
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $cek_integrasi = $this->db->select('id')->from('penerimaan_barang')->where('created_by', $this->data['userdata']['employee_id'])->get()->num_rows();
+
+        $data['cek_data'] = 0;    
+        $data['job_title'] = $this->data['userdata']['job_title'];
+        
+        if($position) {
+            $data['cek_data'] = $cek_integrasi;
+        }
 
         $this->template("penerimaan_barang/list_penerimaan_barang_v", "Data Penerimaan Barang", $data);
     }
@@ -109,6 +122,12 @@ class Penerimaan_barang extends Telescoope_Controller
         foreach($result as $v) {   
 
             $cek_integrasi = $this->db->select('id')->from('uji_penerimaan_barang')->where('penerimaan_id', $v['id'])->get()->num_rows();
+
+            $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approved</span>';
+
+            if($position) {
+                $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
+            }
             
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
@@ -116,7 +135,7 @@ class Penerimaan_barang extends Telescoope_Controller
                         <a href="' .  site_url('penerimaan_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
 
-            if($cek_integrasi > 0) {
+            if($v['status'] == 'Approved') {
                 $action = '<div class="btn-group" role="group">
                     <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                 </div>';
@@ -129,7 +148,7 @@ class Penerimaan_barang extends Telescoope_Controller
                 "regency_name" => $v['regency_name'],
                 "nama_lokasi" => $v['kode_lokasi'] . ' | ' . $v['nama_lokasi'],
                 "tgl_terima" => $v['tgl_terima'],
-                "catatan" => $v['catatan'],
+                "status" => $status,
                 "action" => $action
             );
         }
@@ -154,6 +173,8 @@ class Penerimaan_barang extends Telescoope_Controller
 
         if($position) {
             $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
+        } else {
+            $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
         }
         
         $this->template("penerimaan_barang/add_penerimaan_barang_v", "Tambah Penerimaan Barang", $data);
@@ -164,6 +185,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
 
+        $data['get_role'] = $position;
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
         $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
 
@@ -188,7 +210,6 @@ class Penerimaan_barang extends Telescoope_Controller
         $post = $this->input->post(); 
         $jumlah_terima = $this->input->post('jumlah_terima');
         $jumlah_rusak = $this->input->post('jumlah_rusak');
-        $jumlah_terpasang = $this->input->post('jumlah_terpasang');
         $barang_id = $this->input->post('barang_id');
 
         if (count($post) == 0) {
@@ -208,6 +229,7 @@ class Penerimaan_barang extends Telescoope_Controller
         $data = array(
             "pengiriman_id" => $post['pengiriman_id'],
             "tgl_terima" => $post['tgl_terima'],
+            'status' => 'Pending',
             'catatan' => $post['catatan'],
             'created_by' => $this->data['userdata']['employee_id'],
             'created_at' => date('Y-m-d H:i:s'),
@@ -226,10 +248,13 @@ class Penerimaan_barang extends Telescoope_Controller
 
             $dir = './uploads/' . $this->data['dir'];
 
-            if (!empty($_FILES['foto_barang']['name'])) {
+            if (!empty($jumlah_terima)) {
                 $data_insert = array();
             
-                foreach ($_FILES['foto_barang']['name'] as $key => $file_name) {
+                foreach ($jumlah_terima as $key => $v) {
+                    
+                    $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
+
                     $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_terima_' . date('His') . '_' . $file_name;
                     $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
                     $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
@@ -237,15 +262,21 @@ class Penerimaan_barang extends Telescoope_Controller
                     $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
             
                     if ($this->upload->do_upload('file')) {
-                        $uploadKtp = $this->upload->data();
+                        $uploadBarang = $this->upload->data();
                         $data_insert[] = array(
                             'jumlah_terima' => $jumlah_terima[$key],
                             'jumlah_rusak' => $jumlah_rusak[$key],
-                            'jumlah_terpasang' => $jumlah_terpasang[$key],
                             'barang_id' => $barang_id[$key],
-                            'file_path' => $uploadKtp['file_name'],
+                            'file_path' => isset($uploadBarang['file_name']) ? $uploadBarang['file_name'] : '',
                         );
-                    }
+                    } else {
+                        $data_insert[] = array(
+                            'jumlah_terima' => $jumlah_terima[$key],
+                            'jumlah_rusak' => $jumlah_rusak[$key],
+                            'barang_id' => $barang_id[$key],
+                            'file_path' => '',
+                        );
+                    } 
                 }     
                 
                 foreach ($data_insert as $insert_data) {
@@ -254,7 +285,7 @@ class Penerimaan_barang extends Telescoope_Controller
                         "barang_id" => $insert_data['barang_id'],
                         "jumlah_terima" => $insert_data['jumlah_terima'],
                         "jumlah_rusak" => $insert_data['jumlah_rusak'],
-                        "jumlah_terpasang" => $insert_data['jumlah_terpasang'],
+                        "jumlah_terpasang" => $insert_data['jumlah_terima'],
                         'foto_barang' => $insert_data['file_path'],
                         'created_by' => $this->data['userdata']['employee_id'],
                         'created_at' => date('Y-m-d H:i:s'),
@@ -288,16 +319,12 @@ class Penerimaan_barang extends Telescoope_Controller
         $detail_id = $this->input->post('detail_id');
         $foto_exist = $this->input->post('foto_exist');
 
-        if (count($post) == 0) {
-            $this->setMessage("Isi data dengan Benar.");
-            redirect(site_url('penerimaan_barang/add'));
-        }
-
         $this->db->trans_begin();
 
         $update_data = array(
             "pengiriman_id" => $post['pengiriman_id'],
             "tgl_terima" => $post['tgl_terima'],
+            "status" => $post['status'],
             'catatan' => $post['catatan'],
             'updated_by' => $this->data['userdata']['employee_id'],
             'updated_at' => date('Y-m-d H:i:s'),
@@ -325,14 +352,14 @@ class Penerimaan_barang extends Telescoope_Controller
                         $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
             
                         if ($this->upload->do_upload('file')) {
-                            $uploadKtp = $this->upload->data();
+                            $uploadBarang = $this->upload->data();
                             $data_insert[] = array(
                                 'jumlah_terima' => $jumlah_terima[$key],
                                 'jumlah_rusak' => $jumlah_rusak[$key],
                                 'jumlah_terpasang' => $jumlah_terpasang[$key],
                                 'barang_id' => $barang_id[$key],
                                 'detail_id' => $detail_id[$key],
-                                'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
+                                'file_path' => isset($uploadBarang['file_name']) ? $uploadBarang['file_name'] : '',
                             );
                         }
                     } else {

@@ -12,13 +12,13 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group row mb-2">
-                        <label class="col-md-2 label-control">Kode Perencanaan</label>
+                        <label class="col-md-2 label-control">Titik Lokasi</label>
                         <div class="col-md-8">
-                            <select class="select-single" name="perencanaan_id" id="perencanaan_id" required>
-                                <option value="">Pilih Perencanaan</option>
-                                <?php if (isset($get_perencanaan)) : ?>
-                                    <?php foreach ($get_perencanaan as $k => $v) : ?>
-                                        <option value="<?= $v['id']; ?>"><?= $v['kode_perencanaan']; ?></option>
+                            <select class="select-single" name="penerimaan_id" id="penerimaan_id" required>
+                                <option value="">Pilih Lokasi</option>
+                                <?php if (isset($get_penerimaan)) : ?>
+                                    <?php foreach ($get_penerimaan as $k => $v) : ?>
+                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_penerimaan'] . ' - ' . $v['nama_lokasi'] . ' (' . $v['alamat'] . ', ' . $v['province_name'] . ', ' . $v['regency_name'] . ')'; ?></option>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>
@@ -59,13 +59,14 @@
                                     <th>No</th>
                                     <th>Kode Barang</th>
                                     <th>Nama Barang</th>
-                                    <th>Jumlah</th>
                                     <th>Satuan</th>
+                                    <th>Jumlah Terima</th>
                                     <th>Status Ada</th>
                                     <th>Status Tidak Ada</th>
                                     <th>Kondisi Baik</th>
                                     <th>Kondisi Tidak Baik</th>
-                                    <th>Foto Terima </th>
+                                    <th>Foto Update </th>
+                                    <th>Preview </th>
                                     <th style="display:none">Barang ID </th>
                                 </tr>
                             </thead>
@@ -108,13 +109,13 @@
             }
         });
 
-        $("#perencanaan_id").on("change", function() {
-            let perencanaan_id = $("#perencanaan_id").val();
+        $("#penerimaan_id").on("change", function() {
+            let penerimaan_id = $("#penerimaan_id").val();
             var url_file = '<?php echo base_url('uploads/perencanaan/'); ?>';
             $.ajax({
-                url: "<?php echo site_url('pelaksanaan_harian/update_barang/get_perencanaan'); ?>",
+                url: "<?php echo site_url('pelaksanaan_harian/update_barang/get_penerimaan'); ?>",
                 data: {
-                    perencanaan_id: perencanaan_id
+                    penerimaan_id: penerimaan_id
                 },
                 method: "POST",
                 dataType: "json",
@@ -127,14 +128,15 @@
                         rows += '<td>' + (i + 1) + '</td>';
                         rows += '<td>' + item.kode_barang_id + '</td>';
                         rows += '<td>' + item.nama_barang + '</td>';
-                        rows += '<td>' + item.jumlah + '</td>';
                         rows += '<td>' + item.satuan + '</td>';
-                        rows += '<td><input id="status_ada#' + item.barang_id + '" name="status_ada#' + item.barang_id + '" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
-                        rows += '<td><input id="status_tidak_ada#' + item.barang_id + '" name="status_tidak_ada#' + item.barang_id + '" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
-                        rows += '<td><input id="kondisi_baik#' + item.barang_id + '" name="kondisi_baik#' + item.barang_id + '" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
-                        rows += '<td><input id="kondisi_tidak_baik#' + item.barang_id + '" name="kondisi_tidak_baik#' + item.barang_id + '" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
-                        rows += '<td><input id="foto_barang#' + item.barang_id + '" name="foto_barang#' + item.barang_id + '" type="file" class="form-control" required></td>';
-                        rows += '<td style="display:none"><input id="jumlah_barang#' + item.barang_id + '" name="jumlah_barang#' + item.barang_id + '" type="number" value="' + item.jumlah + '"><input id="barang_id#' + item.barang_id + '" name="barang_id#' + item.barang_id + '" type="number" value="' + item.barang_id + '"></td>';
+                        rows += '<td>' + item.jumlah_terima + '</td>';
+                        rows += '<td><input id="status_ada[]" name="status_ada[]" type="number" min="0" value="' + item.jumlah_terima + '" class="form-control" placeholder="Jumlah" required></td>';
+                        rows += '<td><input id="status_tidak_ada[]" name="status_tidak_ada[]" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
+                        rows += '<td><input id="kondisi_baik[]" name="kondisi_baik[]" type="number" min="0" value="' + item.jumlah_terima + '" class="form-control" placeholder="Jumlah" required></td>';
+                        rows += '<td><input id="kondisi_tidak_baik[]" name="kondisi_tidak_baik[]" type="number" min="0" value="0" class="form-control" placeholder="Jumlah" required></td>';
+                        rows += '<td><input id="foto_barang[]" name="foto_barang[]" type="file" class="form-control" data-row="' + i + '" required></td>';
+                        rows += '<td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 50px; max-height: 50px;"></td>';
+                        rows += '<td style="display:none"><input id="jumlah_barang[]" name="jumlah_barang[]" type="number" value="' + item.jumlah_terima + '"><input id="barang_id[]" name="barang_id[]" type="number" value="' + item.barang_id + '"></td>';
                         rows += '</tr>';
                     });
 
@@ -145,6 +147,24 @@
                     alert('Gagal ambil data barang.');
                 },
             });
+        });
+
+        $("#show-barang").on("change", 'input[name="foto_barang[]"]', function () {
+            var fileInput = $(this);
+            var rowIndex = fileInput.data("row");
+            var imagePreview = fileInput.closest('tr').find('.image-preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.attr('src', '');
+            }
         });
 
     })

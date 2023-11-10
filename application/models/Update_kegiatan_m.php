@@ -39,7 +39,7 @@ class Update_kegiatan_m extends CI_Model
 		$this->db->join('lokasi_skd as lok', 'jk.lokasi_skd_id = lok.id', 'inner');
 
 		if (!empty($lokasi)) {
-			$this->db->where('lok.lokasi_id', $lokasi);
+			$this->db->where('lok.id', $lokasi);
 		}
 
 		return $this->db->get();

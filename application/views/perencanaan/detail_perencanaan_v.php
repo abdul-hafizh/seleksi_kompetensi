@@ -58,12 +58,12 @@
             </div>
             <div class="card-body">
                 <div class="row mb-3 p-3">
-                    <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                    <table id="data-form" class="table table-bordered dt-responsive table-striped align-middle" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Kode Barang</th>
-                                <th>Nama Barang</th>
+                                <th style="width:400px">Nama Barang</th>
                                 <th>Jenis Alat</th>
                                 <th>Satuan</th>
                                 <th>Jumlah</th>

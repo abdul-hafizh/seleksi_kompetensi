@@ -68,12 +68,12 @@
                 </div>
                 <div class="card-body">
                     <div class="row mb-3 p-3">
-                        <table id="data-form" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                        <table id="data-form" class="table table-bordered dt-responsive table-striped align-middle" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Kode Barang</th>
-                                    <th>Nama Barang</th>
+                                    <th style="width:400px">Nama Barang</th>
                                     <th>Jenis Alat</th>
                                     <th>Satuan</th>
                                     <th>Jumlah Rencana</th>
@@ -96,8 +96,8 @@
                                     <td><?php echo $jumlah_rencana; ?></td>
                                     <td><?php echo $jumlah_terkirim; ?></td>
                                     <td><input id="jumlah_kirim" name="jumlah_kirim[]" type="number" min="0" class="form-control" placeholder="Jumlah Kirim" value="<?php echo $v['jumlah_kirim'];?>" required></td>
-                                    <td><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
-                                    <td><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
+                                    <td style="display:none"><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
+                                    <td style="display:none"><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>                            

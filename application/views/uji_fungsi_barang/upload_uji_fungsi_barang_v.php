@@ -21,6 +21,13 @@
                 </div>
 
                 <div class="form-group row mb-2">
+                    <label class="col-md-2 label-control">Tanggal Kegiatan</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" value="<?php echo $get_uji['jadwal_kegiatan']; ?>" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2">
                     <label class="col-md-2 label-control">Penerimaan</label>
                     <div class="col-md-8">
                         <select class="select-single" name="penerimaan_id" id="penerimaan_id" disabled>
@@ -85,14 +92,18 @@
                                     <td><?php echo $v['catatan'];?></td>
                                     <td>
                                         <div class="avatar-group">
-                                            <a href="<?php echo base_url('uploads/penerimaan_barang/' . $v['foto_barang']); ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/penerimaan_barang/' . $v['foto_barang']); ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
-                                                <img src="<?php echo base_url('uploads/penerimaan_barang/' . $v['foto_barang']); ?>" alt="" class="rounded-circle avatar-xxs">
+                                            <?php
+                                                $foto_barang = $v['foto_barang'];
+                                                $image_url = base_url('uploads/penerimaan_barang/' . $foto_barang);
+                                                if (empty($foto_barang)) { $image_url = base_url('assets/images/noimage.jpeg'); }
+                                            ?>
+                                            <a href="<?php echo $image_url; ?>" target="_blank" class="avatar-group-item" data-img="<?php echo $image_url; ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
+                                                <img src="<?php echo $image_url; ?>" alt="" class="rounded-circle avatar-xxs">
                                             </a>
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <?php $cek_exist = $this->db->select('id')->from('uji_detail_foto')->where('uji_detail_id', $v['id_detail'])->get()->num_rows(); ?>
-                                        <?php if($v['kelompok'] != 'Non-IT') { ?>
+                                        <?php $cek_exist = $this->db->select('id')->from('uji_detail_foto')->where('uji_detail_id', $v['id_detail'])->get()->num_rows(); ?>                                        
                                             <div class="btn-group">
                                             <?php if($cek_exist > 0) { ?>
                                                 <a href="<?php echo site_url('uji_fungsi_barang/detail_foto/' . $v['id_detail']); ?>" class="btn btn-sm btn-info">Lihat Foto</a>
@@ -100,9 +111,6 @@
                                                 <a href="<?php echo site_url('uji_fungsi_barang/detail_foto/' . $v['id_detail']); ?>" class="btn btn-sm btn-success">Upload</a>
                                             <?php } ?>
                                         </div>
-                                        <?php } else { ?>
-                                            ---
-                                        <?php } ?>
                                     </td>
                                 </tr>
                             <?php } ?>

@@ -59,12 +59,38 @@ class Instalasi_barang extends Telescoope_Controller
         $file = './assets/laporan_penerimaan_barang.pdf';
         force_download($file, NULL);
 
-        // $instalasi_barang = $this->Penerimaan_barang_m->get_InstalasiBarangExist($penerimaan_id, $tgl_terima)->row_array();
-        // if (isset($instalasi_barang)) {
-        //     $instalasi_barang_detail = $this->Penerimaan_barang_m->get_InstalasiBarangDetail($instalasi_barang['id'])->result_array();
-        //     $data = array();
-        //     $data['instalasi_barang'] = $instalasi_barang;
-        //     $data['instalasi_barang_detail'] = $instalasi_barang_detail;
+        $instalasi_barang = $this->Penerimaan_barang_m->get_InstalasiBarangExist($penerimaan_id, $tgl_terima)->row_array();
+        if (isset($instalasi_barang)) {
+            $instalasi_barang_detail = $this->Penerimaan_barang_m->get_InstalasiBarangDetail($instalasi_barang['id'])->result_array();
+            $data = array();
+            $data['instalasi_barang'] = $instalasi_barang;
+            $data['instalasi_barang_detail'] = $instalasi_barang_detail;
+            $data['month_list'] = [
+                0 => '',
+                1 => 'Januari',
+                2 => 'Februari',
+                3 => 'Maret',
+                4 => 'April',
+                5 => 'Mei',
+                6 => 'Juni',
+                7 => 'Juli',
+                8 => 'Agustus',
+                9 => 'September',
+                10 => 'Oktober',
+                11 => 'November',
+                12 => 'Desember',
+            ];
+            $data['day_list'] = [
+                'Sun' => 'Minggu',
+                'Mon' => 'Senin',
+                'Tue' => 'Selasa',
+                'Wed' => 'Rabu',
+                'Thu' => 'Kamis',
+                'Fri' => 'Jumat',
+                'Sat' => 'Sabtu',
+            ];
+
+            // $this->template("pelaporan/instalasi_barang/export_pdf", "Data Update Kegiatan", $data);
 
         //     $this->load->library('pdf');
         //     $this->pdf->setPaper('A4', 'potrait');
@@ -75,5 +101,53 @@ class Instalasi_barang extends Telescoope_Controller
         //     $this->setMessage("Data instalasi barang tidak ditemukan.");
         //     redirect(site_url('pelaporan/instalasi_barang'));
         // }
+    }
+
+    public function download()
+    {
+        $post = $this->input->get();
+        $penerimaan_id = $post['penerimaan_id'];
+        $tgl_terima = $post['tgl_terima'];
+
+        $instalasi_barang = $this->Penerimaan_barang_m->get_InstalasiBarangExist($penerimaan_id, $tgl_terima)->row_array();
+        if (isset($instalasi_barang)) {
+            $instalasi_barang_detail = $this->Penerimaan_barang_m->get_InstalasiBarangDetail($instalasi_barang['id'])->result_array();
+            $data = array();
+            $data['instalasi_barang'] = $instalasi_barang;
+            $data['instalasi_barang_detail'] = $instalasi_barang_detail;
+            $data['month_list'] = [
+                0 => '',
+                1 => 'Januari',
+                2 => 'Februari',
+                3 => 'Maret',
+                4 => 'April',
+                5 => 'Mei',
+                6 => 'Juni',
+                7 => 'Juli',
+                8 => 'Agustus',
+                9 => 'September',
+                10 => 'Oktober',
+                11 => 'November',
+                12 => 'Desember',
+            ];
+            $data['day_list'] = [
+                'Sun' => 'Minggu',
+                'Mon' => 'Senin',
+                'Tue' => 'Selasa',
+                'Wed' => 'Rabu',
+                'Thu' => 'Kamis',
+                'Fri' => 'Jumat',
+                'Sat' => 'Sabtu',
+            ];
+
+            $this->load->library('pdf');
+            $this->pdf->setPaper('A4', 'potrait');
+            $this->pdf->filename = "laporan_instalasi_barang.pdf";
+            $this->pdf->set_option('isRemoteEnabled', true);
+            $this->pdf->load_view('pelaporan/instalasi_barang/export_pdf', $data, true);
+        } else {
+            $this->setMessage("Data instalasi barang tidak ditemukan.");
+            redirect(site_url('pelaporan/instalasi_barang'));
+        }
     }
 }

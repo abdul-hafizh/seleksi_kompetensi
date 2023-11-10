@@ -25,14 +25,18 @@
                 <div class="card-body">                    
                     
                     <div class="form-group row mb-2">
-                        <label class="col-md-2 label-control">Penerimaan</label>
+                        <label class="col-md-2 label-control">Titik Lokasi</label>
+                        <div class="col-md-8">                            
+                            <input type="text" class="form-control" name="nama_lokasi" value="<?php echo $get_penerimaan['nama_lokasi'] . ' (' . $get_penerimaan['alamat'] . ', ' . $get_penerimaan['province_name'] . ', ' . $get_penerimaan['regency_name'] . ')'; ?>" readonly>
+                            <input type="hidden" name="penerimaan_id" id="penerimaan_id" value="<?php echo $get_penerimaan['id']; ?>">
+                            <input type="hidden" name="lokasi_skd_id" id="lokasi_skd_id" value="<?php echo $get_penerimaan['lokasi_skd_detail']; ?>">
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label class="col-md-2 label-control">Tanggal Kegiatan</label>
                         <div class="col-md-8">
-                            <select class="select-single" name="penerimaan_id" id="penerimaan_id" required>
-                                <option value="">Pilih Pengiriman</option>
-                                <?php foreach($get_penerimaan as $v) { ?>
-                                    <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_penerimaan'] . ' | ' . $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
-                                <?php } ?>
-                            </select>
+                            <input type="date" class="form-control" id="jadwal_kegiatan" name="jadwal_kegiatan" required>
                         </div>
                     </div>
                     
@@ -109,7 +113,7 @@
             }
         });        
 
-        $("#penerimaan_id").on("change", function () {
+        $("#jadwal_kegiatan").on("change", function () {
             let penerimaan_id = $("#penerimaan_id").val();
             var url_file = '<?php echo base_url("uploads/perencanaan/"); ?>';
             $.ajax({
@@ -130,13 +134,18 @@
                         rows += '<td>' + item.jumlah_terima + '</td>';
                         rows += '<td>' + item.jumlah_rusak + '</td>';
                         rows += '<td>' + item.jumlah_terpasang + '</td>';
-                        rows += '<td><input id="status_baik" name="status_baik[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Baik" required></td>';
-                        rows += '<td><input id="status_tidak" name="status_tidak[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Tidak Baik" required></td>';                        
+                        rows += '<td><input id="status_baik" name="status_baik[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Baik" value="' + item.jumlah_terima + '" required></td>';
+                        rows += '<td><input id="status_tidak" name="status_tidak[]" type="number" min="0" class="form-control" placeholder="Jumlah Status Tidak Baik" value="0" required></td>';
                         rows += '<td><input id="catatan" name="catatan[]" type="text" class="form-control" placeholder="Catatan"></td>';
                         rows += '<td>';
                         rows += '<div class="avatar-group">';
-                        rows += '<a href="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" target="_blank" class="avatar-group-item" data-img="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">';
-                        rows += '<img src="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" alt="" class="rounded-circle avatar-xxs">';
+                        if (item.foto_barang) {
+                            rows += '<a href="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" target="_blank" class="avatar-group-item" data-img="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">';
+                            rows += '<img src="<?php echo base_url("uploads/penerimaan_barang/"); ?>' + item.foto_barang + '" alt="" class="rounded-circle avatar-xxs">';
+                        } else {
+                            rows += '<a href="<?php echo base_url('assets/images/noimage.jpeg')?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('assets/images/noimage.jpeg')?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">';
+                            rows += '<img src="<?php echo base_url('assets/images/noimage.jpeg')?>" alt="" class="rounded-circle avatar-xxs">';
+                        }
                         rows += '</a>';
                         rows += '</div>';
                         rows += '</td>';
