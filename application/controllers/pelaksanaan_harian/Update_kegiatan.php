@@ -156,8 +156,13 @@ class Update_kegiatan extends Telescoope_Controller
     public function add()
     {
         $data = array();
-        $lokasi = $this->data['userdata']['lokasi_user'];
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $lokasi = $this->data['userdata']['lokasi_skd_id'];
         $data['get_jadwal_kegiatan'] = $this->Update_kegiatan_m->getJadwalKegiatan($lokasi)->result_array();
+
+        if(!$position) {            
+            $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
+        }
 
         $this->template("pelaksanaan_harian/update_kegiatan/add_update_kegiatan_v", "Tambah Update Kegiatan", $data);
     }
@@ -173,9 +178,14 @@ class Update_kegiatan extends Telescoope_Controller
     public function update($id)
     {
         $data = array();
-        $lokasi = $this->data['userdata']['lokasi_user'];
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $lokasi = $this->data['userdata']['lokasi_skd_id'];
         $data['get_jadwal_kegiatan'] = $this->Update_kegiatan_m->getJadwalKegiatan($lokasi)->result_array();
         $data['selected'] = $this->Update_kegiatan_m->getUpdateKegiatan($id)->row_array();
+
+        if(!$position) {            
+            $this->noAccess("Hanya koordinator yang dapat melakukan ubah data.");
+        }
 
         $this->template("pelaksanaan_harian/update_kegiatan/edit_update_kegiatan_v", "Detail Update Kegiatan", $data);
     }
