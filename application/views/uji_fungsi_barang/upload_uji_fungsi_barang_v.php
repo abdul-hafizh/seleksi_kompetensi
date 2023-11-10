@@ -92,8 +92,13 @@
                                     <td><?php echo $v['catatan'];?></td>
                                     <td>
                                         <div class="avatar-group">
-                                            <a href="<?php echo base_url('uploads/penerimaan_barang/' . $v['foto_barang']); ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/penerimaan_barang/' . $v['foto_barang']); ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
-                                                <img src="<?php echo base_url('uploads/penerimaan_barang/' . $v['foto_barang']); ?>" alt="" class="rounded-circle avatar-xxs">
+                                            <?php
+                                                $foto_barang = $v['foto_barang'];
+                                                $image_url = base_url('uploads/penerimaan_barang/' . $foto_barang);
+                                                if (empty($foto_barang)) { $image_url = base_url('assets/images/noimage.jpeg'); }
+                                            ?>
+                                            <a href="<?php echo $image_url; ?>" target="_blank" class="avatar-group-item" data-img="<?php echo $image_url; ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
+                                                <img src="<?php echo $image_url; ?>" alt="" class="rounded-circle avatar-xxs">
                                             </a>
                                         </div>
                                     </td>
