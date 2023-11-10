@@ -170,8 +170,9 @@ class Update_barang extends Telescoope_Controller
         $status_tidak_ada = $this->input->post('status_tidak_ada');
         $kondisi_baik = $this->input->post('kondisi_baik');
         $kondisi_tidak_baik = $this->input->post('kondisi_tidak_baik');
-        $jumlah_barang = $this->input->post('jumlah_barang');
         $barang_id = $this->input->post('barang_id');
+        $detail_id = $this->input->post('detail_id');
+        $foto_exist = $this->input->post('foto_exist');
 
         $dir = './uploads/' . $this->data['dir'];
 
@@ -179,18 +180,11 @@ class Update_barang extends Telescoope_Controller
             $this->setMessage("Isi data dengan Benar.");
             redirect(site_url('pelaksanaan_harian/update_barang/edit/' . $id));
         }
-
-        $update_barang = $this->Update_barang_m->getUpdate_barang($id)->row_array();
-        $exist = $this->Update_barang_m->get_UpdateBarangExist($update_barang['perencanaan_id'], $post['tgl_update'], $id)->row_array();
-        
-        if (isset($exist)) {
-            $this->setMessage("Data perencanaan : " . $update_barang['kode_perencanaan'] . ' di tanggal :' . date('d-m-Y', strtotime($post['tgl_update'])) . ' sudah pernah di input.');
-            redirect(site_url('pelaksanaan_harian/update_barang/edit/' . $id));
-        }
         
         $this->db->trans_begin();
         
         $data = array(
+            "penerimaan_id" => $post['penerimaan_id'],
             "tgl_update_harian" => $post['tgl_update'],
             'catatan' => $post['catatan'],
             'updated_by' => $this->data['userdata']['employee_id'],
@@ -198,36 +192,60 @@ class Update_barang extends Telescoope_Controller
         );
 
         $this->db->where('id', $id);
-        $simpan = $this->db->update('update_harian_barang', $data);
+        $update = $this->db->update('update_harian_barang', $data);
 
-        if ($simpan) {
+        if ($update) {
 
             if (!empty($barang_id)) {
+
+                $data_insert = array();
             
                 foreach ($barang_id as $key => $v) {
 
                     $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
+                    
+                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . date('YmdHis') . '_' . $file_name;
+                    $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
+                    $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
+                    $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
+                    $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
 
-                    $detail_update = array(
-                        'jumlah_barang_status_ada' => $this->input->post('status_ada#' . $v['barang_id']),
-                        'jumlah_barang_status_tidak_ada' => $this->input->post('status_tidak_ada#' . $v['barang_id']),
-                        'jumlah_barang_kondisi_baik' => $this->input->post('kondisi_baik#' . $v['barang_id']),
-                        'jumlah_barang_kondisi_rusak' => $this->input->post('kondisi_tidak_baik#' . $v['barang_id']),
-                    );
+                    if ($this->upload->do_upload('file')) {
+                        $uploadBarang = $this->upload->data();
+                        $data_insert[] = array(                            
+                            'jumlah_barang_status_ada' => $status_ada[$key],
+                            'jumlah_barang_status_tidak_ada' => $status_tidak_ada[$key],
+                            'jumlah_barang_kondisi_baik' => $kondisi_baik[$key],
+                            'jumlah_barang_kondisi_rusak' => $kondisi_tidak_baik[$key],
+                            'barang_id' => $barang_id[$key],
+                            'detail_id' => $detail_id[$key],
+                            'file_path' => $uploadBarang['file_name'],
+                        );
+                    } else {
+                        $data_insert[] = array(
+                            'jumlah_barang_status_ada' => $status_ada[$key],
+                            'jumlah_barang_status_tidak_ada' => $status_tidak_ada[$key],
+                            'jumlah_barang_kondisi_baik' => $kondisi_baik[$key],
+                            'jumlah_barang_kondisi_rusak' => $kondisi_tidak_baik[$key],
+                            'barang_id' => $barang_id[$key],
+                            'detail_id' => $detail_id[$key],
+                            'file_path' => $foto_exist[$key]
+                        );
+                    }          
+                }
 
-                    if (!empty($_FILES['foto_barang#' . $v['barang_id']]['name'])) {
-                        $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . date('YmdHis') . '_' . $v['barang_id'];
-                        $_FILES['file']['type'] = $_FILES['foto_barang#' . $v['barang_id']]['type'];
-                        $_FILES['file']['tmp_name'] = $_FILES['foto_barang#' . $v['barang_id']]['tmp_name'];
-                        $_FILES['file']['error'] = $_FILES['foto_barang#' . $v['barang_id']]['error'];
-                        $_FILES['file']['size'] = $_FILES['foto_barang#' . $v['barang_id']]['size'];
-                        if ($this->upload->do_upload('file')) {
-                            $uploadKtp = $this->upload->data();
-                            $detail_update["foto_barang"] = $uploadKtp['file_name'];
-                        }
-                    }
+                foreach ($data_insert as $insert_data) {
+                    $detail_update = array(                        
+                        "jumlah_barang_status_ada" => $insert_data['jumlah_barang_status_ada'],
+                        "jumlah_barang_status_tidak_ada" => $insert_data['jumlah_barang_status_tidak_ada'],
+                        "jumlah_barang_kondisi_baik" => $insert_data['jumlah_barang_kondisi_baik'],
+                        "jumlah_barang_kondisi_rusak" => $insert_data['jumlah_barang_kondisi_rusak'],
+                        'foto_barang' => $insert_data['file_path'],
+                        'updated_by' => $this->data['userdata']['employee_id'],
+                        'updated_at' => date('Y-m-d H:i:s')
+                    );            
 
-                    $this->db->where('id', $v['id']);
+                    $this->db->where('id', $insert_data['detail_id']);
                     $simpan_details = $this->db->update('update_harian_barang_detail', $detail_update);
                 }
             }
@@ -334,7 +352,7 @@ class Update_barang extends Telescoope_Controller
                             'barang_id' => $barang_id[$key],
                             'file_path' => ''
                         );
-                    } 
+                    }
                 }
 
                 foreach ($data_insert as $insert_data) {
