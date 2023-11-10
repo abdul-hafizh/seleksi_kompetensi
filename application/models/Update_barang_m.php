@@ -13,23 +13,19 @@ class Update_barang_m extends CI_Model
 
 	public function getUpdate_barang($id = '')
 	{
-		$this->db->select('uhb.id, uhb.tgl_update_harian, uhb.catatan, uhb.perencanaan_id, pr.kode_perencanaan');
-		$this->db->join('perencanaan as pr', 'pr.id = uhb.perencanaan_id', 'left');
+		$this->db->select('uhb.id, uhb.tgl_update_harian, uhb.catatan, uhb.created_at, ref_locations.*, pb.kode_penerimaan, pb.tgl_terima, lokasi_skd.nama_lokasi, lokasi_skd.alamat');
+
+		$this->db->join('penerimaan_barang as pb', 'pb.id = uhb.penerimaan_id', 'left');
+		$this->db->join('pengiriman_barang as pb2', 'pb2.id = pb.pengiriman_id', 'left');
+		$this->db->join('perencanaan as pr', 'pr.id = pb2.perencanaan_id', 'left');
+		$this->db->join('lokasi_skd', 'lokasi_skd.id = pr.kode_lokasi_skd', 'left');
+		$this->db->join('ref_locations', 'ref_locations.location_id = lokasi_skd.lokasi_id', 'left');
+
 		if (!empty($id)) {
 			$this->db->where('uhb.id', $id);
 		}
+
 		return $this->db->get('update_harian_barang uhb');
-
-		// $this->db->select('update_barang.*, ref_locations.*, peb.id as penerimaan_id, peb.jumlah_terima, peb.tgl_terima, peb.rusak, peb.terpasang, pr.nama_barang as nama_barang_pr, pr.jenis_barang, pb.jumlah_kirim, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi');
-
-
-
-		// $this->db->join('penerimaan_barang as peb', 'peb.id = update_barang.penerimaan_id', 'left');
-		// $this->db->join('pengiriman_barang as pb', 'pb.id = peb.pengiriman_id', 'left');
-		// $this->db->join('lokasi_skd', 'lokasi_skd.id = pr.kode_lokasi_skd', 'left');
-		// $this->db->join('ref_locations', 'ref_locations.location_id = lokasi_skd.lokasi_id', 'left');
-
-		// return $this->db->get('update_barang');
 	}
 
 	public function getDetail_Penerimaan($id)
@@ -37,9 +33,7 @@ class Update_barang_m extends CI_Model
 		$this->db->select('pd.*, adm_barang.id as barang_id, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.satuan');
 		$this->db->from('penerimaan_detail pd');
 		$this->db->join('adm_barang', 'adm_barang.id = pd.barang_id', 'left');
-		// if (!empty($id)) {
 		$this->db->where('pd.penerimaan_id', $id);
-		// }
 
 		return $this->db->get();
 	}
@@ -49,9 +43,7 @@ class Update_barang_m extends CI_Model
 		$this->db->select('pd.*, adm_barang.id as barang_id, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.satuan');
 		$this->db->from('perencanaan_detail pd');
 		$this->db->join('adm_barang', 'adm_barang.id = pd.barang_id', 'left');
-		// if (!empty($id)) {
 		$this->db->where('pd.perencanaan_id', $id);
-		// }
 
 		return $this->db->get();
 	}

@@ -31,11 +31,15 @@ class Update_barang extends Telescoope_Controller
 
         $this->data['userdata'] = (!empty($userdata)) ? $userdata : array();
         $sess = $this->session->userdata(do_hash(SESSION_PREFIX));
-        $position1 = $this->Administration_m->getPosition("ADMINISTRATOR");
-        $position2 = $this->Administration_m->getPosition("PUSAT");
-        $position3 = $this->Administration_m->getPosition("KOORDINATOR");
+        
+        $cek_menu = $this->db->select('ajm.*')
+        ->from('adm_jobtitle_menu ajm')
+        ->join('adm_menu am', 'ajm.menu_id = am.menuid', 'left')
+        ->where(['jobtitle' => $this->data['userdata']['job_title'], 'url_path' => $this->data['dir']])
+        ->get()
+        ->num_rows();
 
-        if (!$position1 && !$position2 && !$position3) {
+        if($cek_menu < 1){
             $this->noAccess("Anda tidak memiliki hak akses untuk halaman ini.");
         }
 
@@ -88,19 +92,18 @@ class Update_barang extends Telescoope_Controller
 
         foreach ($result as $v) {
 
-            // $foto_barang = '<a href="' . base_url('uploads/update_barang/' . $v['foto_barang']) . '" target="_blank" class="avatar-group-item" data-img="' . base_url('uploads/update_barang/' . $v['foto_barang']) . '" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
-            //                 <img src="' . base_url('uploads/update_barang/' . $v['foto_barang']) . '" alt="" class="rounded-circle avatar-xxs">
-            //             </a>';
-
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('pelaksanaan_harian/update_barang/edit/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
                         <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
                         <a href="' .  site_url('pelaksanaan_harian/update_barang/delete/' . $v['id']) . '" onclick=\'return confirm("Apakah anda yakin?")\' class="btn btn-sm btn-danger">Delete</a></div>';
 
             $data[] = array(
-                "kode_perencanaan" => $v['kode_perencanaan'],
-                "tgl_update_harian" => date('d-m-Y', strtotime($v['tgl_update_harian'])),
-                "catatan" => $v['catatan'],
+                "kode_penerimaan" => $v['kode_penerimaan'],
+                "province_name" => $v['province_name'],
+                "regency_name" => $v['regency_name'],
+                "nama_lokasi" => $v['nama_lokasi'] . ' (' . $v['alamat'] . ')',
+                "tgl_update" => date('d-m-Y', strtotime($v['tgl_update_harian'])),
+                "tgl_terima" => date('d-m-Y', strtotime($v['tgl_terima'])),
                 "action" => $action
             );
         }
@@ -119,7 +122,16 @@ class Update_barang extends Telescoope_Controller
     public function add()
     {
         $data = array();
-        $data['get_perencanaan'] = $this->Perencanaan_m->getPerencanaan()->result_array();
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        
+        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();        
+
+        if($position) {
+            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
+        } else {
+            $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
+        }
+
         $this->template("pelaksanaan_harian/update_barang/add_update_barang_v2", "Tambah Update Barang", $data);
     }
 
@@ -135,7 +147,17 @@ class Update_barang extends Telescoope_Controller
     public function edit($id)
     {
         $data = array();
-        $data['id']  = $id;
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        
+        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
+
+        if($position) {
+            $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->row_array();
+        } else {
+            $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
+        }
+
+        $data['id']  = $id;        
         $data['get_update_barang'] = $this->Update_barang_m->getUpdate_barang($id)->row_array();
         $data['get_update_barang_detail'] = $this->Update_barang_m->get_UpdateBarangDetail($id)->result_array();
         $this->template("pelaksanaan_harian/update_barang/edit_update_barang_v2", "Edit Update Barang", $data);
@@ -144,19 +166,30 @@ class Update_barang extends Telescoope_Controller
     public function update($id)
     {
         $post = $this->input->post();
+        $status_ada = $this->input->post('status_ada');
+        $status_tidak_ada = $this->input->post('status_tidak_ada');
+        $kondisi_baik = $this->input->post('kondisi_baik');
+        $kondisi_tidak_baik = $this->input->post('kondisi_tidak_baik');
+        $jumlah_barang = $this->input->post('jumlah_barang');
+        $barang_id = $this->input->post('barang_id');
+
         $dir = './uploads/' . $this->data['dir'];
 
         if (count($post) == 0) {
             $this->setMessage("Isi data dengan Benar.");
             redirect(site_url('pelaksanaan_harian/update_barang/edit/' . $id));
         }
+
         $update_barang = $this->Update_barang_m->getUpdate_barang($id)->row_array();
         $exist = $this->Update_barang_m->get_UpdateBarangExist($update_barang['perencanaan_id'], $post['tgl_update'], $id)->row_array();
+        
         if (isset($exist)) {
             $this->setMessage("Data perencanaan : " . $update_barang['kode_perencanaan'] . ' di tanggal :' . date('d-m-Y', strtotime($post['tgl_update'])) . ' sudah pernah di input.');
             redirect(site_url('pelaksanaan_harian/update_barang/edit/' . $id));
         }
+        
         $this->db->trans_begin();
+        
         $data = array(
             "tgl_update_harian" => $post['tgl_update'],
             'catatan' => $post['catatan'],
@@ -166,34 +199,37 @@ class Update_barang extends Telescoope_Controller
 
         $this->db->where('id', $id);
         $simpan = $this->db->update('update_harian_barang', $data);
+
         if ($simpan) {
 
-            $update_barang_details = $this->Update_barang_m->get_UpdateBarangDetail($id)->result_array();
-            foreach ($update_barang_details as $k => $v) {
-                $detail_update = array(
-                    'jumlah_barang_status_ada' => $this->input->post('status_ada#' . $v['barang_id']),
-                    'jumlah_barang_status_tidak_ada' => $this->input->post('status_tidak_ada#' . $v['barang_id']),
-                    'jumlah_barang_kondisi_baik' => $this->input->post('kondisi_baik#' . $v['barang_id']),
-                    'jumlah_barang_kondisi_rusak' => $this->input->post('kondisi_tidak_baik#' . $v['barang_id']),
-                );
+            if (!empty($barang_id)) {
+            
+                foreach ($barang_id as $key => $v) {
 
-                // URUSAN FILE BROH
-                $dir = './uploads/' . $this->data['dir'];
+                    $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
 
-                if (!empty($_FILES['foto_barang#' . $v['barang_id']]['name'])) {
-                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . date('YmdHis') . '_' . $v['barang_id'];
-                    $_FILES['file']['type'] = $_FILES['foto_barang#' . $v['barang_id']]['type'];
-                    $_FILES['file']['tmp_name'] = $_FILES['foto_barang#' . $v['barang_id']]['tmp_name'];
-                    $_FILES['file']['error'] = $_FILES['foto_barang#' . $v['barang_id']]['error'];
-                    $_FILES['file']['size'] = $_FILES['foto_barang#' . $v['barang_id']]['size'];
-                    if ($this->upload->do_upload('file')) {
-                        $uploadKtp = $this->upload->data();
-                        $detail_update["foto_barang"] = $uploadKtp['file_name'];
+                    $detail_update = array(
+                        'jumlah_barang_status_ada' => $this->input->post('status_ada#' . $v['barang_id']),
+                        'jumlah_barang_status_tidak_ada' => $this->input->post('status_tidak_ada#' . $v['barang_id']),
+                        'jumlah_barang_kondisi_baik' => $this->input->post('kondisi_baik#' . $v['barang_id']),
+                        'jumlah_barang_kondisi_rusak' => $this->input->post('kondisi_tidak_baik#' . $v['barang_id']),
+                    );
+
+                    if (!empty($_FILES['foto_barang#' . $v['barang_id']]['name'])) {
+                        $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . date('YmdHis') . '_' . $v['barang_id'];
+                        $_FILES['file']['type'] = $_FILES['foto_barang#' . $v['barang_id']]['type'];
+                        $_FILES['file']['tmp_name'] = $_FILES['foto_barang#' . $v['barang_id']]['tmp_name'];
+                        $_FILES['file']['error'] = $_FILES['foto_barang#' . $v['barang_id']]['error'];
+                        $_FILES['file']['size'] = $_FILES['foto_barang#' . $v['barang_id']]['size'];
+                        if ($this->upload->do_upload('file')) {
+                            $uploadKtp = $this->upload->data();
+                            $detail_update["foto_barang"] = $uploadKtp['file_name'];
+                        }
                     }
-                }
 
-                $this->db->where('id', $v['id']);
-                $simpan_details = $this->db->update('update_harian_barang_detail', $detail_update);
+                    $this->db->where('id', $v['id']);
+                    $simpan_details = $this->db->update('update_harian_barang_detail', $detail_update);
+                }
             }
 
             if ($this->db->trans_status() === FALSE) {
@@ -222,23 +258,29 @@ class Update_barang extends Telescoope_Controller
     public function submit_datav2()
     {
         $post = $this->input->post();
+        $status_ada = $this->input->post('status_ada');
+        $status_tidak_ada = $this->input->post('status_tidak_ada');
+        $kondisi_baik = $this->input->post('kondisi_baik');
+        $kondisi_tidak_baik = $this->input->post('kondisi_tidak_baik');
+        $jumlah_barang = $this->input->post('jumlah_barang');
+        $barang_id = $this->input->post('barang_id');
 
         if (count($post) == 0) {
             $this->setMessage("Isi data dengan Benar.");
             redirect(site_url('pelaksanaan_harian/update_barang/add'));
         }
-        $perencanaan = $this->Perencanaan_m->getPerencanaan($post['perencanaan_id'])->row_array();
-        $exist = $this->Update_barang_m->get_UpdateBarangExist($post['perencanaan_id'], $post['tgl_update'])->row_array();
-        if (isset($exist)) {
-            $this->setMessage("Data perencanaan : " . $perencanaan['kode_perencanaan'] . ' di tanggal :' . date('d-m-Y', strtotime($post['tgl_update'])) . ' sudah pernah di input.');
+
+        $cek_integrasi = $this->db->select('id')->from('update_harian_barang')->where('penerimaan_id', $post['penerimaan_id'])->get()->num_rows();
+        
+        if ($cek_integrasi > 0) {
+            $this->setMessage("Data update barang sudah pernah diinput.");
             redirect(site_url('pelaksanaan_harian/update_barang/add'));
         }
 
         $this->db->trans_begin();
 
         $data = array(
-            "perencanaan_id" => $post['perencanaan_id'],
-            "kode_perencanaan" => $perencanaan['kode_perencanaan'],
+            "penerimaan_id" => $post['penerimaan_id'],
             "tgl_update_harian" => $post['tgl_update'],
             'catatan' => $post['catatan'],
             'created_by' => $this->data['userdata']['employee_id'],
@@ -250,50 +292,66 @@ class Update_barang extends Telescoope_Controller
         if ($simpan) {
 
             $insert_id = $this->db->insert_id();
+            
+            $id = strval($insert_id); 
+            $res = str_repeat('0', 5 - strlen($id)).$id;   
+
+            $this->db->set('kode_update_barang', 'UPB.' . $res)->where('id', $insert_id)->update('update_harian_barang');
+
             $dir = './uploads/' . $this->data['dir'];
             $data_insert = array();
 
-            // LOAD EXISTING PRODUCT ON PERENCANAAN
-            $perencanaan_id = $post['perencanaan_id'];
-            $data_perencanaan = $this->Update_barang_m->getDetail_Perencanaan($perencanaan_id)->result_array();
+            if (!empty($barang_id)) {
+            
+                foreach ($barang_id as $key => $v) {
 
-            foreach ($data_perencanaan as $k => $v) {
+                    $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
 
-                $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . date('YmdHis') . '_' . $v['barang_id'];
-                $_FILES['file']['type'] = $_FILES['foto_barang#' . $v['barang_id']]['type'];
-                $_FILES['file']['tmp_name'] = $_FILES['foto_barang#' . $v['barang_id']]['tmp_name'];
-                $_FILES['file']['error'] = $_FILES['foto_barang#' . $v['barang_id']]['error'];
-                $_FILES['file']['size'] = $_FILES['foto_barang#' . $v['barang_id']]['size'];
+                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . date('YmdHis') . '_' . $file_name;
+                    $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
+                    $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
+                    $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
+                    $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
 
-                if ($this->upload->do_upload('file')) {
-                    $uploadKtp = $this->upload->data();
-                    $data_insert[] = array(
-                        'update_barang_id' => $insert_id,
-                        'jumlah_barang' => $this->input->post('jumlah_barang#' . $v['barang_id']),
-                        'jumlah_barang_status_ada' => $this->input->post('status_ada#' . $v['barang_id']),
-                        'jumlah_barang_status_tidak_ada' => $this->input->post('status_tidak_ada#' . $v['barang_id']),
-                        'jumlah_barang_kondisi_baik' => $this->input->post('kondisi_baik#' . $v['barang_id']),
-                        'jumlah_barang_kondisi_rusak' => $this->input->post('kondisi_tidak_baik#' . $v['barang_id']),
-                        'barang_id' => $v['barang_id'],
-                        'file_path' => $uploadKtp['file_name'],
-                    );
+                    if ($this->upload->do_upload('file')) {
+                        $uploadBarang = $this->upload->data();
+                        $data_insert[] = array(
+                            'jumlah_barang' => $jumlah_barang[$key],
+                            'jumlah_barang_status_ada' => $status_ada[$key],
+                            'jumlah_barang_status_tidak_ada' => $status_tidak_ada[$key],
+                            'jumlah_barang_kondisi_baik' => $kondisi_baik[$key],
+                            'jumlah_barang_kondisi_rusak' => $kondisi_tidak_baik[$key],
+                            'barang_id' => $barang_id[$key],
+                            'file_path' => $uploadBarang['file_name'],
+                        );
+                    } else {
+                        $data_insert[] = array(
+                            'jumlah_barang' => $jumlah_barang[$key],
+                            'jumlah_barang_status_ada' => $status_ada[$key],
+                            'jumlah_barang_status_tidak_ada' => $status_tidak_ada[$key],
+                            'jumlah_barang_kondisi_baik' => $kondisi_baik[$key],
+                            'jumlah_barang_kondisi_rusak' => $kondisi_tidak_baik[$key],
+                            'barang_id' => $barang_id[$key],
+                            'file_path' => ''
+                        );
+                    } 
                 }
-            }
 
-            foreach ($data_insert as $insert_data) {
-                $detail = array(
-                    "update_barang_id" => $insert_data['update_barang_id'],
-                    "barang_id" => $insert_data['barang_id'],
-                    "jumlah_barang" => $insert_data['jumlah_barang'],
-                    "jumlah_barang_status_ada" => $insert_data['jumlah_barang_status_ada'],
-                    "jumlah_barang_status_tidak_ada" => $insert_data['jumlah_barang_status_tidak_ada'],
-                    "jumlah_barang_kondisi_baik" => $insert_data['jumlah_barang_kondisi_baik'],
-                    "jumlah_barang_kondisi_rusak" => $insert_data['jumlah_barang_kondisi_rusak'],
-                    'foto_barang' => $insert_data['file_path'],
-                    'created_by' => $this->data['userdata']['employee_id'],
-                    'created_at' => date('Y-m-d H:i:s'),
-                );
-                $simpan_detail = $this->db->insert('update_harian_barang_detail', $detail);
+                foreach ($data_insert as $insert_data) {
+                    $detail = array(
+                        "update_barang_id" => $insert_id,
+                        "barang_id" => $insert_data['barang_id'],
+                        "jumlah_barang" => $insert_data['jumlah_barang'],
+                        "jumlah_barang_status_ada" => $insert_data['jumlah_barang_status_ada'],
+                        "jumlah_barang_status_tidak_ada" => $insert_data['jumlah_barang_status_tidak_ada'],
+                        "jumlah_barang_kondisi_baik" => $insert_data['jumlah_barang_kondisi_baik'],
+                        "jumlah_barang_kondisi_rusak" => $insert_data['jumlah_barang_kondisi_rusak'],
+                        'foto_barang' => $insert_data['file_path'],
+                        'created_by' => $this->data['userdata']['employee_id'],
+                        'created_at' => date('Y-m-d H:i:s'),
+                    );
+                    $simpan_detail = $this->db->insert('update_harian_barang_detail', $detail);
+                }
             }
 
             if ($this->db->trans_status() === FALSE) {
@@ -309,9 +367,9 @@ class Update_barang extends Telescoope_Controller
             $this->renderMessage("error");
         }
     }
+
     public function submit_data()
     {
-
         $post = $this->input->post();
 
         if (count($post) == 0) {
@@ -363,10 +421,10 @@ class Update_barang extends Telescoope_Controller
         }
     }
 
-    public function get_perencanaan()
+    public function get_penerimaan()
     {
-        $perencanaan_id = $this->input->post('perencanaan_id', true);
-        $data = $this->Update_barang_m->getDetail_Perencanaan($perencanaan_id)->result_array();
+        $penerimaan_id = $this->input->post('penerimaan_id', true);
+        $data = $this->Penerimaan_barang_m->getDetail($penerimaan_id)->result_array();
         echo json_encode($data);
     }
 }

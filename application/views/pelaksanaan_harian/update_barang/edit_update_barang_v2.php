@@ -12,9 +12,9 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group row mb-2">
-                        <label class="col-md-2 label-control">Kode Perencanaan</label>
-                        <div class="col-lg-3">
-                            <input type="text" class="form-control" name="kode_perencanaan" placeholder="Kode Perencanaan" value="<?= isset($get_update_barang) && isset($get_update_barang['kode_perencanaan']) ? $get_update_barang['kode_perencanaan'] : ''; ?>" disabled>
+                        <label class="col-md-2 label-control">Titik Lokasi</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control" value="<?php echo $get_penerimaan['nama_lokasi'] . ' - ' . $get_penerimaan['alamat']; ?>" readonly>
                         </div>
                     </div>
                     <div class="row mb-3">
