@@ -10,7 +10,7 @@ class Dashboard extends Telescoope_Controller
 
 		parent::__construct();
 
-		$this->load->model(array('Administration_m', 'Provinsi_m', 'Perencanaan_m', 'Pengiriman_barang_m', 'Penerimaan_barang_m'));
+		$this->load->model(array('Administration_m', 'Provinsi_m', 'Perencanaan_m', 'Pengiriman_barang_m', 'Penerimaan_barang_m', 'Lokasi_skd_m'));
 
 		$this->form_validation->set_error_delimiters('<span class="help-block">', '</span>');
 
@@ -28,6 +28,10 @@ class Dashboard extends Telescoope_Controller
 
 	public function get_data_dashboard()
 	{
+		$sess = $this->session->all_userdata();
+		$lokasi_skd_id = $sess['lokasi_skd_id'];
+		$lokasi_user = $sess['lokasi_user'];
+		$adm_pos_id = $sess['adm_pos_id'];
 		$provinsi = $this->input->post('provinsi', true);
 		$kabupaten = $this->input->post('kabupaten', true);
 		$kode_lokasi_skd = $this->input->post('kode_lokasi_skd', true);
@@ -36,10 +40,22 @@ class Dashboard extends Telescoope_Controller
 		$total_perencanaan = $this->Perencanaan_m->getTotalPerencanaan($provinsi, $kabupaten, $kode_lokasi_skd, $jenis, $kelompok);
 		$total_pengiriman = $this->Pengiriman_barang_m->getTotalPengiriman($provinsi, $kabupaten, $kode_lokasi_skd, $jenis, $kelompok);
 		$total_diterima = $this->Penerimaan_barang_m->getTotalPenerimaan($provinsi, $kabupaten, $kode_lokasi_skd, $jenis, $kelompok);
+		$total_tilok = $this->Lokasi_skd_m->getTotalTilok($provinsi, $kabupaten, $kode_lokasi_skd);
+		$total_kordinator = $this->Administration_m->getTotalUserPosisi($provinsi, $kabupaten, $kode_lokasi_skd, 3);
+		$total_pengawas = $this->Administration_m->getTotalUserPosisi($provinsi, $kabupaten, $kode_lokasi_skd, 4);
 		$data['total_perencanaan'] = (!empty($total_perencanaan)) ? $total_perencanaan : 0;
 		$data['total_pengiriman'] = (!empty($total_pengiriman)) ? $total_pengiriman : 0;
 		$data['total_penerimaan'] = (!empty($total_diterima->jumlah_terima)) ? $total_diterima->jumlah_terima : 0;
 		$data['total_terinstall'] = (!empty($total_diterima->jumlah_terpasang)) ? $total_diterima->jumlah_terpasang : 0;
+		$data['total_tilok'] = (!empty($total_tilok)) ? $total_tilok : 0;
+		$data['total_kordinator'] = (!empty($total_kordinator)) ? $total_kordinator : 0;
+		$data['total_pengawas'] = (!empty($total_pengawas)) ? $total_pengawas : 0;
+		$data['total_teknisi'] =  0;
+		$data['lokasi_skd_id'] =  $lokasi_skd_id;
+		$data['lokasi_skd'] =  $this->db->get('lokasi_skd')->result_array();
+		$data['lokasi_user'] =  $this->db->get_where('ref_locations', ['location_id' => $lokasi_user])->result_array();
+		$data['lokasi_user_id'] =  $lokasi_user;
+		$data['adm_pos_id'] =  $adm_pos_id;
 		echo json_encode($data);
 	}
 

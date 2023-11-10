@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Instalasi_barang extends Telescoope_Controller
+class Uji_perangkat extends Telescoope_Controller
 {
 
     var $data;
@@ -10,7 +10,7 @@ class Instalasi_barang extends Telescoope_Controller
 
         parent::__construct();
 
-        $this->load->model(array("Administration_m", "Update_barang_m", "Penerimaan_barang_m", "Perencanaan_m"));
+        $this->load->model(array("Administration_m", "Update_barang_m", "Penerimaan_barang_m", "Uji_fungsi_barang_m"));
         $this->data['date_format'] = "h:i A | d M Y";
         $this->form_validation->set_error_delimiters('<div class="help-block">', '</div>');
         $this->data['data'] = array();
@@ -47,21 +47,21 @@ class Instalasi_barang extends Telescoope_Controller
     public function index()
     {
         $data = array();
-        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
-        $this->template("pelaporan/instalasi_barang/form_instalasi_barang_v", "Data Penerimaan dan Instalasi/Pemasangan Barang", $data);
+        $data['get_uji_fungsi'] = $this->Uji_fungsi_barang_m->getUji()->result_array();
+        $this->template("pelaporan/uji_fungsi/form_uji_fungsi_v", "Berita Acara Uji Fungsi Perangkat TIK", $data);
     }
 
     public function export()
     {
         $post = $this->input->post();
-        $penerimaan_id = $post['penerimaan_id'];
+        $penerimaan_id = $post['uji_id'];
         $tgl_terima = $post['tgl_terima'];
-        $file = './assets/laporan_penerimaan_barang.pdf';
+        $file = './assets/uji_aceh_Potola_arabia.pdf';
         force_download($file, NULL);
 
-        // $instalasi_barang = $this->Penerimaan_barang_m->get_InstalasiBarangExist($penerimaan_id, $tgl_terima)->row_array();
+        // $instalasi_barang = $this->Uji_fungsi_barang_m->get_InstalasiBarangExist($penerimaan_id, $tgl_terima)->row_array();
         // if (isset($instalasi_barang)) {
-        //     $instalasi_barang_detail = $this->Penerimaan_barang_m->get_InstalasiBarangDetail($instalasi_barang['id'])->result_array();
+        //     $instalasi_barang_detail = $this->Uji_fungsi_barang_m->get_InstalasiBarangDetail($instalasi_barang['id'])->result_array();
         //     $data = array();
         //     $data['instalasi_barang'] = $instalasi_barang;
         //     $data['instalasi_barang_detail'] = $instalasi_barang_detail;
