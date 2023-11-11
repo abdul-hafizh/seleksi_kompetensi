@@ -142,45 +142,102 @@
 </div><!-- end row -->
 
 <div class="row">
-    <!-- Pie Chart starts -->
-    <div class="col-lg-4">
+    <div class="col-xl-3">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-soft-primary text-primary rounded-2 fs-2">
+                            <i data-feather="globe" class="text-primary"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden ms-3">
+                        <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Titik Lokasi</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value titik_lokasi">0</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div>
+    </div><!-- end col -->
+
+    <div class="col-xl-3">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-soft-warning text-warning rounded-2 fs-2">
+                            <i data-feather="users" class="text-warning"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <p class="text-uppercase fw-medium text-muted mb-3">Kordinator</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value kordinator">0</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div>
+    </div><!-- end col -->
+
+    <div class="col-xl-3">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-soft-success text-success rounded-2 fs-2">
+                            <i data-feather="user-check" class="text-success"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <p class="text-uppercase fw-medium text-muted mb-3">Pengawas</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value pengawas">0</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div>
+    </div><!-- end col -->
+
+    <div class="col-xl-3">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-soft-info text-info rounded-2 fs-2">
+                            <i data-feather="tool" class="text-info"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden ms-3">
+                        <p class="text-uppercase fw-medium text-muted text-truncate mb-3">Teknisi</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 class="fs-4 flex-grow-1 mb-0"><span class="counter-value teknisi">0</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div>
+    </div><!-- end col -->
+</div><!-- end row -->
+
+
+<div class="row">
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Perencanaan VS Terkirim</h4>
+                <h4 class="card-title mb-0">Charts Barang</h4>
             </div><!-- end card header -->
 
             <div class="card-body">
-                <div id="pie_perencanaan_terkirim" class="apex-charts" dir="ltr"></div>
+                <div id="column_chart" class="apex-charts" dir="ltr"></div>
             </div><!-- end card-body -->
         </div><!-- end card -->
     </div>
-
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Terkirim VS Diterima</h4>
-            </div>
-            <div class="card-content">
-                <div class="card-body">
-                    <div id="pie_terkirim_diterima" class="apex-charts"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Diterima VS Ter-Instal</h4>
-            </div>
-            <div class="card-content">
-                <div class="card-body">
-                    <div id="pie_diterima_terinstall" class="apex-charts"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Pie Chart ends -->
+</div>
+<!-- Pie Chart ends -->
 </div>
 
 <div class="row">
@@ -229,8 +286,8 @@
                                 <th>Provinsi</th>
                                 <th>Kabupaten</th>
                                 <th>Titik Lokasi</th>
-                                <th>Alamat</th>
                                 <th>Nama</th>
+                                <th>Alamat</th>
                                 <th>No Telpon</th>
                                 <th>Posisi</th>
                             </tr>
@@ -242,6 +299,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!-- apexcharts -->
@@ -265,72 +323,67 @@
         loadDatatableAjax();
         searchTable();
         resetSearch();
-        var options = {
-            series: [0, 0],
+
+        var options_chart = {
             chart: {
-                height: 300,
-                type: "pie"
-            },
-            labels: ["Target Perencanaan", "Terkirim"],
-            legend: {
-                position: "bottom"
-            },
-            dataLabels: {
-                dropShadow: {
-                    enabled: !1
+                height: 350,
+                type: "bar",
+                toolbar: {
+                    show: !1
                 }
             },
-            // colors: chartPieBasicColors
+            plotOptions: {
+                bar: {
+                    horizontal: !1,
+                    columnWidth: "45%",
+                    endingShape: "rounded"
+                }
+            },
+            dataLabels: {
+                enabled: !1
+            },
+            stroke: {
+                show: !0,
+                width: 2,
+                colors: ["transparent"]
+            },
+            series: [{
+                name: "Target Perencanaan",
+                data: [0]
+            }, {
+                name: "Terkirim",
+                data: [0]
+            }, {
+                name: "Diterima",
+                data: [0]
+            }, {
+                name: "Ter-Install",
+                data: [0]
+            }],
+            xaxis: {
+                categories: ["Data"]
+            },
+            yaxis: {
+                title: {
+                    text: "Item"
+                }
+            },
+            grid: {
+                borderColor: "#f1f1f1"
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(t) {
+                        return t + " item"
+                    }
+                }
+            }
         }
-        var pieChart = new ApexCharts(
-            document.querySelector("#pie_perencanaan_terkirim"),
-            options
-        );
-        pieChart.render();
-
-        var options2 = {
-            series: [0, 0],
-            chart: {
-                height: 300,
-                type: "pie"
-            },
-            labels: ["Target Perencanaan", "Terkirim"],
-            legend: {
-                position: "bottom"
-            },
-            dataLabels: {
-                dropShadow: {
-                    enabled: !1
-                }
-            },
-        };
-
-        var pieChart2 = new ApexCharts(document.querySelector("#pie_terkirim_diterima"), options2);
-
-        pieChart2.render();
-
-        var options3 = {
-            series: [0, 0],
-            chart: {
-                height: 300,
-                type: "pie"
-            },
-            labels: ["Diterima", "Ter-Install"],
-            legend: {
-                position: "bottom"
-            },
-            dataLabels: {
-                dropShadow: {
-                    enabled: !1
-                }
-            },
-            // colors: chartPieBasicColors
-        }
-        var pieChart3 = new ApexCharts(
-            document.querySelector("#pie_diterima_terinstall"),
-            options3
-        );
-        pieChart3.render();
+        var chart = new ApexCharts(document.querySelector("#column_chart"), options_chart);
+        chart.render();
 
         initDashboard();
         $("#provinsi").on("change", function() {
@@ -412,12 +465,43 @@
                     $('.terkirim').html(result.total_pengiriman);
                     $('.diterima').html(result.total_penerimaan);
                     $('.terinstall').html(result.total_terinstall);
-                    const pieData = [Number(result.total_perencanaan), Number(result.total_pengiriman)];
-                    const pieData2 = [Number(result.total_pengiriman), Number(result.total_penerimaan)];
-                    const pieData3 = [Number(result.total_penerimaan), Number(result.total_terinstall)];
-                    pieChart.updateSeries(pieData);
-                    pieChart2.updateSeries(pieData2);
-                    pieChart3.updateSeries(pieData3);
+                    $('.titik_lokasi').html(result.total_tilok);
+                    $('.kordinator').html(result.total_kordinator);
+                    $('.pengawas').html(result.total_pengawas);
+                    $('.teknisi').html(result.total_teknisi);
+                    const barData = [{
+                        name: "Target Perencanaan",
+                        data: [Number(result.total_perencanaan)]
+                    }, {
+                        name: "Terkirim",
+                        data: [Number(result.total_pengiriman)]
+                    }, {
+                        name: "Diterima",
+                        data: [Number(result.total_penerimaan)]
+                    }, {
+                        name: "Ter-Install",
+                        data: [Number(result.total_terinstall)]
+                    }];
+                    chart.updateSeries(barData);
+
+                    if (result.adm_pos_id > 2) {
+                        kode_lokasi_skd = '<option value="">- Pilih -</option>';
+                        $.each(result.lokasi_skd, function(key, val) {
+                            var select = '';
+                            if (val.id == result.lokasi_skd_id)
+                                select = 'selected';
+                            kode_lokasi_skd += '<option value="' + val.id + '" ' + select + '>' + val.nama_lokasi + '</option>';
+                        });
+                        $('#kode_lokasi_skd').html(kode_lokasi_skd);
+
+                        $.each(result.lokasi_user, function(key, val) {
+                            select = 'selected';
+                            kabupaten = '<option value="' + val.regency_id + '" ' + select + '>' + val.regency_name + '</option>';
+                            provinsi = '<option value="' + val.province_id + '" ' + select + '>' + val.province_name + '</option>';
+                        });
+                        $('#kabupaten').html(kabupaten);
+                        $('#provinsi').html(provinsi).prop('disabled', true);
+                    }
                 }
             })
         }
@@ -440,13 +524,24 @@
                     $('.terkirim').html(result.total_pengiriman);
                     $('.diterima').html(result.total_penerimaan);
                     $('.terinstall').html(result.total_terinstall);
-                    // pieChart2.updateSeries(Number(result.total_perencanaan), Number(result.total_pengiriman));
-                    const pieData = [Number(result.total_perencanaan), Number(result.total_pengiriman)];
-                    const pieData2 = [Number(result.total_pengiriman), Number(result.total_penerimaan)];
-                    const pieData3 = [Number(result.total_penerimaan), Number(result.total_terinstall)];
-                    pieChart.updateSeries(pieData);
-                    pieChart2.updateSeries(pieData2);
-                    pieChart3.updateSeries(pieData3);
+                    $('.titik_lokasi').html(result.total_tilok);
+                    $('.kordinator').html(result.total_kordinator);
+                    $('.pengawas').html(result.total_pengawas);
+                    $('.teknisi').html(result.total_teknisi);
+                    const barData = [{
+                        name: "Target Perencanaan",
+                        data: [Number(result.total_perencanaan)]
+                    }, {
+                        name: "Terkirim",
+                        data: [Number(result.total_pengiriman)]
+                    }, {
+                        name: "Diterima",
+                        data: [Number(result.total_penerimaan)]
+                    }, {
+                        name: "Ter-Install",
+                        data: [Number(result.total_terinstall)]
+                    }];
+                    chart.updateSeries(barData);
                 }
             })
         }

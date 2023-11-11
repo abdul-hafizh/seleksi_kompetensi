@@ -56,6 +56,8 @@ class Instalasi_barang extends Telescoope_Controller
         $post = $this->input->post();
         $penerimaan_id = $post['penerimaan_id'];
         $tgl_terima = $post['tgl_terima'];
+        $file = './assets/laporan_penerimaan_barang.pdf';
+        force_download($file, NULL);
 
         $instalasi_barang = $this->Penerimaan_barang_m->get_InstalasiBarangExist($penerimaan_id, $tgl_terima)->row_array();
         if (isset($instalasi_barang)) {
@@ -90,15 +92,15 @@ class Instalasi_barang extends Telescoope_Controller
 
             // $this->template("pelaporan/instalasi_barang/export_pdf", "Data Update Kegiatan", $data);
 
-            $this->load->library('pdf');
-            $this->pdf->setPaper('A4', 'potrait');
-            $this->pdf->filename = "laporan_instalasi_barang.pdf";
-            $this->pdf->set_option('isRemoteEnabled', true);
-            $this->pdf->load_view('pelaporan/instalasi_barang/export_pdf', $data);
-        } else {
-            $this->setMessage("Data instalasi barang tidak ditemukan.");
-            redirect(site_url('pelaporan/instalasi_barang'));
-        }
+        //     $this->load->library('pdf');
+        //     $this->pdf->setPaper('A4', 'potrait');
+        //     $this->pdf->filename = "laporan_instalasi_barang.pdf";
+        //     $this->pdf->set_option('isRemoteEnabled', true);
+        //     $this->pdf->load_view('pelaporan/instalasi_barang/export_pdf', $data);
+        // } else {
+        //     $this->setMessage("Data instalasi barang tidak ditemukan.");
+        //     redirect(site_url('pelaporan/instalasi_barang'));
+        // }
     }
 
     public function download()

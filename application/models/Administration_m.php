@@ -388,4 +388,65 @@ class Administration_m extends CI_Model
 
 		return $this->db->get('adm_employee');
 	}
+
+	public function getTotalUserPosisi($provinsi = '', $kabupaten = '', $kode_lokasi_skd = '', $posisi)
+	{
+		$user = $this->session->userdata();
+		$user_pos = $user['adm_pos_id'];
+
+		$this->db->select('count(adm_employee.id) as jumlah_user')
+			->join('lokasi_skd', 'lokasi_skd.id=adm_employee.lokasi_skd_id', 'left')
+			->join('ref_locations', 'ref_locations.location_id=adm_employee.lokasi_user', 'left');
+
+		if ($user_pos > 2) {
+			$this->db->where('lokasi_skd.id', $user['lokasi_skd_id']);
+		}
+
+		$this->db->where('adm_employee.adm_pos_id', $posisi);
+
+		if (!empty($provinsi)) {
+
+			$this->db->where('ref_locations.province_id', $provinsi);
+		}
+
+		if (!empty($kabupaten)) {
+
+			$this->db->where('ref_locations.regency_id', $kabupaten);
+		}
+		if (!empty($kode_lokasi_skd)) {
+
+			$this->db->where('lokasi_skd.id', $kode_lokasi_skd);
+		}
+
+		return $this->db->get('adm_employee')->row()->jumlah_user;
+	}
+
+	public function getTotalUser($provinsi = '', $kabupaten = '', $kode_lokasi_skd = '')
+	{
+
+		$user = $this->session->userdata();
+		$user_pos = $user['adm_pos_id'];
+
+		$this->db->select('count(lokasi_skd.id) as jumlah_tilok')
+			->join('ref_locations', 'lokasi_skd.lokasi_id=ref_locations.location_id', 'left');
+
+		if ($user_pos > 2) {
+			$this->db->where('lokasi_skd.id', $user['lokasi_skd_id']);
+		}
+
+		if (!empty($provinsi)) {
+
+			$this->db->where('ref_locations.province_id', $provinsi);
+		}
+
+		if (!empty($kabupaten)) {
+
+			$this->db->where('ref_locations.regency_id', $kabupaten);
+		}
+		if (!empty($kode_lokasi_skd)) {
+
+			$this->db->where('lokasi_skd.id', $kode_lokasi_skd);
+		}
+		return $this->db->get('lokasi_skd')->row()->jumlah_tilok;
+	}
 }
