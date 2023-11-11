@@ -78,7 +78,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'sucofindo',
+	'database' => 'admin_ssima',
 
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
