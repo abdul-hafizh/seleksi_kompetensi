@@ -75,7 +75,7 @@ class Update_barang extends Telescoope_Controller
 
         $this->db->limit($rowperpage, $row);
 
-        $result = $this->Update_barang_m->getUpdate_barang()->result_array();
+        $result = $this->Update_barang_m->getUpdate_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         if (!empty($search)) {
             // $this->db->group_start();
             // $this->db->like('test', $search);
@@ -83,7 +83,7 @@ class Update_barang extends Telescoope_Controller
             // $this->db->group_end();
         }
 
-        $count = $this->Update_barang_m->getUpdate_barang()->num_rows();
+        $count = $this->Update_barang_m->getUpdate_barang("", $this->data['userdata']['lokasi_skd_id'])->num_rows();
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;
