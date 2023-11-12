@@ -39,7 +39,7 @@
                             <div class="container card-body p-4">
 
                                 <div class="row">
-                                    <div class="col-4 h-100 justify-content-center align-items-center">
+                                    <div class="col-lg-4 col-12 px-4 py-3 width-365">
                                         <div class="text-center mt-4">
                                             <div class="container">
                                                 <div class="row row-cols-auto justify-content-center">
@@ -95,7 +95,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <div class="col-8">
+                                    <div class="col-lg-8 d-none d-lg-flex auth-img-bg width-732 pd-none">
                                         <img src="<?php echo base_url(); ?>assets/images/login-side-photo.png" alt="Login image" class="w-100" style="object-fit: cover; object-position: left;">
                                     </div>
                                 </div>
