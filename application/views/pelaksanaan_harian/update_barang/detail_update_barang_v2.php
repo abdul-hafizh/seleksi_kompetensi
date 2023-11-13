@@ -12,9 +12,9 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group row mb-2">
-                        <label class="col-md-2 label-control">Kode Perencanaan</label>
+                        <label class="col-md-2 label-control">Kode Penerimaan</label>
                         <div class="col-lg-3">
-                            <input type="text" class="form-control" name="kode_perencanaan" placeholder="Kode Perencanaan" value="<?= isset($get_update_barang) && isset($get_update_barang['kode_perencanaan']) ? $get_update_barang['kode_perencanaan'] : ''; ?>" disabled>
+                            <input type="text" class="form-control" name="kode_penerimaan" placeholder="Kode Penerimaan" value="<?php echo isset($get_update_barang) && isset($get_update_barang['kode_penerimaan']) ? $get_update_barang['kode_penerimaan'] : ''; ?>" disabled>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -22,7 +22,7 @@
                             <label class="form-label">Tanggal Update</label>
                         </div>
                         <div class="col-lg-3">
-                            <input type="date" class="form-control" name="tgl_update" placeholder="Tanggal Update" value="<?= isset($get_update_barang) && isset($get_update_barang['tgl_update_harian']) ? $get_update_barang['tgl_update_harian'] : ''; ?>" disabled>
+                            <input type="date" class="form-control" name="tgl_update" placeholder="Tanggal Update" value="<?php echo isset($get_update_barang) && isset($get_update_barang['tgl_update_harian']) ? $get_update_barang['tgl_update_harian'] : ''; ?>" disabled>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -30,7 +30,7 @@
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-8">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan" disabled><?= isset($get_update_barang) && isset($get_update_barang['catatan']) ? $get_update_barang['catatan'] : ''; ?></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan" disabled><?php echo isset($get_update_barang) && isset($get_update_barang['catatan']) ? $get_update_barang['catatan'] : ''; ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -66,17 +66,17 @@
                                     <?php $no = 1; ?>
                                     <?php foreach ($get_update_barang_detail as $k => $v) : ?>
                                         <tr>
-                                            <td><?= $no; ?></td>
-                                            <td><?= $v["kode_barang_id"]; ?></td>
-                                            <td><?= $v["nama_barang"]; ?></td>
-                                            <td><?= $v["jumlah_barang"]; ?></td>
-                                            <td><?= $v["satuan"]; ?></td>
-                                            <td><?= $v["jumlah_barang_status_ada"]; ?></td>
-                                            <td><?= $v["jumlah_barang_status_tidak_ada"]; ?></td>
-                                            <td><?= $v["jumlah_barang_kondisi_baik"]; ?></td>
-                                            <td><?= $v["jumlah_barang_kondisi_rusak"]; ?></td>
+                                            <td><?php echo $no; ?></td>
+                                            <td><?php echo $v["kode_barang_id"]; ?></td>
+                                            <td><?php echo $v["nama_barang"]; ?></td>
+                                            <td><?php echo $v["jumlah_barang"]; ?></td>
+                                            <td><?php echo $v["satuan"]; ?></td>
+                                            <td><?php echo $v["jumlah_barang_status_ada"]; ?></td>
+                                            <td><?php echo $v["jumlah_barang_status_tidak_ada"]; ?></td>
+                                            <td><?php echo $v["jumlah_barang_kondisi_baik"]; ?></td>
+                                            <td><?php echo $v["jumlah_barang_kondisi_rusak"]; ?></td>
                                             <td>
-                                                <a target="_blank" href="<?= base_url('uploads/update_barang/' . $v["foto_barang"]) ?>" class="btn btn-sm btn-warning">Show</a>
+                                                <a target="_blank" href="<?php echo base_url('uploads/update_barang/' . $v["foto_barang"]) ?>" class="btn btn-sm btn-warning">Show</a>
                                             </td>
                                         </tr>
                                         <?php $no++ ?>

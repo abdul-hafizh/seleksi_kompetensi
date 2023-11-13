@@ -69,30 +69,36 @@ class Update_kegiatan extends Telescoope_Controller
     {
         $post = $this->input->post();
 
+        $lokasi = '';
         $draw = $post['draw'];
         $row = $post['start'];
         $rowperpage = $post['length'];
         $search = $post['search']['value'];
         $columnIndex = $post['order'][0]['column'];
         $columnName = $post['columns'][$columnIndex]['data'];
-        // $prov = isset($post['s_provinsi']) ? $post['s_provinsi'] : "";
 
         if (!empty($search)) {
-            // $this->db->group_start();
-            // $this->db->like('test', $search);
-            // $this->db->or_like('test', $search);
-            // $this->db->group_end();
+            $this->db->group_start();
+            $this->db->like('kode_kegiatan', $search);
+            $this->db->or_like('tgl_kegiatan', $search);
+            $this->db->group_end();
         }
 
         $this->db->limit($rowperpage, $row);
-        $lokasi = $this->data['userdata']['lokasi_user'];
+        
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+
+        if($position) {
+            $lokasi = $this->data['userdata']['lokasi_skd_id'];
+        }
+
         $result = $this->Update_kegiatan_m->getUpdateKegiatan('', $lokasi)->result_array();
 
         if (!empty($search)) {
-            // $this->db->group_start();
-            // $this->db->like('test', $search);
-            // $this->db->or_like('test', $search);
-            // $this->db->group_end();
+            $this->db->group_start();
+            $this->db->like('kode_kegiatan', $search);
+            $this->db->or_like('tgl_kegiatan', $search);
+            $this->db->group_end();
         }
 
         $count = $this->Update_kegiatan_m->getUpdateKegiatan('', $lokasi)->num_rows();

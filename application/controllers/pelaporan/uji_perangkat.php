@@ -16,7 +16,7 @@ class Uji_perangkat extends Telescoope_Controller
         $this->data['data'] = array();
         $this->data['post'] = $this->input->post();
         $userdata = $this->Administration_m->getLogin();
-        $this->data['dir'] = 'update_barang';
+        $this->data['dir'] = 'uji_perangkat';
         $this->data['controller_name'] = $this->uri->segment(1);
         $dir = './uploads/' . $this->data['dir'];
         if (!file_exists($dir)) {
@@ -31,11 +31,15 @@ class Uji_perangkat extends Telescoope_Controller
 
         $this->data['userdata'] = (!empty($userdata)) ? $userdata : array();
         $sess = $this->session->userdata(do_hash(SESSION_PREFIX));
-        $position1 = $this->Administration_m->getPosition("ADMINISTRATOR");
-        $position2 = $this->Administration_m->getPosition("PUSAT");
-        $position3 = $this->Administration_m->getPosition("KOORDINATOR");
+        
+        $cek_menu = $this->db->select('ajm.*')
+        ->from('adm_jobtitle_menu ajm')
+        ->join('adm_menu am', 'ajm.menu_id = am.menuid', 'left')
+        ->where(['jobtitle' => $this->data['userdata']['job_title'], 'url_path' => $this->data['dir']])
+        ->get()
+        ->num_rows();
 
-        if (!$position1 && !$position2 && !$position3) {
+        if($cek_menu < 1){
             $this->noAccess("Anda tidak memiliki hak akses untuk halaman ini.");
         }
 
