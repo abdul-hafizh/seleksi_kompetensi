@@ -1,5 +1,3 @@
-<?php if(count($get_foto) > 0) { ?>
-
 <form action="<?php echo site_url('uji_fungsi_barang/submit_update_detail_foto'); ?>" method="post" id="basic-form" enctype="multipart/form-data">   
     <div class="row">
         <div class="col-lg-12">
@@ -58,8 +56,6 @@
     </div>
 </form>
 
-<?php } else { ?>
-
 <form action="<?php echo site_url('uji_fungsi_barang/submit_detail_foto'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
@@ -102,5 +98,3 @@
         </div>
     </div>
 </form>
-
-<?php } ?>
