@@ -75,6 +75,7 @@ class Serah_terima_barang extends Telescoope_Controller
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("PENGAWAS");
+        $position3 = $this->Administration_m->getPosition("ADMINISTRATOR");
                         
         if (!empty($search)) {
             $this->db->group_start();
@@ -114,10 +115,16 @@ class Serah_terima_barang extends Telescoope_Controller
         foreach($result as $v) {   
             
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('serah_terima_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="' .  site_url('serah_terima_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
+                        <a href="' .  site_url('serah_terima_barang/update/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
-            
+                    
+            if($position || $position3) {                         
+                $action = '<div class="btn-group" role="group">
+                    <a href="' .  site_url('serah_terima_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="' .  site_url('serah_terima_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
+                </div>';
+            }
+
             $data[] = array(                                
                 "kode_serah_terima" => $v['kode_serah_terima'],
                 "province_name" => $v['province_name'],

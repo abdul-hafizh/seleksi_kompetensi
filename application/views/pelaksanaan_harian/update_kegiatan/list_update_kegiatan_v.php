@@ -33,17 +33,13 @@
                         <thead>
                             <tr>
                                 <th>Kode Kegiatan</th>
+                                <th>Nama Lokasi</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
                                 <th>Tanggal Kegiatan</th>
                                 <th>Foto Registrasi</th>
                                 <th>Foto Pengarahan</th>
                                 <th>Foto Kegiatan Lainnya</th>
-                                <th>Video Kegiatan</th>
-                                <th>Jumlah Peserta Sesi-1</th>
-                                <th>Jumlah Peserta Sesi-2</th>
-                                <th>Jumlah Peserta Sesi-3</th>
-                                <th>Jumlah Peserta Sesi-4</th>
-                                <th>Jumlah Peserta Sesi-5</th>
-                                <th>Jumlah Peserta Sesi-6</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -84,17 +80,13 @@
             scrollX: !0,
             'columns': [
                 { data: 'kode_kegiatan' }, 
+                { data: 'nama_lokasi' }, 
+                { data: 'province_name' }, 
+                { data: 'regency_name' }, 
                 { data: 'tgl_kegiatan' }, 
                 { data: 'foto_registrasi' }, 
                 { data: 'foto_pengarahan' }, 
                 { data: 'foto_kegiatan_lain' },
-                { data: 'video_kegiatan' },
-                { data: 'sesi_1' },
-                { data: 'sesi_2' },
-                { data: 'sesi_3' },
-                { data: 'sesi_4' },
-                { data: 'sesi_5' },
-                { data: 'sesi_6' },
                 { data: 'action' },
             ]            
         });

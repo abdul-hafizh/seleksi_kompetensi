@@ -10,7 +10,7 @@
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Titik Lokasi</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" title="Titik Lokasi" value="<?php echo $detail['kode_kegiatan'] . " • " . $detail['nama_lokasi']; ?>" readonly>
+                                <input type="text" class="form-control" title="Titik Lokasi" value="<?php echo $detail['kode_kegiatan'] . " • " . $detail['nama_lokasi'] . ' (' . $detail['alamat'] . ')'; ?>" readonly>
                             </div>
                         </div>
 

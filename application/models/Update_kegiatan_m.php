@@ -14,11 +14,12 @@ class Update_kegiatan_m extends CI_Model
 	public function getUpdateKegiatan($id = '', $lokasi = '')
 	{
 
-		$this->db->select('uhk.*, jk.kode_kegiatan, lok.nama_lokasi');
+		$this->db->select('uhk.*, jk.kode_kegiatan, lok.nama_lokasi, lok.alamat, ref_locations.*');
 
 		$this->db->from('update_harian_kegiatan as uhk');
 		$this->db->join('jadwal_kegiatan as jk', 'uhk.jadwal_kegiatan_id = jk.id', 'inner');
 		$this->db->join('lokasi_skd as lok', 'lok.id = jk.lokasi_skd_id', 'inner');
+		$this->db->join('ref_locations', 'ref_locations.location_id = lok.lokasi_id', 'left');
 
 		if (!empty($id)) {
 			$this->db->where('uhk.id', $id);

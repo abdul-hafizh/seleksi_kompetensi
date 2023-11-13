@@ -25,7 +25,7 @@ class Update_barang extends Telescoope_Controller
 
         $config['allowed_types'] = '*';
         $config['overwrite'] = false;
-        $config['max_size'] = 3064;
+        $config['max_size'] = 4086;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -51,6 +51,8 @@ class Update_barang extends Telescoope_Controller
     public function index()
     {
         $data = array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
+        
         $this->template("pelaksanaan_harian/update_barang/list_update_barang_v", "Data Update Pengawasan Barang", $data);
     }
 
@@ -104,9 +106,14 @@ class Update_barang extends Telescoope_Controller
         foreach ($result as $v) {
 
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('pelaksanaan_harian/update_barang/edit/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
-                        <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
-                        <a href="' .  site_url('pelaksanaan_harian/update_barang/delete/' . $v['id']) . '" onclick=\'return confirm("Apakah anda yakin?")\' class="btn btn-sm btn-danger">Delete</a></div>';
+                        <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>';
+                        
+            if($position) {
+                $action = '<div class="btn-group" role="group">
+                    <a href="' .  site_url('pelaksanaan_harian/update_barang/edit/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                    <a href="' .  site_url('pelaksanaan_harian/update_barang/delete/' . $v['id']) . '" onclick=\'return confirm("Apakah anda yakin?")\' class="btn btn-sm btn-danger">Delete</a></div>';
+            }
 
             $data[] = array(
                 "kode_penerimaan" => $v['kode_penerimaan'],
@@ -299,7 +306,12 @@ class Update_barang extends Telescoope_Controller
             redirect(site_url('pelaksanaan_harian/update_barang/add'));
         }
 
-        $cek_integrasi = $this->db->select('id')->from('update_harian_barang')->where('penerimaan_id', $post['penerimaan_id'])->get()->num_rows();        
+        $cek_integrasi = $this->db->select('id')->from('update_harian_barang')->where('tgl_update_harian', $post['tgl_update'])->where('penerimaan_id', $post['penerimaan_id'])->get()->num_rows();
+        
+        if ($cek_integrasi > 0) {
+            $this->setMessage("Data update barang sudah pernah diinput.");
+            redirect(site_url('pelaksanaan_harian/update_barang/add'));
+        }
 
         $this->db->trans_begin();
 

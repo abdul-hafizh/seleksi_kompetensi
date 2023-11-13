@@ -108,7 +108,11 @@
                                             <?php if($cek_exist > 0) { ?>
                                                 <a href="<?php echo site_url('uji_fungsi_barang/detail_foto/' . $v['id_detail']); ?>" class="btn btn-sm btn-info">Lihat Foto</a>
                                             <?php } else { ?>
-                                                <a href="<?php echo site_url('uji_fungsi_barang/detail_foto/' . $v['id_detail']); ?>" class="btn btn-sm btn-success">Upload</a>
+                                                <?php if($job_title == 'KOORDINATOR') { ?>
+                                                    <a href="<?php echo site_url('uji_fungsi_barang/detail_foto/' . $v['id_detail']); ?>" class="btn btn-sm btn-success">Upload</a>
+                                                <?php } else { ?>
+                                                    <span class="badge bg-warning">Belum Upload</span>
+                                                <?php } ?>
                                             <?php } ?>
                                         </div>
                                     </td>

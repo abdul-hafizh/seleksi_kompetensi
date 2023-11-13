@@ -34,7 +34,7 @@ class Update_kegiatan extends Telescoope_Controller
 
         $config['allowed_types'] = '*';
         $config['overwrite'] = false;
-        $config['max_size'] = 3064;
+        $config['max_size'] = 4086;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -61,6 +61,7 @@ class Update_kegiatan extends Telescoope_Controller
     public function index()
     {
         $data = array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         $this->template("pelaksanaan_harian/update_kegiatan/list_update_kegiatan_v", "Data Update Kegiatan", $data);
     }
@@ -87,6 +88,7 @@ class Update_kegiatan extends Telescoope_Controller
         $this->db->limit($rowperpage, $row);
         
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("ADMINISTRATOR");
 
         if($position) {
             $lokasi = $this->data['userdata']['lokasi_skd_id'];
@@ -111,12 +113,21 @@ class Update_kegiatan extends Telescoope_Controller
         foreach ($result as $v) {
 
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/update/' . $v['id']) . '" class="btn btn-sm btn-warning" disabled>Edit</a>
-                        <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary" disabled>Detail</a>
+                        <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
+                    
+            if($position || $position2) {                        
+                $action = '<div class="btn-group" role="group">
+                        <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                    </div>';
+            }
 
             $data[] = array(
                 "kode_kegiatan" => $v['kode_kegiatan'],
+                "nama_lokasi" => $v['nama_lokasi'],
+                "province_name" => $v['province_name'],
+                "regency_name" => $v['regency_name'],
                 "tgl_kegiatan" => $v['tgl_kegiatan'],
                 "foto_registrasi" => "<div class=\"avatar-group\">
                         <a href=\"" . base_url('uploads/update_kegiatan/' . $v['foto_registrasi']) . "\" target=\"_blank\" class=\"avatar-group-item\" data-img=\"" . base_url('uploads/update_kegiatan/' . $v['foto_registrasi']) . "\" data-bs-toggle=\"tooltip\" data-bs-trigger=\"hover\" data-bs-placement=\"top\" title=\"Foto Registrasi\">
@@ -133,17 +144,6 @@ class Update_kegiatan extends Telescoope_Controller
                             <img src=\"" . base_url('uploads/update_kegiatan/' . $v['foto_kegiatan_lain']) . "\" alt=\"\" class=\"rounded-circle avatar-xxs\">
                         </a>
                     </div>",
-                "video_kegiatan" => "<div class=\"avatar-group\">
-                        <a href=\"" . base_url('uploads/update_kegiatan/' . $v['video_kegiatan']) . "\" target=\"_blank\" class=\"avatar-group-item\" data-img=\"" . base_url('uploads/update_kegiatan/' . $v['video_kegiatan']) . "\" data-bs-toggle=\"tooltip\" data-bs-trigger=\"hover\" data-bs-placement=\"top\" title=\"Video Kegiatan\">
-                            " . $v['video_kegiatan'] . "
-                        </a>
-                    </div>",
-                "sesi_1" => $v['sesi_1'],
-                "sesi_2" => $v['sesi_2'],
-                "sesi_3" => $v['sesi_3'],
-                "sesi_4" => $v['sesi_4'],
-                "sesi_5" => $v['sesi_5'],
-                "sesi_6" => $v['sesi_6'],
                 "action" => $action
             );
         }

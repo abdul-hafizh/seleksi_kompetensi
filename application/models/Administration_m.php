@@ -389,7 +389,7 @@ class Administration_m extends CI_Model
 		return $this->db->get('adm_employee');
 	}
 
-	public function getTotalUserPosisi($provinsi = '', $kabupaten = '', $kode_lokasi_skd = '', $posisi)
+	public function getTotalUserPosisi($provinsi = '', $kabupaten = '', $kode_lokasi_skd = '', $posisi = '')
 	{
 		$user = $this->session->userdata();
 		$user_pos = $user['adm_pos_id'];

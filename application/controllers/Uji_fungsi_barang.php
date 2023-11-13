@@ -59,7 +59,6 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
     public function index(){
         $data = array();
-
         $data['job_title'] = $this->data['userdata']['job_title'];
 
         $this->template("uji_fungsi_barang/list_uji_fungsi_barang_v", "Data Uji Fungsi Barang", $data);
@@ -70,6 +69,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("PENGAWAS");
+        $position3 = $this->Administration_m->getPosition("ADMINISTRATOR");
         
         $draw = $post['draw'];
         $row = $post['start'];
@@ -116,9 +116,16 @@ class Uji_fungsi_barang extends Telescoope_Controller
         foreach($result as $v) {   
             
             $action = '<div class="btn-group" role="group">
+                        <a href="' .  site_url('uji_fungsi_barang/upload_foto/' . $v['id_uji']) . '" class="btn btn-sm btn-primary">Detail</a>
+                    </div>';
+
+                    
+            if($position || $position3) {
+                $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('uji_fungsi_barang/upload_foto/' . $v['id_uji']) . '" class="btn btn-sm btn-success">Upload Foto</a>
                         <a href="' .  site_url('uji_fungsi_barang/delete/' . $v['id_uji']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
+            }
             
             $data[] = array(                                
                 "kode_uji" => $v['kode_uji'],
@@ -167,7 +174,8 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $data['get_uji'] = $this->Uji_fungsi_barang_m->getUji($id)->row_array();
         $data['get_detail'] = $this->Uji_fungsi_barang_m->getDetail($id)->result_array();
-        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();        
+        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();  
+        $data['job_title'] = $this->data['userdata']['job_title'];      
 
         if($position) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
@@ -185,6 +193,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $data['get_uji'] = $this->Uji_fungsi_barang_m->getUji($id)->row_array();
         $data['get_detail'] = $this->Uji_fungsi_barang_m->getDetail($id, 'Non-IT')->result_array();
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         if($position || $position2) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
@@ -197,6 +206,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $data = array();
         $data['get_detail'] = $this->Uji_fungsi_barang_m->getDetailFoto($id)->row_array();
         $data['get_foto'] = $this->Uji_fungsi_barang_m->getDetailFotoUploaded($id)->result_array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         $this->template("uji_fungsi_barang/detail_upload_uji_fungsi_barang_v", "Upload Foto Uji Fungsi Barang", $data);
     }
