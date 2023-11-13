@@ -170,6 +170,7 @@
 				dataType: "json",
 				success: function (data) {
 					lokasi_skd_id = '<option value="">Pilih Lokasi</option>';
+                    lokasi_skd_id += '<option value="0">Semua Lokasi</option>';
 					$.each(data, function (i, item) {   
 						lokasi_skd_id += '<option value="' + item.id +'">' + item.kode_lokasi + ' | ' + item.nama_lokasi + "</option>";
 					});
