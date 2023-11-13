@@ -69,6 +69,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $post = $this->input->post();    
         
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
         
         $draw = $post['draw'];
         $row = $post['start'];
@@ -89,7 +90,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $result = $this->Uji_fungsi_barang_m->getUji()->result_array();
 
-        if($position) {
+        if($position || $position2) {
             $result = $this->Uji_fungsi_barang_m->getUji("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
 
@@ -103,7 +104,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $count = $this->Uji_fungsi_barang_m->getUji()->num_rows();
 
-        if($position) {
+        if($position || $position2) {
             $count = $this->Uji_fungsi_barang_m->getUji("", $this->data['userdata']['lokasi_skd_id'])->num_rows();
         }
 
@@ -146,10 +147,11 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $data = array();        
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
 
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();        
 
-        if($position) {
+        if($position || $position2) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->row_array();
         } else {
             $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
@@ -178,12 +180,13 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $data = array();        
         
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
 
         $data['get_uji'] = $this->Uji_fungsi_barang_m->getUji($id)->row_array();
         $data['get_detail'] = $this->Uji_fungsi_barang_m->getDetail($id, 'Non-IT')->result_array();
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
 
-        if($position) {
+        if($position || $position2) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
 

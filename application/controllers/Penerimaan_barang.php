@@ -61,12 +61,14 @@ class Penerimaan_barang extends Telescoope_Controller
         $data = array();
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
+
         $cek_integrasi = $this->db->select('id')->from('penerimaan_barang')->where('created_by', $this->data['userdata']['employee_id'])->get()->num_rows();
 
         $data['cek_data'] = 0;    
         $data['job_title'] = $this->data['userdata']['job_title'];
         
-        if($position) {
+        if($position || $position2) {
             $data['cek_data'] = $cek_integrasi;
         }
 
@@ -77,6 +79,7 @@ class Penerimaan_barang extends Telescoope_Controller
         $post = $this->input->post();    
         
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
         
         $draw = $post['draw'];
         $row = $post['start'];
@@ -98,7 +101,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $result = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
 
-        if($position) {
+        if($position || $position2) {
             $result = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
 
@@ -113,7 +116,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $count = $this->Penerimaan_barang_m->getPenerimaan_barang()->num_rows();
 
-        if($position) {
+        if($position || $position2) {
             $count = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->num_rows();
         }
 
@@ -128,7 +131,7 @@ class Penerimaan_barang extends Telescoope_Controller
 
             $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approved</span>';
 
-            if($position) {
+            if($position || $position2) {
                 $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
             }
             
@@ -171,10 +174,11 @@ class Penerimaan_barang extends Telescoope_Controller
         $data = array();        
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
 
         $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang()->result_array();        
 
-        if($position) {
+        if($position || $position2) {
             $data['get_pengiriman'] = $this->Pengiriman_barang_m->getPengiriman_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         } else {
             $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
@@ -187,12 +191,13 @@ class Penerimaan_barang extends Telescoope_Controller
         $data = array();        
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
 
         $data['get_role'] = $position;
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
         $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
 
-        if($position) {
+        if($position || $position2) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
             $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
         }        

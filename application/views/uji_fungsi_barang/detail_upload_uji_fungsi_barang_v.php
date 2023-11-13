@@ -75,7 +75,7 @@
                                     <label class="form-label">Uplaod Foto Barang ke - <?php echo $i; ?></label>
                                 </div>
                                 <div class="col-lg-4">
-                                    <input id="foto_barang" name="foto_barang[]" type="file" class="form-control" required>
+                                    <input id="foto_barang" name="foto_barang[]" type="file" class="form-control">
                                 </div>
                                 <div class="col-lg-4">
                                     <input id="catatan_foto" name="catatan_foto[]" type="text" class="form-control" placeholder="Keterangan Foto ke - <?php echo $i; ?>">

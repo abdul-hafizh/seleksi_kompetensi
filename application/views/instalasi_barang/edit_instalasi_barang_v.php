@@ -112,7 +112,7 @@
                                         <td><?php echo $v['jumlah_kirim'];?></td>
                                         <td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" placeholder="Jumlah Terima" value="<?php echo $v['jumlah_terima'];?>" readonly></td>
                                         <td style="display:none"><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" placeholder="Jumlah Rusak" value="<?php echo $v['jumlah_rusak'];?>" readonly></td>
-                                        <td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" value="<?php echo $v['jumlah_terpasang'];?>" readonly></td>
+                                        <td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" value="<?php echo $v['jumlah_terpasang'];?>"></td>
                                         <td>
                                             <div class="avatar-group">
                                                 <?php

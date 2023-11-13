@@ -59,6 +59,7 @@ class Serah_terima_barang extends Telescoope_Controller
 
     public function index(){
         $data = array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         $this->template("serah_terima_barang/list_serah_terima_barang_v", "Data Serah Terima Barang", $data);
     }
@@ -71,6 +72,9 @@ class Serah_terima_barang extends Telescoope_Controller
         $search = $post['search']['value']; 
         $columnIndex = $post['order'][0]['column'];
         $columnName = $post['columns'][$columnIndex]['data'];
+
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
                         
         if (!empty($search)) {
             $this->db->group_start();
@@ -83,6 +87,10 @@ class Serah_terima_barang extends Telescoope_Controller
         $this->db->limit($rowperpage, $row);
 
         $result = $this->Serah_terima_barang_m->getDismantle()->result_array();
+        
+        if($position || $position2) {
+            $result = $this->Serah_terima_barang_m->getDismantle("", $this->data['userdata']['lokasi_skd_id'])->result_array();
+        }
 
         if (!empty($search)) {
             $this->db->group_start();
@@ -93,6 +101,10 @@ class Serah_terima_barang extends Telescoope_Controller
         }
 
         $count = $this->Serah_terima_barang_m->getDismantle()->num_rows();
+        
+        if($position || $position2) { 
+            $count = $this->Serah_terima_barang_m->getDismantle("", $this->data['userdata']['lokasi_skd_id'])->num_rows();
+        }
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;
@@ -130,7 +142,13 @@ class Serah_terima_barang extends Telescoope_Controller
     
     public function add(){
         $data = array();        
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
+
         $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi()->result_array();
+        if($position || $position2) {
+            $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi($this->data['userdata']['lokasi_skd_id'])->result_array();
+        }
         
         $this->template("serah_terima_barang/add_serah_terima_barang_v", "Tambah Serah Terima Barang", $data);
     }
