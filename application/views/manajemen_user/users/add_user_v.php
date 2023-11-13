@@ -121,8 +121,7 @@
 				method: "post",
 				dataType: "json",
 				success: function (data) {
-					kabupaten = '<option value="">Pilih Kabupaten</option>';                    
-                    kabupaten += '<option value="0">Semua Lokasi</option>';
+					kabupaten = '<option value="">Pilih Kabupaten</option>';                                        
 					$.each(data, function (i, item) {   
 						kabupaten += '<option value="' + item.location_id +'">' + item.regency_name + "</option>";
 					});                    
