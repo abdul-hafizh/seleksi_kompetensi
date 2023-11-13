@@ -311,14 +311,6 @@ class Uji_fungsi_barang extends Telescoope_Controller
         
         $dir = './uploads/' . $this->data['dir'];
 
-        $cek_integrasi = $this->db->select('id')->from('uji_detail_foto')->where('uji_detail_id', $post['detail_id'])->get()->num_rows();
-
-        if ($cek_integrasi > 0) {
-            $this->setMessage("Data foto sudah pernah diinput.");
-            $this->db->trans_rollback();
-            redirect(site_url('uji_fungsi_barang/upload_foto/' . $post['uji_penerimaan_id']));
-        }
-
         if (!empty($_FILES['foto_barang']['name'])) {
             $data_insert = array();
         

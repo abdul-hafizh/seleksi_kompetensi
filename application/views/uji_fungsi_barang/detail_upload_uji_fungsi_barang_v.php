@@ -68,7 +68,7 @@
                         <?php for ($i = 1; $i <= (int)$get_detail['jumlah_terima']; $i++) { ?>
                             <div class="row mb-3">
                                 <div class="col-lg-2">
-                                    <label class="form-label">Uplaod Foto Barang ke - <?php echo $i; ?></label>
+                                    <label class="form-label">Upload Foto Barang ke - <?php echo $i; ?></label>
                                 </div>
                                 <div class="col-lg-4">
                                     <input id="foto_barang" name="foto_barang[]" type="file" class="form-control">

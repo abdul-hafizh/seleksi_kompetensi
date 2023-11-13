@@ -299,12 +299,7 @@ class Update_barang extends Telescoope_Controller
             redirect(site_url('pelaksanaan_harian/update_barang/add'));
         }
 
-        $cek_integrasi = $this->db->select('id')->from('update_harian_barang')->where('penerimaan_id', $post['penerimaan_id'])->get()->num_rows();
-        
-        if ($cek_integrasi > 0) {
-            $this->setMessage("Data update barang sudah pernah diinput.");
-            redirect(site_url('pelaksanaan_harian/update_barang/add'));
-        }
+        $cek_integrasi = $this->db->select('id')->from('update_harian_barang')->where('penerimaan_id', $post['penerimaan_id'])->get()->num_rows();        
 
         $this->db->trans_begin();
 
