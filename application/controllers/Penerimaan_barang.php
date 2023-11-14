@@ -148,10 +148,11 @@ class Penerimaan_barang extends Telescoope_Controller
                     </div>';
             }
 
-            if($v['status'] == 'Approved') {
+            if($position2) {
                 $action = '<div class="btn-group" role="group">
-                    <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
-                </div>';
+                        <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="' .  site_url('penerimaan_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                    </div>';
             }
             
             $data[] = array(                                

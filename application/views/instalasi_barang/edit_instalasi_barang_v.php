@@ -40,7 +40,7 @@
                             <label class="form-label">Tanggal Terima</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="date" class="form-control" name="tgl_terima" placeholder="Tanggal Terima" value="<?php echo $get_penerimaan['tgl_terima']; ?>" required>
+                            <input type="date" class="form-control" name="tgl_terima" placeholder="Tanggal Terima" value="<?php echo $get_penerimaan['tgl_terima']; ?>" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@
                         <div class="col-lg-8">
                             <input type="hidden" name="id" value="<?php echo $get_penerimaan['id']; ?>" readonly>
                             <input type="hidden" name="pengiriman_id" value="<?php echo $get_penerimaan['pengiriman_id']; ?>" readonly>
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"><?php echo $get_penerimaan['catatan']; ?></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>><?php echo $get_penerimaan['catatan']; ?></textarea>
                         </div>
                     </div>                    
                 </div>
@@ -112,7 +112,7 @@
                                         <td><?php echo $v['jumlah_kirim'];?></td>
                                         <td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" placeholder="Jumlah Terima" value="<?php echo $v['jumlah_terima'];?>" readonly></td>
                                         <td style="display:none"><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" placeholder="Jumlah Rusak" value="<?php echo $v['jumlah_rusak'];?>" readonly></td>
-                                        <td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" value="<?php echo $v['jumlah_terpasang'];?>" <?php $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>></td>
+                                        <td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" value="<?php echo $v['jumlah_terpasang'];?>" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>></td>
                                         <td>
                                             <div class="avatar-group">
                                                 <?php
@@ -128,7 +128,7 @@
                                         <td>
                                             <div class="row">
                                                 <div class="col-md-9">
-                                                    <input id="foto_barang_terpasang" name="foto_barang_terpasang[]" type="file" class="form-control" data-row="<?php echo $no;?>" <?php $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
+                                                    <input id="foto_barang_terpasang" name="foto_barang_terpasang[]" type="file" class="form-control" data-row="<?php echo $no;?>" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                                                 </div>
                                                 <?php if(isset($v['foto_barang_terpasang'])) { ?>
                                                     <div class="col-md-2">

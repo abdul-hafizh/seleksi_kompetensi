@@ -40,7 +40,7 @@
                             <label class="form-label">Tanggal Terima</label>
                         </div>
                         <div class="col-lg-3">       
-                            <input type="date" class="form-control" name="tgl_terima" placeholder="Tanggal Terima" value="<?php echo $get_penerimaan['tgl_terima']; ?>" required>
+                            <input type="date" class="form-control" name="tgl_terima" placeholder="Tanggal Terima" value="<?php echo $get_penerimaan['tgl_terima']; ?>" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@
                         <div class="col-lg-8">
                             <input type="hidden" name="id" value="<?php echo $get_penerimaan['id']; ?>" readonly>
                             <input type="hidden" name="pengiriman_id" value="<?php echo $get_penerimaan['pengiriman_id']; ?>" readonly>
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"><?php echo $get_penerimaan['catatan']; ?></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>><?php echo $get_penerimaan['catatan']; ?></textarea>
                         </div>
                     </div>                    
                 </div>
@@ -125,7 +125,7 @@
                                                 </a>
                                             </div>
                                         </td>
-                                        <td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="<?php echo $no;?>" <?php $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>></td>
+                                        <td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="<?php echo $no;?>" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>></td>
                                         <td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 50px; max-height: 50px;"></td>
                                         <td style="display:none"><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
                                         <td style="display:none"><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
