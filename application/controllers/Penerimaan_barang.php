@@ -203,6 +203,7 @@ class Penerimaan_barang extends Telescoope_Controller
         $data['get_role'] = $position;
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
         $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         if($position || $position2) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();

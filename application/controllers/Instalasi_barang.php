@@ -59,6 +59,7 @@ class Instalasi_barang extends Telescoope_Controller
 
     public function index(){
         $data = array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         $this->template("instalasi_barang/list_instalasi_barang_v", "Data Instalasi Barang", $data);
     }
@@ -125,15 +126,23 @@ class Instalasi_barang extends Telescoope_Controller
             
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('instalasi_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
-                        <a href="' .  site_url('instalasi_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="' .  site_url('instalasi_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
+                    
+            if($position || $position2) {
 
-            if($v['status'] == 'Approved') {
                 $action = '<div class="btn-group" role="group">
                     <a href="' .  site_url('instalasi_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
-                </div>';
-            }
+                    <a href="' .  site_url('instalasi_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="' .  site_url('instalasi_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
+                </div>';                
+
+                if($position2) {
+                    $action = '<div class="btn-group" role="group">
+                        <a href="' .  site_url('instalasi_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        <a href="' .  site_url('instalasi_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                    </div>';                
+                }
+            }            
             
             $data[] = array(                                
                 "kode_penerimaan" => $v['kode_penerimaan'],
@@ -167,6 +176,7 @@ class Instalasi_barang extends Telescoope_Controller
         $data['get_role'] = $position;
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();
         $data['get_detail'] = $this->Penerimaan_barang_m->getDetail($id)->result_array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         if($position || $position2) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang($id)->row_array();

@@ -77,18 +77,21 @@ class Update_kegiatan extends Telescoope_Controller
         $search = $post['search']['value'];
         $columnIndex = $post['order'][0]['column'];
         $columnName = $post['columns'][$columnIndex]['data'];
+        
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("ADMINISTRATOR");
 
         if (!empty($search)) {
             $this->db->group_start();
             $this->db->like('kode_kegiatan', $search);
             $this->db->or_like('tgl_kegiatan', $search);
+            $this->db->or_like('province_name', $search);
+            $this->db->or_like('regency_name', $search);
+            $this->db->or_like('nama_lokasi', $search);
             $this->db->group_end();
         }
 
-        $this->db->limit($rowperpage, $row);
-        
-        $position = $this->Administration_m->getPosition("KOORDINATOR");
-        $position2 = $this->Administration_m->getPosition("ADMINISTRATOR");
+        $this->db->limit($rowperpage, $row);        
 
         if($position) {
             $lokasi = $this->data['userdata']['lokasi_skd_id'];
@@ -100,6 +103,9 @@ class Update_kegiatan extends Telescoope_Controller
             $this->db->group_start();
             $this->db->like('kode_kegiatan', $search);
             $this->db->or_like('tgl_kegiatan', $search);
+            $this->db->or_like('province_name', $search);
+            $this->db->or_like('regency_name', $search);
+            $this->db->or_like('nama_lokasi', $search);
             $this->db->group_end();
         }
 

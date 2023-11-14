@@ -75,6 +75,7 @@
         </div>
     </div>
 
+    <?php if($job_title == 'KOORDINATOR') { ?>
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -159,6 +160,7 @@
             </div>
         </div>
     </div>
+    <?php } ?>
 
     <div class="row mt-2">
         <div class="col-lg-12">

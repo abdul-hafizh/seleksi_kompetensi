@@ -60,6 +60,8 @@ class Update_barang extends Telescoope_Controller
     {
         $post = $this->input->post();
 
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+
         $lokasi = '';
         $draw = $post['draw'];
         $row = $post['start'];
@@ -78,8 +80,6 @@ class Update_barang extends Telescoope_Controller
         }
 
         $this->db->limit($rowperpage, $row);
-
-        $position = $this->Administration_m->getPosition("KOORDINATOR");
 
         if($position) {
             $lokasi = $this->data['userdata']['lokasi_skd_id'];
