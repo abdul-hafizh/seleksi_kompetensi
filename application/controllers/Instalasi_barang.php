@@ -33,7 +33,7 @@ class Instalasi_barang extends Telescoope_Controller
 
         $config['allowed_types'] = '*';
         $config['overwrite'] = false;
-        $config['max_size'] = 3064;
+        $config['max_size'] = 4064;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -220,7 +220,7 @@ class Instalasi_barang extends Telescoope_Controller
                     $file_name = isset($_FILES['foto_barang_terpasang']['name'][$key]) ? $_FILES['foto_barang_terpasang']['name'][$key] : '';
 
                     if (!empty($file_name)) {
-                        $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
+                        $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . $key+1 . '_' . date('His') . '_' . $file_name;
                         $_FILES['file']['type'] = $_FILES['foto_barang_terpasang']['type'][$key];
                         $_FILES['file']['tmp_name'] = $_FILES['foto_barang_terpasang']['tmp_name'][$key];
                         $_FILES['file']['error'] = $_FILES['foto_barang_terpasang']['error'][$key];

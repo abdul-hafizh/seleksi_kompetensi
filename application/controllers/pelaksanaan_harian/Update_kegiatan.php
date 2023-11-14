@@ -218,7 +218,7 @@ class Update_kegiatan extends Telescoope_Controller
         if ($sesi_6 !== '') array_push($sesi, $sesi_6);
 
         if (!empty($_FILES['foto_registrasi']['name'])) {
-            $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fregistrasi_' . date('Ymdhis') . '_' . $_FILES['foto_registrasi']['name'];
+            $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fregistrasi_1' . date('Ymdhis') . '_' . $_FILES['foto_registrasi']['name'];
             $_FILES['file']['type'] = $_FILES['foto_registrasi']['type'];
             $_FILES['file']['tmp_name'] = $_FILES['foto_registrasi']['tmp_name'];
             $_FILES['file']['error'] = $_FILES['foto_registrasi']['error'];
@@ -229,7 +229,7 @@ class Update_kegiatan extends Telescoope_Controller
         }
 
         if (!empty($_FILES['foto_pengarahan']['name'])) {
-            $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fpengarahan_' . date('Ymdhis') . '_' . $_FILES['foto_pengarahan']['name'];
+            $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fpengarahan_2' . date('Ymdhis') . '_' . $_FILES['foto_pengarahan']['name'];
             $_FILES['file']['type'] = $_FILES['foto_pengarahan']['type'];
             $_FILES['file']['tmp_name'] = $_FILES['foto_pengarahan']['tmp_name'];
             $_FILES['file']['error'] = $_FILES['foto_pengarahan']['error'];
@@ -240,7 +240,7 @@ class Update_kegiatan extends Telescoope_Controller
         }
 
         if (!empty($_FILES['foto_kegiatan_lain']['name'])) {
-            $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fkegiatan_lain_' . date('Ymdhis') . '_' . $_FILES['foto_kegiatan_lain']['name'];
+            $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fkegiatan_lain_3' . date('Ymdhis') . '_' . $_FILES['foto_kegiatan_lain']['name'];
             $_FILES['file']['type'] = $_FILES['foto_kegiatan_lain']['type'];
             $_FILES['file']['tmp_name'] = $_FILES['foto_kegiatan_lain']['tmp_name'];
             $_FILES['file']['error'] = $_FILES['foto_kegiatan_lain']['error'];
@@ -251,7 +251,7 @@ class Update_kegiatan extends Telescoope_Controller
         }
 
         if (!empty($_FILES['video_kegiatan']['name'])) {
-            $_FILES['file']['name'] = $jadwal_kegiatan_id . '_vkegiatan_' . date('Ymdhis') . '_' . $_FILES['video_kegiatan']['name'];
+            $_FILES['file']['name'] = $jadwal_kegiatan_id . '_vkegiatan_4' . date('Ymdhis') . '_' . $_FILES['video_kegiatan']['name'];
             $_FILES['file']['type'] = $_FILES['video_kegiatan']['type'];
             $_FILES['file']['tmp_name'] = $_FILES['video_kegiatan']['tmp_name'];
             $_FILES['file']['error'] = $_FILES['video_kegiatan']['error'];

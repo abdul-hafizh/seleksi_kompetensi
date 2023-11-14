@@ -13,7 +13,7 @@
     </div>
 <?php } $this->session->unset_userdata('message'); ?>
 
-<form action="<?php echo site_url('instalasi_barang/submit_update'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+<form action="<?php echo site_url('instalasi_barang/submit_update'); ?>" method="POST" id="basic-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -132,10 +132,15 @@
                                                 </div>
                                                 <?php if(isset($v['foto_barang_terpasang'])) { ?>
                                                     <div class="col-md-2">
+                                                        <?php
+                                                            $foto_barang_install = $v['foto_barang_terpasang'];
+                                                            $image_url_install = base_url('uploads/instalasi_barang/' . $foto_barang_install);
+                                                            if (empty($foto_barang_install)) { $image_url_install = base_url('assets/images/noimage.jpeg'); }
+                                                        ?>
                                                         <div class="avatar-group">
-                                                        <a href="<?php echo base_url('uploads/instalasi_barang/' . $v['foto_barang_terpasang']); ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/instalasi_barang/' . $v['foto_barang_terpasang']); ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
-                                                            <img src="<?php echo base_url('uploads/instalasi_barang/' . $v['foto_barang_terpasang']); ?>" alt="" class="rounded-circle avatar-xxs">
-                                                        </a>
+                                                            <a href="<?php echo $image_url_install; ?>" target="_blank" class="avatar-group-item" data-img="<?php echo $image_url_install; ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Foto Barang">
+                                                                <img src="<?php echo $image_url_install; ?>" alt="" class="rounded-circle avatar-xxs">
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 <?php } ?>

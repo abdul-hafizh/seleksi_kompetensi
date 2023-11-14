@@ -270,7 +270,7 @@ class Penerimaan_barang extends Telescoope_Controller
                     
                     $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
 
-                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_terima_' . date('His') . '_' . $file_name;
+                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_terima_' . $key+1 . '_' . date('His') . '_' . $file_name;
                     $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
                     $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
                     $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
@@ -360,7 +360,7 @@ class Penerimaan_barang extends Telescoope_Controller
                     $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
 
                     if (!empty($file_name)) {
-                        $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . date('His') . '_' . $file_name;
+                        $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . $key+1 . '_' . date('His') . '_' . $file_name;
                         $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
                         $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
                         $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];

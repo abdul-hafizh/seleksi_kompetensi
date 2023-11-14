@@ -222,7 +222,7 @@ class Update_barang extends Telescoope_Controller
 
                     $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
                     
-                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . date('YmdHis') . '_' . $file_name;
+                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . $key+1 . '_' . date('YmdHis') . '_' . $file_name;
                     $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
                     $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
                     $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
@@ -343,7 +343,7 @@ class Update_barang extends Telescoope_Controller
 
                     $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
 
-                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . date('YmdHis') . '_' . $file_name;
+                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . $key+1 . '_' . date('YmdHis') . '_' . $file_name;
                     $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
                     $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
                     $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
