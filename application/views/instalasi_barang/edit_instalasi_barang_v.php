@@ -75,7 +75,6 @@
         </div>
     </div>
 
-    <?php if($job_title == 'KOORDINATOR') { ?>
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -113,7 +112,7 @@
                                         <td><?php echo $v['jumlah_kirim'];?></td>
                                         <td><input id="jumlah_terima" name="jumlah_terima[]" type="number" min="0" class="form-control" placeholder="Jumlah Terima" value="<?php echo $v['jumlah_terima'];?>" readonly></td>
                                         <td style="display:none"><input id="jumlah_rusak" name="jumlah_rusak[]" type="number" min="0" class="form-control" placeholder="Jumlah Rusak" value="<?php echo $v['jumlah_rusak'];?>" readonly></td>
-                                        <td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" value="<?php echo $v['jumlah_terpasang'];?>"></td>
+                                        <td><input id="jumlah_terpasang" name="jumlah_terpasang[]" type="number" min="0" class="form-control" placeholder="Jumlah Terpasang" value="<?php echo $v['jumlah_terpasang'];?>" <?php $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>></td>
                                         <td>
                                             <div class="avatar-group">
                                                 <?php
@@ -129,7 +128,7 @@
                                         <td>
                                             <div class="row">
                                                 <div class="col-md-9">
-                                                    <input id="foto_barang_terpasang" name="foto_barang_terpasang[]" type="file" class="form-control" data-row="<?php echo $no;?>">
+                                                    <input id="foto_barang_terpasang" name="foto_barang_terpasang[]" type="file" class="form-control" data-row="<?php echo $no;?>" <?php $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                                                 </div>
                                                 <?php if(isset($v['foto_barang_terpasang'])) { ?>
                                                     <div class="col-md-2">
@@ -160,7 +159,6 @@
             </div>
         </div>
     </div>
-    <?php } ?>
 
     <div class="row mt-2">
         <div class="col-lg-12">

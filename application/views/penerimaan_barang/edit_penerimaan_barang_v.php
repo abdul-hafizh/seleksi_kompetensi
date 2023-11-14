@@ -75,7 +75,6 @@
         </div>
     </div>
 
-    <?php if($job_title == 'KOORDINATOR') { ?>
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -126,7 +125,7 @@
                                                 </a>
                                             </div>
                                         </td>
-                                        <td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="<?php echo $no;?>"></td>
+                                        <td><input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="<?php echo $no;?>" <?php $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>></td>
                                         <td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 50px; max-height: 50px;"></td>
                                         <td style="display:none"><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>
                                         <td style="display:none"><input id="detail_id" name="detail_id[]" type="hidden" value="<?php echo $v['id'];?>"></td>
@@ -140,7 +139,6 @@
             </div>
         </div>
     </div>
-    <?php } ?>
 
     <div class="row mt-2">
         <div class="col-lg-12">
