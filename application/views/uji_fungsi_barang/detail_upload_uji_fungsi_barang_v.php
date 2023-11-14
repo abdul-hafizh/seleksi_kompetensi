@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <?php if($job_title == 'KOORDINATOR') { ?>
+        <?php if($job_title == 'KOORDINATOR' && $get_detail['status_uji'] == 'Pending') { ?>
         <div class="row mt-2">
             <div class="col-lg-12">
                 <div class="card">
@@ -60,13 +60,13 @@
     </form>
 <?php } ?>
 
-<?php if($job_title == 'KOORDINATOR') { ?>
+<?php if($job_title == 'KOORDINATOR' && $get_detail['status_uji'] == 'Pending') { ?>
     <form action="<?php echo site_url('uji_fungsi_barang/submit_detail_foto'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Upload Foto Barang</h5>
+                        <h5 class="card-title mb-0">Tambah Foto Barang</h5>
                     </div>
                     <div class="card-body">
                         <div class="row mb-3 p-3">
@@ -104,7 +104,19 @@
             </div>
         </div>
     </form>
-<?php } ?>
+<?php } else {?>
+    <div class="row mt-2">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">                    
+                    <div class="text-center">
+                        <h3>Belum ada foto.</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php }?>
 
 <script>    
     $(document).ready(function () {                

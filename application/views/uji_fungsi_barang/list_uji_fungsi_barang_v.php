@@ -41,6 +41,7 @@
                                 <th>Nama Lokasi</th>
                                 <th>Tanggal Terima</th>
                                 <th>Tanggal Uji</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -87,6 +88,7 @@
                 { data: 'nama_lokasi' }, 
                 { data: 'tgl_terima' },
                 { data: 'tgl_uji' },
+                { data: 'status' },
                 { data: 'action' },
             ]            
         });

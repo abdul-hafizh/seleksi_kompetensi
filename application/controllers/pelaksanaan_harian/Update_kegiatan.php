@@ -80,6 +80,7 @@ class Update_kegiatan extends Telescoope_Controller
         
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("ADMINISTRATOR");
+        $position3 = $this->Administration_m->getPosition("PENGAWAS");
 
         if (!empty($search)) {
             $this->db->group_start();
@@ -93,7 +94,7 @@ class Update_kegiatan extends Telescoope_Controller
 
         $this->db->limit($rowperpage, $row);        
 
-        if($position) {
+        if($position || $position3) {
             $lokasi = $this->data['userdata']['lokasi_skd_id'];
         }
 
@@ -121,13 +122,31 @@ class Update_kegiatan extends Telescoope_Controller
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
+
+            $status = $v['status_kegiatan'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approved</span>';
                     
-            if($position || $position2) {                        
+            if($position) {
+                
+                $status = $v['status_kegiatan'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
+
                 $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                         <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
+                    
+                if($v['status_kegiatan'] == 'Approved'){
+                    $action = '<div class="btn-group" role="group">
+                            <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                        </div>';
+                }
             }
+
+            if($position2) {
+                $action = '<div class="btn-group" role="group">
+                        <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                    </div>';
+            }            
 
             $data[] = array(
                 "kode_kegiatan" => $v['kode_kegiatan'],
@@ -135,6 +154,7 @@ class Update_kegiatan extends Telescoope_Controller
                 "province_name" => $v['province_name'],
                 "regency_name" => $v['regency_name'],
                 "tgl_kegiatan" => $v['tgl_kegiatan'],
+                "status" => $status,
                 "foto_registrasi" => "<div class=\"avatar-group\">
                         <a href=\"" . base_url('uploads/update_kegiatan/' . $v['foto_registrasi']) . "\" target=\"_blank\" class=\"avatar-group-item\" data-img=\"" . base_url('uploads/update_kegiatan/' . $v['foto_registrasi']) . "\" data-bs-toggle=\"tooltip\" data-bs-trigger=\"hover\" data-bs-placement=\"top\" title=\"Foto Registrasi\">
                             <img src=\"" . base_url('uploads/update_kegiatan/' . $v['foto_registrasi']) . "\" alt=\"\" class=\"rounded-circle avatar-xxs\">
@@ -194,6 +214,7 @@ class Update_kegiatan extends Telescoope_Controller
         $lokasi = $this->data['userdata']['lokasi_skd_id'];
         $data['get_jadwal_kegiatan'] = $this->Update_kegiatan_m->getJadwalKegiatan($lokasi)->result_array();
         $data['selected'] = $this->Update_kegiatan_m->getUpdateKegiatan($id)->row_array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         if(!$position) {            
             $this->noAccess("Hanya koordinator yang dapat melakukan ubah data.");
@@ -204,11 +225,11 @@ class Update_kegiatan extends Telescoope_Controller
 
     public function submit()
     {
-
         $post = $this->input->post();
         $id = $this->input->post('id');
         $jadwal_kegiatan_id = $this->input->post('jadwal_kegiatan_id');
         $tgl_kegiatan = $this->input->post('tgl_kegiatan');
+        $status_kegiatan = $this->input->post('status_kegiatan');
         $sesi_1 = $this->input->post('sesi_1');
         $sesi_2 = $this->input->post('sesi_2');
         $sesi_3 = $this->input->post('sesi_3');
@@ -278,6 +299,7 @@ class Update_kegiatan extends Telescoope_Controller
             $data = array(
                 "jadwal_kegiatan_id" => $jadwal_kegiatan_id,
                 "tgl_kegiatan" => $tgl_kegiatan,
+                "status_kegiatan" => $status_kegiatan,
                 'updated_by' => $this->data['userdata']['employee_id'],
                 'updated_at' => date('Y-m-d H:i:s'),
             );
@@ -298,6 +320,7 @@ class Update_kegiatan extends Telescoope_Controller
             $data = array(
                 "jadwal_kegiatan_id" => $jadwal_kegiatan_id,
                 "tgl_kegiatan" => $tgl_kegiatan,
+                "status_kegiatan" => 'Pending',
                 'foto_registrasi' => isset($uploadFotoRegistrasi['file_name']) ? $uploadFotoRegistrasi['file_name'] : '',
                 'foto_pengarahan' => isset($uploadFotoPengarahan['file_name']) ? $uploadFotoPengarahan['file_name'] : '',
                 'foto_kegiatan_lain' => isset($uploadFotoKegiatanLain['file_name']) ? $uploadFotoKegiatanLain['file_name'] : '',

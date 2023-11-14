@@ -37,6 +37,7 @@
                                 <th>Provinsi</th>
                                 <th>Kabupaten</th>
                                 <th>Tanggal Kegiatan</th>
+                                <th>Status</th>
                                 <th>Foto Registrasi</th>
                                 <th>Foto Pengarahan</th>
                                 <th>Foto Kegiatan Lainnya</th>
@@ -84,6 +85,7 @@
                 { data: 'province_name' }, 
                 { data: 'regency_name' }, 
                 { data: 'tgl_kegiatan' }, 
+                { data: 'status' }, 
                 { data: 'foto_registrasi' }, 
                 { data: 'foto_pengarahan' }, 
                 { data: 'foto_kegiatan_lain' },

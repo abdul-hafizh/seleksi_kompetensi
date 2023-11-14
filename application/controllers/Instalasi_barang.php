@@ -119,31 +119,36 @@ class Instalasi_barang extends Telescoope_Controller
             $cek_integrasi = $this->db->select('id')->from('uji_penerimaan_barang')->where('penerimaan_id', $v['id'])->get()->num_rows();
 
             $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approved</span>';
-
-            if($position || $position2) {
-                $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
-            }
             
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('instalasi_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
                     
-            if($position || $position2) {
+            if($position) {
+                
+                $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
 
                 $action = '<div class="btn-group" role="group">
                     <a href="' .  site_url('instalasi_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     <a href="' .  site_url('instalasi_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                     <a href="' .  site_url('instalasi_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                 </div>';                
-
-                if($position2) {
+                
+                if($v['status'] == 'Approved'){
                     $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('instalasi_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
-                        <a href="' .  site_url('instalasi_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
-                    </div>';                
+                    </div>';                                    
                 }
+
             }            
             
+            if($position2) {
+                $action = '<div class="btn-group" role="group">
+                    <a href="' .  site_url('instalasi_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                    <a href="' .  site_url('instalasi_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                </div>';                
+            }
+
             $data[] = array(                                
                 "kode_penerimaan" => $v['kode_penerimaan'],
                 "kode_pengiriman" => $v['kode_pengiriman'],

@@ -22,15 +22,30 @@
                             <label class="form-label">Tanggal Update</label>
                         </div>
                         <div class="col-lg-3">
-                            <input type="date" class="form-control" name="tgl_update" placeholder="Tanggal Update" value="<?php echo isset($get_update_barang) && isset($get_update_barang['tgl_update_harian']) ? $get_update_barang['tgl_update_harian'] : ''; ?>">
+                            <input type="date" class="form-control" name="tgl_update" placeholder="Tanggal Update" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?> value="<?php echo isset($get_update_barang) && isset($get_update_barang['tgl_update_harian']) ? $get_update_barang['tgl_update_harian'] : ''; ?>">
                         </div>
                     </div>
+                    <?php if($job_title != 'KOORDINATOR'){ ?>
+                        <div class="row mb-3">
+                            <div class="col-lg-2">
+                                <label class="form-label">Status</label>
+                            </div>
+                            <div class="col-lg-3">       
+                                <select class="form-control" name="status_barang" required>
+                                    <option value="Pending" <?php echo $get_update_barang['status_barang'] == 'Pending' ? ' selected' : ''; ?> >Pending</option>
+                                    <option value="Approved" <?php echo $get_update_barang['status_barang'] == 'Approved' ? ' selected' : ''; ?>>Approved</option>
+                                </select>
+                            </div>
+                        </div>    
+                    <?php } else { ?>
+                        <input type="hidden" name="status_barang" value="<?php echo $get_update_barang['status_barang']; ?>" readonly>
+                    <?php } ?>
                     <div class="row mb-3">
                         <div class="col-lg-2">
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-8">
-                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan"><?php echo isset($get_update_barang) && isset($get_update_barang['catatan']) ? $get_update_barang['catatan'] : ''; ?></textarea>
+                            <textarea class="form-control" name="catatan" rows="3" placeholder="Catatan" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>><?php echo isset($get_update_barang) && isset($get_update_barang['catatan']) ? $get_update_barang['catatan'] : ''; ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -77,16 +92,16 @@
                                             <td><?php echo $v["jumlah_barang"]; ?></td>
                                             <td><?php echo $v["satuan"]; ?></td>
                                             <td>
-                                                <input name="status_ada[]" type="number" min="0" value="<?php echo isset($v['jumlah_barang_status_ada']) ? $v['jumlah_barang_status_ada'] : 0 ?>" class="form-control" placeholder="Jumlah" required>
+                                                <input name="status_ada[]" type="number" min="0" value="<?php echo isset($v['jumlah_barang_status_ada']) ? $v['jumlah_barang_status_ada'] : 0 ?>" class="form-control" placeholder="Jumlah" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                                             </td>
                                             <td>
-                                                <input name="status_tidak_ada[]" type="number" min="0" value="<?php echo isset($v['jumlah_barang_status_tidak_ada']) ? $v['jumlah_barang_status_tidak_ada'] : 0 ?>" class="form-control" placeholder="Jumlah" required>
+                                                <input name="status_tidak_ada[]" type="number" min="0" value="<?php echo isset($v['jumlah_barang_status_tidak_ada']) ? $v['jumlah_barang_status_tidak_ada'] : 0 ?>" class="form-control" placeholder="Jumlah" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                                             </td>
                                             <td>
-                                                <input name="kondisi_baik[]" type="number" min="0" value="<?php echo isset($v['jumlah_barang_kondisi_baik']) ? $v['jumlah_barang_kondisi_baik'] : 0 ?>" class="form-control" placeholder="Jumlah" required>
+                                                <input name="kondisi_baik[]" type="number" min="0" value="<?php echo isset($v['jumlah_barang_kondisi_baik']) ? $v['jumlah_barang_kondisi_baik'] : 0 ?>" class="form-control" placeholder="Jumlah" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                                             </td>
                                             <td>
-                                                <input name="kondisi_tidak_baik[]" type="number" min="0" value="<?php echo isset($v['jumlah_barang_kondisi_rusak']) ? $v['jumlah_barang_kondisi_rusak'] : 0 ?>" class="form-control" placeholder="Jumlah" required>
+                                                <input name="kondisi_tidak_baik[]" type="number" min="0" value="<?php echo isset($v['jumlah_barang_kondisi_rusak']) ? $v['jumlah_barang_kondisi_rusak'] : 0 ?>" class="form-control" placeholder="Jumlah" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                                             </td>
                                             <td>
                                                 <div class="avatar-group">
@@ -101,7 +116,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="<?php echo $no;?>">
+                                                <input id="foto_barang" name="foto_barang[]" type="file" class="form-control" data-row="<?php echo $no;?>" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                                             </td>
                                             <td class="image-preview-container"><img class="image-preview" src="<?php echo base_url('assets/images/noimage.jpeg'); ?>" alt="Image Preview" style="max-width: 50px; max-height: 50px;"></td>
                                             <td style="display:none"><input id="barang_id" name="barang_id[]" type="hidden" value="<?php echo $v['barang_id'];?>"></td>

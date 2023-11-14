@@ -61,6 +61,7 @@ class Update_barang extends Telescoope_Controller
         $post = $this->input->post();
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
 
         $lokasi = '';
         $draw = $post['draw'];
@@ -81,7 +82,7 @@ class Update_barang extends Telescoope_Controller
 
         $this->db->limit($rowperpage, $row);
 
-        if($position) {
+        if($position || $position2) {
             $lokasi = $this->data['userdata']['lokasi_skd_id'];
         }
 
@@ -106,13 +107,28 @@ class Update_barang extends Telescoope_Controller
         foreach ($result as $v) {
 
             $action = '<div class="btn-group" role="group">
-                        <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>';
-                        
+                        <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a></div>';                                
+            
+            $status = $v['status_barang'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approved</span>';
+            
             if($position) {
+                $status = $v['status_barang'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
+
                 $action = '<div class="btn-group" role="group">
                     <a href="' .  site_url('pelaksanaan_harian/update_barang/edit/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                     <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     <a href="' .  site_url('pelaksanaan_harian/update_barang/delete/' . $v['id']) . '" onclick=\'return confirm("Apakah anda yakin?")\' class="btn btn-sm btn-danger">Delete</a></div>';
+    
+                if($v['status_barang'] == 'Approved'){
+                    $action = '<div class="btn-group" role="group">
+                    <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a></div>';
+                }
+            }
+
+            if($position2) {
+                $action = '<div class="btn-group" role="group">
+                    <a href="' .  site_url('pelaksanaan_harian/update_barang/edit/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="' .  site_url('pelaksanaan_harian/update_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a></div>';
             }
 
             $data[] = array(
@@ -122,6 +138,7 @@ class Update_barang extends Telescoope_Controller
                 "nama_lokasi" => $v['nama_lokasi'] . ' (' . $v['alamat'] . ')',
                 "tgl_update" => date('d-m-Y', strtotime($v['tgl_update_harian'])),
                 "tgl_terima" => date('d-m-Y', strtotime($v['tgl_terima'])),
+                "status" => $status,
                 "action" => $action
             );
         }
@@ -168,6 +185,7 @@ class Update_barang extends Telescoope_Controller
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
 
         if($position) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->row_array();
@@ -205,6 +223,7 @@ class Update_barang extends Telescoope_Controller
             "penerimaan_id" => $post['penerimaan_id'],
             "tgl_update_harian" => $post['tgl_update'],
             'catatan' => $post['catatan'],
+            'status_barang' => $post['status_barang'],
             'updated_by' => $this->data['userdata']['employee_id'],
             'updated_at' => date('Y-m-d H:i:s'),
         );
@@ -318,6 +337,7 @@ class Update_barang extends Telescoope_Controller
         $data = array(
             "penerimaan_id" => $post['penerimaan_id'],
             "tgl_update_harian" => $post['tgl_update'],
+            'status_barang' => 'Pending',
             'catatan' => $post['catatan'],
             'created_by' => $this->data['userdata']['employee_id'],
             'created_at' => date('Y-m-d H:i:s'),

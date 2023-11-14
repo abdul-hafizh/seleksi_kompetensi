@@ -39,6 +39,7 @@ $this->session->unset_userdata('message'); ?>
                                 <th>Nama Lokasi</th>
                                 <th>Tanggal Terima</th>
                                 <th>Tanggal Update</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -84,6 +85,7 @@ $this->session->unset_userdata('message'); ?>
                 { data: 'nama_lokasi' }, 
                 { data: 'tgl_terima' },
                 { data: 'tgl_update' },
+                { data: 'status' },
                 { data: 'action' },
             ]
         });

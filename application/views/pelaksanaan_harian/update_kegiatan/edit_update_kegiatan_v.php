@@ -14,7 +14,7 @@
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Titik Lokasi</label>
                             <div class="col-md-9">
-                                <select class="select-single" name="jadwal_kegiatan_id" id="jadwal_kegiatan_id" required>
+                                <select class="select-single" name="jadwal_kegiatan_id" id="jadwal_kegiatan_id" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                                     <option value="" disabled selected>Titik Lokasi</option>
                                     <?php foreach ($get_jadwal_kegiatan as $detail) { ?>
                                         <option value="<?php echo $detail['id']; ?>" selected="<?php echo $selected['id'] == $detail['id']; ?>">
@@ -28,9 +28,25 @@
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Tanggal Kegiatan</label>
                             <div class="col-md-3">
-                                <input type="date" class="form-control" name="tgl_kegiatan" title="Tanggal Kegiatan" value="<?php echo $selected['tgl_kegiatan']; ?>" required>
+                                <input type="date" class="form-control" name="tgl_kegiatan" title="Tanggal Kegiatan" value="<?php echo $selected['tgl_kegiatan']; ?>" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                             </div>
                         </div>
+
+                        <?php if($job_title != 'KOORDINATOR'){ ?>
+                            <div class="row mb-3">
+                                <div class="col-lg-3">
+                                    <label class="form-label">Status</label>
+                                </div>
+                                <div class="col-lg-3">       
+                                    <select class="form-control" name="status_kegiatan" required>
+                                        <option value="Pending" <?php echo $selected['status_kegiatan'] == 'Pending' ? ' selected' : ''; ?> >Pending</option>
+                                        <option value="Approved" <?php echo $selected['status_kegiatan'] == 'Approved' ? ' selected' : ''; ?>>Approved</option>
+                                    </select>
+                                </div>
+                            </div>    
+                        <?php } else { ?>
+                            <input type="hidden" name="status_kegiatan" value="<?php echo $selected['status_kegiatan']; ?>" readonly>
+                        <?php } ?>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Foto Registrasi <span class="text-muted">(Opsional)</span></label>
@@ -42,7 +58,7 @@
                                 </div>
                             </div>
                             <div class="col-md-7">
-                                <input type="file" class="form-control col-lg-7" name="foto_registrasi" placeholder="Foto Registrasi" <?php isset($selected['id']) ? "" : "required" ?>>
+                                <input type="file" class="form-control col-lg-7" name="foto_registrasi" placeholder="Foto Registrasi" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                             </div>
                         </div>
 
@@ -56,7 +72,7 @@
                                 </div>
                             </div>
                             <div class="col-md-7">
-                                <input type="file" class="form-control col-lg-7" name="foto_pengarahan" placeholder="Foto Pengarahan" <?php isset($selected['id']) ? "" : "required" ?>>
+                                <input type="file" class="form-control col-lg-7" name="foto_pengarahan" placeholder="Foto Pengarahan" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                             </div>
                         </div>
 
@@ -70,14 +86,14 @@
                                 </div>
                             </div>
                             <div class="col-md-7">
-                                <input type="file" class="form-control col-lg-7" name="foto_kegiatan_lain" placeholder="Foto Kegiatan Lain" <?php isset($selected['id']) ? "" : "required" ?>>
+                                <input type="file" class="form-control col-lg-7" name="foto_kegiatan_lain" placeholder="Foto Kegiatan Lain" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control">Upload Video Kegiatan <span class="text-muted">(Opsional)</span></label>
                             <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="video_kegiatan" placeholder="Video Kegiatan" <?php isset($selected['id']) ? "" : "required" ?>>
+                                <input type="file" class="form-control col-lg-7" name="video_kegiatan" placeholder="Video Kegiatan" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                             </div>
                         </div>
 
@@ -91,42 +107,42 @@
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-1</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_1" placeholder="" value="<?php echo $selected['sesi_1']; ?>" required>
+                                <input type="number" class="form-control col-lg-7" name="sesi_1" placeholder="" value="<?php echo $selected['sesi_1']; ?>" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-2</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_2" placeholder="" value="<?php echo $selected['sesi_2']; ?>">
+                                <input type="number" class="form-control col-lg-7" name="sesi_2" placeholder="" value="<?php echo $selected['sesi_2']; ?>" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-3</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_3" placeholder="" value="<?php echo $selected['sesi_3']; ?>">
+                                <input type="number" class="form-control col-lg-7" name="sesi_3" placeholder="" value="<?php echo $selected['sesi_3']; ?>" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-4</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_4" placeholder="" value="<?php echo $selected['sesi_4']; ?>">
+                                <input type="number" class="form-control col-lg-7" name="sesi_4" placeholder="" value="<?php echo $selected['sesi_4']; ?>" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-5</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_5" placeholder="" value="<?php echo $selected['sesi_5']; ?>">
+                                <input type="number" class="form-control col-lg-7" name="sesi_5" placeholder="" value="<?php echo $selected['sesi_5']; ?>" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                             </div>
                         </div>
 
                         <div class="form-group row mb-2">
                             <label class="col-md-3 label-control" style="text-align: right; padding-top: 8px;">Sesi-6</label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control col-lg-7" name="sesi_6" placeholder="" value="<?php echo $selected['sesi_6']; ?>">
+                                <input type="number" class="form-control col-lg-7" name="sesi_6" placeholder="" value="<?php echo $selected['sesi_6']; ?>" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
                             </div>
                         </div>
 

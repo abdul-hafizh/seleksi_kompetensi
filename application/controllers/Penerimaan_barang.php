@@ -128,24 +128,27 @@ class Penerimaan_barang extends Telescoope_Controller
         
         foreach($result as $v) {   
 
-            $cek_integrasi = $this->db->select('id')->from('uji_penerimaan_barang')->where('penerimaan_id', $v['id'])->get()->num_rows();
-
             $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approved</span>';
-
-            if($position || $position2) {
-                $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
-            }
             
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
                     
             if($position || $position3) {
+                
+                $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
+
                 $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                         <a href="' .  site_url('penerimaan_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                         <a href="' .  site_url('penerimaan_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
+                    
+                    if($v['status'] == 'Approved'){
+                        $action = '<div class="btn-group" role="group">
+                                <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
+                            </div>';
+                    }
             }
 
             if($position2) {

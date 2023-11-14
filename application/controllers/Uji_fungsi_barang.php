@@ -118,13 +118,30 @@ class Uji_fungsi_barang extends Telescoope_Controller
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('uji_fungsi_barang/upload_foto/' . $v['id_uji']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
-
                     
             if($position || $position3) {
                 $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('uji_fungsi_barang/upload_foto/' . $v['id_uji']) . '" class="btn btn-sm btn-success">Upload Foto</a>
                         <a href="' .  site_url('uji_fungsi_barang/delete/' . $v['id_uji']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
                     </div>';
+
+                if($v['status_uji'] == 'Approved'){
+                    $action = '<div class="btn-group" role="group">
+                        <a href="' .  site_url('uji_fungsi_barang/upload_foto/' . $v['id_uji']) . '" class="btn btn-sm btn-primary">Detail</a>
+                    </div>';
+                }
+            }
+                
+            if($position2) {                    
+                $action = '<div class="btn-group" role="group">
+                        <a href="' .  site_url('uji_fungsi_barang/upload_foto/' . $v['id_uji']) . '" class="btn btn-sm btn-warning">Edit</a>
+                    </div>';
+            }
+
+            $status = $v['status_uji'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approved</span>';
+
+            if($position) {
+                $status = $v['status_uji'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
             }
             
             $data[] = array(                                
@@ -135,6 +152,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
                 "nama_lokasi" => $v['kode_lokasi'] . ' | ' . $v['nama_lokasi'],
                 "tgl_terima" => $v['tgl_terima'],
                 "tgl_uji" => $v['jadwal_kegiatan'],
+                "status" => $status,
                 "action" => $action
             );
         }
@@ -237,6 +255,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
                 $data = array(
                     "penerimaan_id" => $post['penerimaan_id'],
                     'jadwal_kegiatan' => $post['jadwal_kegiatan'],
+                    'status_uji' => 'Pending',
                     'catatan_uji' => $post['catatan_uji'],
                     'created_by' => $this->data['userdata']['employee_id'],
                     'created_at' => date('Y-m-d H:i:s'),
@@ -292,6 +311,43 @@ class Uji_fungsi_barang extends Telescoope_Controller
                 }
             }            
 
+            if ($this->db->trans_status() === FALSE)  {
+                $this->setMessage("Failed save data.");
+                $this->db->trans_rollback();
+            } else {
+                $this->setMessage("Success save data.");
+                $this->db->trans_commit();
+            }            
+
+            redirect(site_url('uji_fungsi_barang'));
+        
+        } else {
+            $this->renderMessage("error");
+        }
+    }
+
+    public function submit_update(){
+
+        $post = $this->input->post(); 
+
+        if (count($post) == 0) {
+            $this->setMessage("Isi data dengan Benar.");
+            redirect(site_url('uji_fungsi_barang/add'));
+        }
+
+        $this->db->trans_begin();
+        
+        $data = array(
+            'status_uji' => $post['status_uji'],
+            'catatan_uji' => $post['catatan_uji'],
+            'updated_by' => $this->data['userdata']['employee_id'],
+            'updated_at' => date('Y-m-d H:i:s')
+        );
+
+        $this->db->where('id', $post['id_uji']);
+        $update = $this->db->update('uji_penerimaan_barang', $data);
+        
+        if($update){             
             if ($this->db->trans_status() === FALSE)  {
                 $this->setMessage("Failed save data.");
                 $this->db->trans_rollback();

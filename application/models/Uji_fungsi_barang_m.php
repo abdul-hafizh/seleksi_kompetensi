@@ -12,7 +12,7 @@ class Uji_fungsi_barang_m extends CI_Model {
 
 	public function getUji($id = '', $lokasi = ''){
 
-        $this->db->select('pbg.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, pb.kode_pengiriman, upb.kode_uji, upb.id as id_uji, upb.jadwal_kegiatan, upb.catatan_uji');
+        $this->db->select('pbg.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, pb.kode_pengiriman, upb.kode_uji, upb.id as id_uji, upb.jadwal_kegiatan, upb.catatan_uji, upb.status_uji');
 
 		if(!empty($id)){
 
@@ -55,7 +55,7 @@ class Uji_fungsi_barang_m extends CI_Model {
 	}	
 
 	public function getDetailFoto($id = '') {
-		$this->db->select('upd.*, pd.jumlah_terima');
+		$this->db->select('upd.*, pd.jumlah_terima, upb.status_uji');
 		$this->db->from('uji_penerimaan_detail as upd');
 		$this->db->join('uji_penerimaan_barang as upb', 'upb.id = upd.uji_penerimaan_id', 'left');
 		$this->db->join('penerimaan_barang as pb', 'pb.id = upb.penerimaan_id', 'left');

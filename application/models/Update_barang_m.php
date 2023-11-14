@@ -13,7 +13,7 @@ class Update_barang_m extends CI_Model
 
 	public function getUpdate_barang($id = '', $lokasi = '')
 	{
-		$this->db->select('uhb.id, uhb.tgl_update_harian, uhb.catatan, uhb.created_at, ref_locations.*, pb.kode_penerimaan, pb.tgl_terima, lokasi_skd.nama_lokasi, lokasi_skd.alamat');
+		$this->db->select('uhb.id, uhb.tgl_update_harian, uhb.catatan, uhb.created_at, uhb.status_barang, ref_locations.*, pb.kode_penerimaan, pb.tgl_terima, lokasi_skd.nama_lokasi, lokasi_skd.alamat');
 
 		$this->db->join('penerimaan_barang as pb', 'pb.id = uhb.penerimaan_id', 'left');
 		$this->db->join('pengiriman_barang as pb2', 'pb2.id = pb.pengiriman_id', 'left');

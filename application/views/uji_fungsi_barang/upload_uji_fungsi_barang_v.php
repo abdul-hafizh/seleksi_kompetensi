@@ -6,51 +6,85 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Detail Data Penerimaan</h5>
-            </div>
-            <div class="card-body">                    
-                <div class="form-group row mb-2">
-                    <label class="col-md-2 label-control">Kode Uji Fungsi Barang</label>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" value="<?php echo $get_uji['kode_penerimaan']; ?>" readonly>
-                    </div>
+<form action="<?php echo site_url('uji_fungsi_barang/submit_update'); ?>" method="post" id="basic-form" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Detail Data Penerimaan</h5>
                 </div>
-
-                <div class="form-group row mb-2">
-                    <label class="col-md-2 label-control">Tanggal Kegiatan</label>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" value="<?php echo $get_uji['jadwal_kegiatan']; ?>" readonly>
+                <div class="card-body">                    
+                    <div class="form-group row mb-2">
+                        <label class="col-md-2 label-control">Kode Uji Fungsi Barang</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" value="<?php echo $get_uji['kode_penerimaan']; ?>" readonly>
+                            <input type="hidden" name="id_uji" value="<?php echo $get_uji['id']; ?>" readonly>
+                        </div>
                     </div>
+
+                    <div class="form-group row mb-2">
+                        <label class="col-md-2 label-control">Tanggal Kegiatan</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" value="<?php echo $get_uji['jadwal_kegiatan']; ?>" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label class="col-md-2 label-control">Penerimaan</label>
+                        <div class="col-md-8">
+                            <select class="select-single" name="penerimaan_id" id="penerimaan_id" disabled>
+                                <option value="">Pilih Pengiriman</option>
+                                <?php foreach($get_penerimaan as $v) { ?>
+                                    <option value="<?php echo $v['id']; ?>" <?php echo $get_uji['id'] == $v['id'] ? 'selected' : ''; ?>><?php echo $v['kode_penerimaan'] . ' | ' . $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <?php if($job_title != 'KOORDINATOR'){ ?>
+                        <div class="row mb-3">
+                            <div class="col-lg-2">
+                                <label class="form-label">Status</label>
+                            </div>
+                            <div class="col-lg-3">       
+                                <select class="form-control" name="status_uji" required>
+                                    <option value="Pending" <?php echo $get_uji['status_uji'] == 'Pending' ? ' selected' : ''; ?> >Pending</option>
+                                    <option value="Approved" <?php echo $get_uji['status_uji'] == 'Approved' ? ' selected' : ''; ?>>Approved</option>
+                                </select>
+                            </div>
+                        </div>    
+                    <?php } else { ?>
+                        <input type="hidden" name="status_uji" value="<?php echo $get_uji['status_uji']; ?>" readonly>
+                    <?php } ?>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-2">
+                            <label class="form-label">Catatan</label>
+                        </div>
+                        <div class="col-lg-8">
+                            <textarea class="form-control" rows="3" readonly><?php echo $get_uji['catatan_uji']; ?></textarea>
+                        </div>
+                    </div>                    
                 </div>
-
-                <div class="form-group row mb-2">
-                    <label class="col-md-2 label-control">Penerimaan</label>
-                    <div class="col-md-8">
-                        <select class="select-single" name="penerimaan_id" id="penerimaan_id" disabled>
-                            <option value="">Pilih Pengiriman</option>
-                            <?php foreach($get_penerimaan as $v) { ?>
-                                <option value="<?php echo $v['id']; ?>" <?php echo $get_uji['id'] == $v['id'] ? 'selected' : ''; ?>><?php echo $v['kode_penerimaan'] . ' | ' . $v['province_name'] . ' | ' . $v['regency_name'] . ' | ' . $v['nama_lokasi'] . ' (' . $v['kode_lokasi'] . ')'; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-lg-2">
-                        <label class="form-label">Catatan</label>
-                    </div>
-                    <div class="col-lg-8">
-                        <textarea class="form-control" rows="3" readonly><?php echo $get_uji['catatan_uji']; ?></textarea>
-                    </div>
-                </div>                    
             </div>
         </div>
     </div>
-</div>
+
+    <?php if($job_title == 'PENGAWAS'){ ?>
+    <div class="row mt-2">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-warning" onclick="return confirm('Apakah Anda yakin?');">Ubah Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+
+</form>
 
 <div class="row">
     <div class="col-lg-12">
