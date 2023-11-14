@@ -134,7 +134,7 @@ class Penerimaan_barang extends Telescoope_Controller
                         <a href="' .  site_url('penerimaan_barang/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
                     
-            if($position || $position3) {
+            if($position) {
                 
                 $status = $v['status'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
 
