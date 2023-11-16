@@ -61,14 +61,13 @@ class Penerimaan_barang extends Telescoope_Controller
         $data = array();
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
-        $position2 = $this->Administration_m->getPosition("PENGAWAS");
 
         $cek_integrasi = $this->db->select('id')->from('penerimaan_barang')->where('created_by', $this->data['userdata']['employee_id'])->get()->num_rows();
 
         $data['cek_data'] = 0;    
         $data['job_title'] = $this->data['userdata']['job_title'];
         
-        if($position || $position2) {
+        if($position) {
             $data['cek_data'] = $cek_integrasi;
         }
 
@@ -81,6 +80,8 @@ class Penerimaan_barang extends Telescoope_Controller
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("PENGAWAS");
         $position3 = $this->Administration_m->getPosition("ADMINISTRATOR");
+        $position4 = $this->Administration_m->getPosition("ADMIN");
+        $position5 = $this->Administration_m->getPosition("SUPERVISOR/REGIONAL");
         
         $draw = $post['draw'];
         $row = $post['start'];
@@ -102,8 +103,12 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $result = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
 
-        if($position || $position2) {
+        if($position || $position2 || $position4) {
             $result = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
+        }
+
+        if($position5) {
+            $result = $this->Penerimaan_barang_m->getPenerimaan_barang("", "", $this->data['userdata']['lokasi_user'])->result_array();
         }
 
         if (!empty($search)) {
@@ -117,8 +122,12 @@ class Penerimaan_barang extends Telescoope_Controller
 
         $count = $this->Penerimaan_barang_m->getPenerimaan_barang()->num_rows();
 
-        if($position || $position2) {
+        if($position || $position2 || $position4) {
             $count = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->num_rows();
+        }
+
+        if($position5) {
+            $count = $this->Penerimaan_barang_m->getPenerimaan_barang("", "", $this->data['userdata']['lokasi_user'])->num_rows();
         }
 
         $totalRecords = $count;
@@ -400,7 +409,7 @@ class Penerimaan_barang extends Telescoope_Controller
                         "barang_id" => $insert_data['barang_id'],
                         "jumlah_terima" => $insert_data['jumlah_terima'],
                         "jumlah_rusak" => $insert_data['jumlah_rusak'],
-                        "jumlah_terpasang" => $insert_data['jumlah_terpasang'],
+                        "jumlah_terpasang" => $insert_data['jumlah_terima'],
                         'foto_barang' => $insert_data['file_path'],
                         'updated_by' => $this->data['userdata']['employee_id'],
                         'updated_at' => date('Y-m-d H:i:s'),

@@ -11,7 +11,7 @@ class Penerimaan_barang_m extends CI_Model
 		$this->load->helper('security');
 	}
 
-	public function getPenerimaan_barang($id = '', $lokasi = '')
+	public function getPenerimaan_barang($id = '', $lokasi = '', $regional = '')
 	{
 
 		$this->db->select('penerimaan_barang.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.id as lokasi_skd_detail, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, lokasi_skd.alamat, pb.kode_pengiriman, pr.id as pr_id');
@@ -24,6 +24,11 @@ class Penerimaan_barang_m extends CI_Model
 		if (!empty($lokasi)) {
 
 			$this->db->where('lokasi_skd.id', $lokasi);
+		}
+
+		if (!empty($regional)) {
+
+			$this->db->where('lokasi_skd.lokasi_id', $regional);
 		}
 
 		$this->db->join('pengiriman_barang as pb', 'pb.id = penerimaan_barang.pengiriman_id', 'left');

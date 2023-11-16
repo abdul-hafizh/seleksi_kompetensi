@@ -195,8 +195,8 @@ class Users extends Telescoope_Controller
         $inputEmp = array(    
             'fullname' => $post['fullname'],
             'nik' => $post['nik'],
-            'lokasi_user' => $post['kabupaten'],
-            'lokasi_skd_id' => $post['lokasi_skd_id'],
+            'lokasi_user' => isset($post['kabupaten']) ? $post['kabupaten'] : 0,
+            'lokasi_skd_id' => isset($post['lokasi_skd_id']) ? $post['lokasi_skd_id'] : 0,
             'alamat' => $post['alamat'],
             'email' => $post['email'],
             'file_ktp' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
@@ -252,8 +252,8 @@ class Users extends Telescoope_Controller
         $updateEmp = array(
             'fullname' => $post['fullname'],
             'nik' => $post['nik'],
-            'lokasi_user' => $post['kabupaten'],
-            'lokasi_skd_id' => $post['lokasi_skd_id'],
+            'lokasi_user' => isset($post['kabupaten']) ? $post['kabupaten'] : 0,
+            'lokasi_skd_id' => isset($post['lokasi_skd_id']) ? $post['lokasi_skd_id'] : 0,
             'file_ktp' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : $row_data['file_ktp'],
             'alamat' => $post['alamat'],
             'email' => $post['email'],

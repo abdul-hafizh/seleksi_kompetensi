@@ -10,7 +10,7 @@ class Serah_terima_barang_m extends CI_Model {
 
 	}
 
-	public function getDismantle($id = '', $lokasi = ''){
+	public function getDismantle($id = '', $lokasi = '', $regional = ''){
 
         $this->db->select('st.*, rl.*, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi');
 
@@ -23,6 +23,12 @@ class Serah_terima_barang_m extends CI_Model {
 		if(!empty($lokasi)){
 
 			$this->db->where('lokasi_skd.id', $lokasi);
+
+		}
+
+		if(!empty($regional)){
+
+			$this->db->where('lokasi_skd.lokasi_id', $regional);
 
 		}
 		

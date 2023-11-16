@@ -11,7 +11,7 @@ class Update_kegiatan_m extends CI_Model
 		$this->load->helper('security');
 	}
 
-	public function getUpdateKegiatan($id = '', $lokasi = '')
+	public function getUpdateKegiatan($id = '', $lokasi = '', $region = '')
 	{
 
 		$this->db->select('uhk.*, jk.kode_kegiatan, lok.nama_lokasi, lok.alamat, ref_locations.*');
@@ -27,6 +27,10 @@ class Update_kegiatan_m extends CI_Model
 
 		if (!empty($lokasi)) {
 			$this->db->where('lok.id', $lokasi);
+		}
+
+		if (!empty($region)) {
+			$this->db->where('lok.lokasi_id', $region);
 		}
 
 		return $this->db->get();

@@ -92,10 +92,10 @@
                                 </select>
                             </div>
                         </div> 
-                        <div class="form-group row mb-2">
+                        <div class="form-group row mb-2" id="div-provinsi">
                             <label class="col-md-3 label-control">Provinsi</label>
                             <div class="col-md-9">
-                                <select class="select-single" name="provinsi" id="provinsi" required>
+                                <select class="select-single" name="provinsi" id="provinsi">
                                     <option value="">Pilih Provinsi</option>
                                     <?php foreach($get_provinsi as $v) { ?>
                                         <option value="<?php echo $v['location_id']; ?>" <?php echo $get_employee['province_id'] == $v['location_id'] ? "selected" : "" ?>><?php echo $v['province_name']; ?></option>
@@ -103,7 +103,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row mb-2">
+                        <div class="form-group row mb-2" id="div-kabupaten">
                             <label class="col-md-3 label-control">Kabupaten</label>
                             <div class="col-md-9">
                                 <select class="select-single" name="kabupaten" id="kabupaten">
@@ -114,10 +114,10 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row last mb-2">
+                        <div class="form-group row last mb-2" id="div-lokasi">
                             <label class="col-md-3 label-control">Titik Lokasi</label>
                             <div class="col-md-9">
-                                <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id" required>
+                                <select class="select-single" name="lokasi_skd_id" id="lokasi_skd_id">
                                     <option value="">Pilih Lokasi</option>
                                     <?php foreach($get_lokasi as $v) { ?>
                                         <option value="<?php echo $v['id']; ?>" <?php echo $get_employee['lokasi_skd_id'] == $v['id'] ? "selected" : "" ?>><?php echo $v['kode_lokasi'] . ' | ' . $v['nama_lokasi']; ?></option>
@@ -143,6 +143,55 @@
 <script>    
     $(document).ready(function () {
         $(".select-single").select2();
+
+        $("#posisi").on("change", function () {
+            var selectedPosisi = $(this).val();
+            
+            // Jika posisi adalah ADMIN
+            if (selectedPosisi === "3" || selectedPosisi === "4" || selectedPosisi === "5") {
+                $("#div-provinsi").show();
+                $("#provinsi").prop("required", true); 
+                $("#provinsi").val('');
+
+                $("#div-kabupaten").show();
+                $("#kabupaten").prop("required", true); 
+                $("#kabupaten").val('');
+
+                $("#div-lokasi").show();
+                $("#lokasi_skd_id").prop("required", true); 
+                $("#lokasi_skd_id").val('');
+            } 
+
+            // Jika posisi adalah PUSAT
+            else if (selectedPosisi === "2") {
+                $("#div-provinsi").hide();
+                $("#provinsi").prop("required", false); 
+                $("#provinsi").val('');
+
+                $("#div-kabupaten").hide();
+                $("#kabupaten").prop("required", false); 
+                $("#kabupaten").val('');
+
+                $("#div-lokasi").hide();
+                $("#lokasi_skd_id").prop("required", false); 
+                $("#lokasi_skd_id").val('');
+            } 
+
+            // Jika posisi adalah SUPERVISOR/REGIONAL
+            else if (selectedPosisi === "6") {
+                $("#div-provinsi").show();
+                $("#provinsi").prop("required", true); 
+                $("#provinsi").val('');
+
+                $("#div-kabupaten").show();
+                $("#kabupaten").prop("required", true); 
+                $("#kabupaten").val('');
+
+                $("#div-lokasi").hide();
+                $("#lokasi_skd_id").prop("required", false); 
+                $("#lokasi_skd_id").val('');
+            }
+        });
 
         $("#provinsi").on("change", function () {
 			let provinsi = $("#provinsi").val();

@@ -70,6 +70,8 @@ class Uji_fungsi_barang extends Telescoope_Controller
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("PENGAWAS");
         $position3 = $this->Administration_m->getPosition("ADMINISTRATOR");
+        $position4 = $this->Administration_m->getPosition("ADMIN");
+        $position5 = $this->Administration_m->getPosition("SUPERVISOR/REGIONAL");
         
         $draw = $post['draw'];
         $row = $post['start'];
@@ -90,8 +92,12 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $result = $this->Uji_fungsi_barang_m->getUji()->result_array();
 
-        if($position || $position2) {
+        if($position || $position2 || $position4) {
             $result = $this->Uji_fungsi_barang_m->getUji("", $this->data['userdata']['lokasi_skd_id'])->result_array();
+        }
+
+        if($position5) {
+            $result = $this->Uji_fungsi_barang_m->getUji("", "", $this->data['userdata']['lokasi_user'])->result_array();
         }
 
         if (!empty($search)) {
@@ -104,8 +110,12 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $count = $this->Uji_fungsi_barang_m->getUji()->num_rows();
 
-        if($position || $position2) {
+        if($position || $position2 || $position4) {
             $count = $this->Uji_fungsi_barang_m->getUji("", $this->data['userdata']['lokasi_skd_id'])->num_rows();
+        }
+
+        if($position5) {
+            $count = $this->Uji_fungsi_barang_m->getUji("", "", $this->data['userdata']['lokasi_user'])->num_rows();
         }
 
         $totalRecords = $count;
@@ -169,12 +179,12 @@ class Uji_fungsi_barang extends Telescoope_Controller
     }
     
     public function add(){
-        $data = array();        
+        $data = array();
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("PENGAWAS");
 
-        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();        
+        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
 
         if($position || $position2) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->row_array();
@@ -186,7 +196,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
     }
 
     public function detail($id){
-        $data = array();        
+        $data = array();
         
         $position = $this->Administration_m->getPosition("KOORDINATOR");
 
@@ -203,17 +213,18 @@ class Uji_fungsi_barang extends Telescoope_Controller
     }
 
     public function upload_foto($id){
-        $data = array();        
+        $data = array();
         
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("PENGAWAS");
+        $position3 = $this->Administration_m->getPosition("ADMIN");
 
         $data['get_uji'] = $this->Uji_fungsi_barang_m->getUji($id)->row_array();
         $data['get_detail'] = $this->Uji_fungsi_barang_m->getDetail($id, 'Non-IT')->result_array();
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
         $data['job_title'] = $this->data['userdata']['job_title'];
 
-        if($position || $position2) {
+        if($position || $position2 || $position3) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->result_array();
         }
 
@@ -306,7 +317,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
                         "barang_id" => $insert_data['barang_id'],
                         'created_by' => $this->data['userdata']['employee_id'],
                         'created_at' => date('Y-m-d H:i:s'),
-                    );            
+                    );    
                     $simpan_detail = $this->db->insert('uji_penerimaan_detail', $detail);
                 }
             }            
@@ -406,7 +417,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
                     'created_at' => date('Y-m-d H:i:s'),
                 );
         
-                $simpan = $this->db->insert('uji_detail_foto', $data);                
+                $simpan = $this->db->insert('uji_detail_foto', $data);        
             }
         }                    
         
@@ -440,7 +451,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
 
         $this->db->trans_begin();
         
-        $dir = './uploads/' . $this->data['dir'];        
+        $dir = './uploads/' . $this->data['dir'];
 
         if (!empty($foto_exist)) {
             $data_insert = array();

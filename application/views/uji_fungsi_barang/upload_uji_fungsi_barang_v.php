@@ -41,28 +41,30 @@
                         </div>
                     </div>
 
-                    <?php if($job_title != 'KOORDINATOR'){ ?>
-                        <div class="row mb-3">
-                            <div class="col-lg-2">
-                                <label class="form-label">Status</label>
-                            </div>
-                            <div class="col-lg-3">       
+                    <div class="row mb-3">
+                        <div class="col-lg-2">
+                            <label class="form-label">Status</label>
+                        </div>
+                        <?php if($job_title != 'KOORDINATOR'){ ?>
+                            <div class="col-lg-3">
                                 <select class="form-control" name="status_uji" required>
                                     <option value="Pending" <?php echo $get_uji['status_uji'] == 'Pending' ? ' selected' : ''; ?> >Pending</option>
                                     <option value="Approved" <?php echo $get_uji['status_uji'] == 'Approved' ? ' selected' : ''; ?>>Approved</option>
                                 </select>
                             </div>
-                        </div>    
-                    <?php } else { ?>
-                        <input type="hidden" name="status_uji" value="<?php echo $get_uji['status_uji']; ?>" readonly>
-                    <?php } ?>
+                            <?php } else { ?>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control" name="status_uji" value="<?php echo $get_uji['status_uji']; ?>" readonly>
+                            </div>
+                        <?php } ?>
+                    </div>    
 
                     <div class="row mb-3">
                         <div class="col-lg-2">
                             <label class="form-label">Catatan</label>
                         </div>
                         <div class="col-lg-8">
-                            <textarea class="form-control" rows="3" readonly><?php echo $get_uji['catatan_uji']; ?></textarea>
+                            <textarea class="form-control" rows="3" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly'; ?> ><?php echo $get_uji['catatan_uji']; ?></textarea>
                         </div>
                     </div>                    
                 </div>

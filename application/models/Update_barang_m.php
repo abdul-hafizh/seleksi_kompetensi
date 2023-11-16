@@ -11,7 +11,7 @@ class Update_barang_m extends CI_Model
 		$this->load->helper('security');
 	}
 
-	public function getUpdate_barang($id = '', $lokasi = '')
+	public function getUpdate_barang($id = '', $lokasi = '', $region = '')
 	{
 		$this->db->select('uhb.id, uhb.tgl_update_harian, uhb.catatan, uhb.created_at, uhb.status_barang, ref_locations.*, pb.kode_penerimaan, pb.tgl_terima, lokasi_skd.nama_lokasi, lokasi_skd.alamat');
 
@@ -27,6 +27,10 @@ class Update_barang_m extends CI_Model
 
 		if (!empty($lokasi)) {
 			$this->db->where('lokasi_skd.id', $lokasi);
+		}
+
+		if (!empty($region)) {
+			$this->db->where('lokasi_skd.lokasi_id', $region);
 		}
 
 		return $this->db->get('update_harian_barang uhb');

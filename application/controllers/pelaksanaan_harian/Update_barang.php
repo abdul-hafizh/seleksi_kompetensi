@@ -62,8 +62,11 @@ class Update_barang extends Telescoope_Controller
 
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("PENGAWAS");
+        $position3 = $this->Administration_m->getPosition("ADMIN");
+        $position4 = $this->Administration_m->getPosition("SUPERVISOR/REGIONAL");
 
         $lokasi = '';
+        $region = '';
         $draw = $post['draw'];
         $row = $post['start'];
         $rowperpage = $post['length'];
@@ -82,11 +85,15 @@ class Update_barang extends Telescoope_Controller
 
         $this->db->limit($rowperpage, $row);
 
-        if($position || $position2) {
+        if($position || $position2 || $position3) {
             $lokasi = $this->data['userdata']['lokasi_skd_id'];
         }
 
-        $result = $this->Update_barang_m->getUpdate_barang("", $lokasi)->result_array();
+        if($position4) {
+            $region = $this->data['userdata']['lokasi_user'];
+        }
+
+        $result = $this->Update_barang_m->getUpdate_barang("", $lokasi, $region)->result_array();
         
         if (!empty($search)) {
             $this->db->group_start();
@@ -97,7 +104,7 @@ class Update_barang extends Telescoope_Controller
             $this->db->group_end();
         }
 
-        $count = $this->Update_barang_m->getUpdate_barang("", $lokasi)->num_rows();
+        $count = $this->Update_barang_m->getUpdate_barang("", $lokasi, $region)->num_rows();
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;
@@ -183,14 +190,16 @@ class Update_barang extends Telescoope_Controller
     {
         $data = array();
         $position = $this->Administration_m->getPosition("KOORDINATOR");
+        $position2 = $this->Administration_m->getPosition("PENGAWAS");
+        $position3 = $this->Administration_m->getPosition("ADMIN");
         
         $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
         $data['job_title'] = $this->data['userdata']['job_title'];
 
-        if($position) {
+        if($position || $position2 || $position3) {
             $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang("", $this->data['userdata']['lokasi_skd_id'])->row_array();
         } else {
-            $this->noAccess("Hanya koordinator yang dapat melakukan tambah data.");
+            $this->noAccess("Hanya koordinator yang dapat melakukan edit data.");
         }
 
         $data['id']  = $id;        
@@ -202,6 +211,7 @@ class Update_barang extends Telescoope_Controller
     public function update($id)
     {
         $post = $this->input->post();
+        
         $status_ada = $this->input->post('status_ada');
         $status_tidak_ada = $this->input->post('status_tidak_ada');
         $kondisi_baik = $this->input->post('kondisi_baik');

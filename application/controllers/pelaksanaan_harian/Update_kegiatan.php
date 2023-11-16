@@ -71,6 +71,7 @@ class Update_kegiatan extends Telescoope_Controller
         $post = $this->input->post();
 
         $lokasi = '';
+        $region = '';
         $draw = $post['draw'];
         $row = $post['start'];
         $rowperpage = $post['length'];
@@ -81,6 +82,8 @@ class Update_kegiatan extends Telescoope_Controller
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("ADMINISTRATOR");
         $position3 = $this->Administration_m->getPosition("PENGAWAS");
+        $position4 = $this->Administration_m->getPosition("ADMIN");
+        $position5 = $this->Administration_m->getPosition("SUPERVISOR/REGIONAL");
 
         if (!empty($search)) {
             $this->db->group_start();
@@ -94,11 +97,15 @@ class Update_kegiatan extends Telescoope_Controller
 
         $this->db->limit($rowperpage, $row);        
 
-        if($position || $position3) {
+        if($position || $position3 || $position4) {
             $lokasi = $this->data['userdata']['lokasi_skd_id'];
         }
 
-        $result = $this->Update_kegiatan_m->getUpdateKegiatan('', $lokasi)->result_array();
+        if($position5) {
+            $region = $this->data['userdata']['lokasi_user'];
+        }
+
+        $result = $this->Update_kegiatan_m->getUpdateKegiatan('', $lokasi, $region)->result_array();
 
         if (!empty($search)) {
             $this->db->group_start();
@@ -110,7 +117,7 @@ class Update_kegiatan extends Telescoope_Controller
             $this->db->group_end();
         }
 
-        $count = $this->Update_kegiatan_m->getUpdateKegiatan('', $lokasi)->num_rows();
+        $count = $this->Update_kegiatan_m->getUpdateKegiatan('', $lokasi, $region)->num_rows();
 
         $totalRecords = $count;
         $totalRecordwithFilter = $count;
@@ -141,7 +148,7 @@ class Update_kegiatan extends Telescoope_Controller
                 }
             }
 
-            if($position2) {
+            if($position3) {
                 $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                         <a href="' .  site_url('pelaksanaan_harian/update_kegiatan/detail/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
@@ -215,10 +222,6 @@ class Update_kegiatan extends Telescoope_Controller
         $data['get_jadwal_kegiatan'] = $this->Update_kegiatan_m->getJadwalKegiatan($lokasi)->result_array();
         $data['selected'] = $this->Update_kegiatan_m->getUpdateKegiatan($id)->row_array();
         $data['job_title'] = $this->data['userdata']['job_title'];
-
-        if(!$position) {            
-            $this->noAccess("Hanya koordinator yang dapat melakukan ubah data.");
-        }
 
         $this->template("pelaksanaan_harian/update_kegiatan/edit_update_kegiatan_v", "Detail Update Kegiatan", $data);
     }

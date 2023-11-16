@@ -76,6 +76,8 @@ class Serah_terima_barang extends Telescoope_Controller
         $position = $this->Administration_m->getPosition("KOORDINATOR");
         $position2 = $this->Administration_m->getPosition("PENGAWAS");
         $position3 = $this->Administration_m->getPosition("ADMINISTRATOR");
+        $position4 = $this->Administration_m->getPosition("ADMIN");
+        $position5 = $this->Administration_m->getPosition("SUPERVISOR/REGIONAL");
                         
         if (!empty($search)) {
             $this->db->group_start();
@@ -89,8 +91,12 @@ class Serah_terima_barang extends Telescoope_Controller
 
         $result = $this->Serah_terima_barang_m->getDismantle()->result_array();
         
-        if($position || $position2) {
+        if($position || $position2 || $position4) {
             $result = $this->Serah_terima_barang_m->getDismantle("", $this->data['userdata']['lokasi_skd_id'])->result_array();
+        }
+
+        if($position5) {
+            $result = $this->Serah_terima_barang_m->getDismantle("", "", $this->data['userdata']['lokasi_user'])->result_array();
         }
 
         if (!empty($search)) {
@@ -103,8 +109,12 @@ class Serah_terima_barang extends Telescoope_Controller
 
         $count = $this->Serah_terima_barang_m->getDismantle()->num_rows();
         
-        if($position || $position2) { 
+        if($position || $position2 || $position4) { 
             $count = $this->Serah_terima_barang_m->getDismantle("", $this->data['userdata']['lokasi_skd_id'])->num_rows();
+        }
+
+        if($position5) { 
+            $count = $this->Serah_terima_barang_m->getDismantle("", "", $this->data['userdata']['lokasi_user'])->num_rows();
         }
 
         $totalRecords = $count;
