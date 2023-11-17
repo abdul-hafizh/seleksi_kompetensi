@@ -18,7 +18,7 @@
                         <label class="col-md-2 label-control">Kode Uji Fungsi Barang</label>
                         <div class="col-md-8">
                             <input type="text" class="form-control" value="<?php echo $get_uji['kode_penerimaan']; ?>" readonly>
-                            <input type="hidden" name="id_uji" value="<?php echo $get_uji['id']; ?>" readonly>
+                            <input type="hidden" name="id_uji" value="<?php echo $get_uji['id_uji']; ?>" readonly>
                         </div>
                     </div>
 

@@ -18,7 +18,7 @@
                                 <option value="">Pilih Penerimaan</option>
                                 <?php if (isset($get_penerimaan)) : ?>
                                     <?php foreach ($get_penerimaan as $k => $v) : ?>
-                                        <option value="<?= $v['id']; ?>"><?= $v['kode_penerimaan']; ?></option>
+                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_penerimaan'] . ' | ' . $v['nama_lokasi'] . '('. $v['alamat'] .') ' . $v['regency_name']; ?></option>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>

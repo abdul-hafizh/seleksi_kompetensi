@@ -18,7 +18,7 @@
                                 <option value="">Pilih Uji Fungsi</option>
                                 <?php if (isset($get_uji_fungsi)) : ?>
                                     <?php foreach ($get_uji_fungsi as $k => $v) : ?>
-                                        <option value="<?= $v['id']; ?>"><?= $v['kode_uji']; ?></option>
+                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_uji'] . ' | ' . $v['nama_lokasi'] . '('. $v['alamat'] .') ' . $v['regency_name']; ?></option>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>

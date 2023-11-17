@@ -12,7 +12,7 @@ class Uji_fungsi_barang_m extends CI_Model {
 
 	public function getUji($id = '', $lokasi = ''){
 
-        $this->db->select('pbg.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, pb.kode_pengiriman, upb.kode_uji, upb.id as id_uji, upb.jadwal_kegiatan, upb.catatan_uji, upb.status_uji');
+        $this->db->select('pbg.*, ref_locations.*, pb.tgl_kirim, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, lokasi_skd.alamat, pb.kode_pengiriman, upb.kode_uji, upb.id as id_uji, upb.jadwal_kegiatan, upb.catatan_uji, upb.status_uji');
 
 		if(!empty($id)){
 
