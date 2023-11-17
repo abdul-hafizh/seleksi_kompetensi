@@ -172,7 +172,14 @@ class Serah_terima_barang extends Telescoope_Controller
 
     public function update($id){
         $data = array();                
+        
+        $position = $this->Administration_m->getPosition("KOORDINATOR");
+
         $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi()->result_array();
+        if($position) {
+            $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi($this->data['userdata']['lokasi_skd_id'])->result_array();
+        }
+
         $data['get_row'] = $this->Serah_terima_barang_m->getDismantle($id)->row_array();
         $data['get_foto'] = $this->Serah_terima_barang_m->getDetail($id)->result_array();
 
