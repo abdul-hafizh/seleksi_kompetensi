@@ -40,6 +40,7 @@
                                 <th>Judul Berita</th>
                                 <th>Jenis</th>
                                 <th>Tanggal</th>
+                                <th>File</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -83,6 +84,7 @@
                 { data: 'judul_berita' }, 
                 { data: 'jenis_berita_acara' },
                 { data: 'tgl_kegiatan' },
+                { data: 'file_lampiran' },
                 { data: 'action' },
             ]            
         });

@@ -25,7 +25,7 @@
                     <div class="form-group row mb-2">
                         <label class="col-md-2 label-control">Tanggal Kegiatan</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" value="<?php echo $get_uji['jadwal_kegiatan']; ?>" readonly>
+                            <input type="text" class="form-control" name="jadwal_kegiatan" value="<?php echo $get_uji['jadwal_kegiatan']; ?>" <?php echo $job_title == 'KOORDINATOR' ? 'required' : 'readonly' ?>>
                         </div>
                     </div>
 
@@ -72,7 +72,7 @@
         </div>
     </div>
 
-    <?php if($job_title == 'PENGAWAS'){ ?>
+    <?php if($job_title == 'PENGAWAS' || $job_title == 'KOORDINATOR'){ ?>
     <div class="row mt-2">
         <div class="col-lg-12">
             <div class="card">

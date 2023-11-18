@@ -350,6 +350,7 @@ class Uji_fungsi_barang extends Telescoope_Controller
         
         $data = array(
             'status_uji' => $post['status_uji'],
+            'jadwal_kegiatan' => $post['jadwal_kegiatan'],
             'catatan_uji' => $post['catatan_uji'],
             'updated_by' => $this->data['userdata']['employee_id'],
             'updated_at' => date('Y-m-d H:i:s')

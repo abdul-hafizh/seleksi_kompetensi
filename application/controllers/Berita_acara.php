@@ -125,6 +125,7 @@ class Berita_acara extends Telescoope_Controller
         $totalRecordwithFilter = $count;
 
         $data = array();
+        $lampiran = '<span class="badge bg-secondary">No File</span>';
         
         foreach($result as $v) {   
             
@@ -139,6 +140,10 @@ class Berita_acara extends Telescoope_Controller
                 </div>';
             }
 
+            if(!empty($v['file_lampiran'])) {
+                $lampiran = '<a href="' . base_url('uploads/berita_acara/' . $v['file_lampiran']) . '" class="btn btn-sm btn-info" target="_blank">Lihat Dokumen</a>';
+            }
+
             $data[] = array(                                
                 "province_name" => $v['province_name'],
                 "regency_name" => $v['regency_name'],
@@ -146,6 +151,7 @@ class Berita_acara extends Telescoope_Controller
                 "judul_berita" => $v['judul_berita'],
                 "jenis_berita_acara" => $v['jenis_berita_acara'],
                 "tgl_kegiatan" => $v['tgl_kegiatan'],
+                "file_lampiran" => $lampiran,
                 "action" => $action
             );
         }
