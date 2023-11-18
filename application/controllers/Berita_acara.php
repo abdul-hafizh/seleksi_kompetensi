@@ -33,7 +33,7 @@ class Berita_acara extends Telescoope_Controller
 
         $config['allowed_types'] = '*';
         $config['overwrite'] = false;
-        $config['max_size'] = 5120;
+        $config['max_size'] = 5920;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -140,8 +140,8 @@ class Berita_acara extends Telescoope_Controller
                 </div>';
             }
 
-            if(!empty($v['file_lampiran'])) {
-                $lampiran = '<a href="' . base_url('uploads/berita_acara/' . $v['file_lampiran']) . '" class="btn btn-sm btn-info" target="_blank">Lihat Dokumen</a>';
+            if(isset($v['file_lampiran'])) {
+                $lampiran = '<a href="' . base_url('uploads/berita_acara/' . $v['file_lampiran']) . '" class="btn btn-sm btn-info" target="_blank">View</a>';
             }
 
             $data[] = array(                                
@@ -215,7 +215,17 @@ class Berita_acara extends Telescoope_Controller
             $_FILES['file']['tmp_name'] = $_FILES['file_lampiran']['tmp_name'];
             $_FILES['file']['error'] = $_FILES['file_lampiran']['error'];
             $_FILES['file']['size'] = $_FILES['file_lampiran']['size'];
-            if($this->upload->do_upload('file')){ $uploadLampiran = $this->upload->data(); }
+            if($this->upload->do_upload('file')){ 
+                $uploadLampiran = $this->upload->data(); 
+            } else {
+                $error = $this->upload->display_errors();
+                if (strpos($error, 'The file you are attempting to upload exceeds the maximum allowed size') !== false) {
+                    $this->setMessage("Ukuran yang diizinkan 5 Mb.");
+                    $this->db->trans_rollback();
+                }
+                $this->setMessage("Gagal upload file.");
+                $this->db->trans_rollback();
+            }
         }
 
         $data = array(
@@ -269,6 +279,14 @@ class Berita_acara extends Telescoope_Controller
                     unlink($file_path);
                 }                
                 $uploadLampiran = $this->upload->data(); 
+            } else {
+                $error = $this->upload->display_errors();
+                if (strpos($error, 'The file you are attempting to upload exceeds the maximum allowed size') !== false) {
+                    $this->setMessage("Ukuran yang diizinkan 5 Mb.");
+                    $this->db->trans_rollback();
+                }
+                $this->setMessage("Gagal upload file.");
+                $this->db->trans_rollback();
             }
         }
 
