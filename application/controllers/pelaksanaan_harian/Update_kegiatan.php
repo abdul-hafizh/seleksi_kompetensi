@@ -34,7 +34,7 @@ class Update_kegiatan extends Telescoope_Controller
 
         $config['allowed_types'] = '*';
         $config['overwrite'] = false;
-        $config['max_size'] = 4086;
+        $config['max_size'] = 50186;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -240,6 +240,9 @@ class Update_kegiatan extends Telescoope_Controller
         $sesi_5 = $this->input->post('sesi_5');
         $sesi_6 = $this->input->post('sesi_6');
 
+        $max_file_size = 4 * 1024 * 1024;
+        $max_file_size_v = 50 * 1024 * 1024;
+
         $sesi = [$sesi_1];
         if ($sesi_2 !== '') array_push($sesi, $sesi_2);
         if ($sesi_3 !== '') array_push($sesi, $sesi_3);
@@ -248,44 +251,64 @@ class Update_kegiatan extends Telescoope_Controller
         if ($sesi_6 !== '') array_push($sesi, $sesi_6);
 
         if (!empty($_FILES['foto_registrasi']['name'])) {
+            $file_size1 = $_FILES['foto_registrasi']['size'][$key];
+            if ($file_size1 > $max_file_size) {
+                $this->setMessage("Gagal upload, ada ukuran file yang melebihi 3 mb.");
+                $this->db->trans_rollback();
+            }     
             $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fregistrasi_1' . date('Ymdhis') . '_' . $_FILES['foto_registrasi']['name'];
             $_FILES['file']['type'] = $_FILES['foto_registrasi']['type'];
             $_FILES['file']['tmp_name'] = $_FILES['foto_registrasi']['tmp_name'];
             $_FILES['file']['error'] = $_FILES['foto_registrasi']['error'];
-            $_FILES['file']['size'] = $_FILES['foto_registrasi']['size'];
+            $_FILES['file']['size'] = $file_size1;
             if ($this->upload->do_upload('file')) {
                 $uploadFotoRegistrasi = $this->upload->data();
             }
         }
 
         if (!empty($_FILES['foto_pengarahan']['name'])) {
+            $file_size2 = $_FILES['foto_pengarahan']['size'][$key];
+            if ($file_size2 > $max_file_size) {
+                $this->setMessage("Gagal upload, ada ukuran file yang melebihi 3 mb.");
+                $this->db->trans_rollback();
+            }   
             $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fpengarahan_2' . date('Ymdhis') . '_' . $_FILES['foto_pengarahan']['name'];
             $_FILES['file']['type'] = $_FILES['foto_pengarahan']['type'];
             $_FILES['file']['tmp_name'] = $_FILES['foto_pengarahan']['tmp_name'];
             $_FILES['file']['error'] = $_FILES['foto_pengarahan']['error'];
-            $_FILES['file']['size'] = $_FILES['foto_pengarahan']['size'];
+            $_FILES['file']['size'] = $file_size2;
             if ($this->upload->do_upload('file')) {
                 $uploadFotoPengarahan = $this->upload->data();
             }
         }
 
         if (!empty($_FILES['foto_kegiatan_lain']['name'])) {
+            $file_size3 = $_FILES['foto_kegiatan_lain']['size'][$key];
+            if ($file_size3 > $max_file_size) {
+                $this->setMessage("Gagal upload, ada ukuran file yang melebihi 3 mb.");
+                $this->db->trans_rollback();
+            } 
             $_FILES['file']['name'] = $jadwal_kegiatan_id . '_fkegiatan_lain_3' . date('Ymdhis') . '_' . $_FILES['foto_kegiatan_lain']['name'];
             $_FILES['file']['type'] = $_FILES['foto_kegiatan_lain']['type'];
             $_FILES['file']['tmp_name'] = $_FILES['foto_kegiatan_lain']['tmp_name'];
             $_FILES['file']['error'] = $_FILES['foto_kegiatan_lain']['error'];
-            $_FILES['file']['size'] = $_FILES['foto_kegiatan_lain']['size'];
+            $_FILES['file']['size'] = $file_size3;
             if ($this->upload->do_upload('file')) {
                 $uploadFotoKegiatanLain = $this->upload->data();
             }
         }
 
         if (!empty($_FILES['video_kegiatan']['name'])) {
+            $file_size4 = $_FILES['video_kegiatan']['size'][$key];
+            if ($file_size4 > $max_file_size_v) {
+                $this->setMessage("Gagal upload, ada ukuran file yang melebihi 50 mb.");
+                $this->db->trans_rollback();
+            } 
             $_FILES['file']['name'] = $jadwal_kegiatan_id . '_vkegiatan_4' . date('Ymdhis') . '_' . $_FILES['video_kegiatan']['name'];
             $_FILES['file']['type'] = $_FILES['video_kegiatan']['type'];
             $_FILES['file']['tmp_name'] = $_FILES['video_kegiatan']['tmp_name'];
             $_FILES['file']['error'] = $_FILES['video_kegiatan']['error'];
-            $_FILES['file']['size'] = $_FILES['video_kegiatan']['size'];
+            $_FILES['file']['size'] = $file_size4;
             if ($this->upload->do_upload('file')) {
                 $uploadVideoKegiatan = $this->upload->data();
             }

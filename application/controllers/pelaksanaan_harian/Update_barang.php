@@ -246,16 +246,24 @@ class Update_barang extends Telescoope_Controller
             if (!empty($barang_id)) {
 
                 $data_insert = array();
+
+                $max_file_size = 4 * 1024 * 1024;
             
                 foreach ($barang_id as $key => $v) {
 
                     $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
+                    $file_size = $_FILES['foto_barang']['size'][$key];
+
+                    if ($file_size > $max_file_size) {
+                        $this->setMessage("Gagal upload, ada ukuran file yang melebihi 3 mb.");
+                        $this->db->trans_rollback();
+                    }                
                     
                     $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . $key+1 . '_' . date('YmdHis') . '_' . $file_name;
                     $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
                     $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
                     $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
-                    $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
+                    $_FILES['file']['size'] = $file_size;
 
                     if ($this->upload->do_upload('file')) {
                         $uploadBarang = $this->upload->data();
@@ -367,17 +375,25 @@ class Update_barang extends Telescoope_Controller
             $dir = './uploads/' . $this->data['dir'];
             $data_insert = array();
 
+            $max_file_size = 4 * 1024 * 1024;
+
             if (!empty($barang_id)) {
             
                 foreach ($barang_id as $key => $v) {
 
                     $file_name = isset($_FILES['foto_barang']['name'][$key]) ? $_FILES['foto_barang']['name'][$key] : '';
+                    $file_size = $_FILES['foto_barang']['size'][$key];
+
+                    if ($file_size > $max_file_size) {
+                        $this->setMessage("Gagal upload, ada ukuran file yang melebihi 3 mb.");
+                        $this->db->trans_rollback();
+                    }      
 
                     $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_update_' . $key+1 . '_' . date('YmdHis') . '_' . $file_name;
                     $_FILES['file']['type'] = $_FILES['foto_barang']['type'][$key];
                     $_FILES['file']['tmp_name'] = $_FILES['foto_barang']['tmp_name'][$key];
                     $_FILES['file']['error'] = $_FILES['foto_barang']['error'][$key];
-                    $_FILES['file']['size'] = $_FILES['foto_barang']['size'][$key];
+                    $_FILES['file']['size'] = $file_size;
 
                     if ($this->upload->do_upload('file')) {
                         $uploadBarang = $this->upload->data();
