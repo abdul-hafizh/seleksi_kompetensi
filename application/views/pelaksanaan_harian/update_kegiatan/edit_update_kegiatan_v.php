@@ -91,9 +91,17 @@
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Upload Video Kegiatan <span class="text-muted">(Opsional)</span></label>
+                            <label class="col-md-3 label-control">Ubah Video Kegiatan <span class="text-muted">(Opsional)</span></label>                            
                             <div class="col-md-9">
-                                <input type="file" class="form-control col-lg-7" name="video_kegiatan" placeholder="Video Kegiatan" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
+                                <input type="file" class="form-control" name="video_kegiatan" placeholder="Video Kegiatan" <?php echo $job_title == 'KOORDINATOR' ? '' : 'readonly' ?>>
+                                <?php if (!empty($selected['video_kegiatan'])): ?>
+                                    <video width="340" height="160" controls>
+                                        <source src="<?php echo base_url('uploads/update_kegiatan/' . $selected['video_kegiatan']) ?>" type="video/mp4">
+                                        Maaf, browser Anda tidak mendukung tag video.
+                                    </video>
+                                <?php else: ?>
+                                    <p>Tidak ada video</p>
+                                <?php endif; ?>
                             </div>
                         </div>
 

@@ -22,7 +22,7 @@
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Upload Foto Registrasi</label>
+                            <label class="col-md-3 label-control">Foto Registrasi</label>
                             <div class="col-md-9">
                                 <div class="avatar-group">
                                     <a href="<?php echo base_url('uploads/update_kegiatan/' . $detail['foto_registrasi']) ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/update_kegiatan/' . $detail['foto_registrasi']) ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top">
@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Upload Foto Pengarahan</label>
+                            <label class="col-md-3 label-control">Foto Pengarahan</label>
                             <div class="col-md-9">
                                 <div class="avatar-group">
                                     <a href="<?php echo base_url('uploads/update_kegiatan/' . $detail['foto_pengarahan']) ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/update_kegiatan/' . $detail['foto_pengarahan']) ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top">
@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Upload Foto Kegiatan Lain</label>
+                            <label class="col-md-3 label-control">Foto Kegiatan Lain</label>
                             <div class="col-md-9">
                                 <div class="avatar-group">
                                     <a href="<?php echo base_url('uploads/update_kegiatan/' . $detail['foto_kegiatan_lain']) ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/update_kegiatan/' . $detail['foto_kegiatan_lain']) ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top">
@@ -55,11 +55,16 @@
                         </div>
 
                         <div class="form-group row mb-2">
-                            <label class="col-md-3 label-control">Upload Video Kegiatan</label>
-                            <div class="col-md-9">
-                                <a href="<?php echo base_url('uploads/update_kegiatan/' . $detail['video_kegiatan']) ?>" target="_blank" class="avatar-group-item" data-img="<?php echo base_url('uploads/update_kegiatan/' . $detail['video_kegiatan']) ?>" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top">
-                                    <?php echo $detail['video_kegiatan'] ?>
-                                </a>
+                            <label class="col-md-3 label-control">Video Kegiatan</label>
+                            <div class="col-md-9">                                
+                                <?php if (!empty($detail['video_kegiatan'])): ?>
+                                    <video width="340" height="160" controls>
+                                        <source src="<?php echo base_url('uploads/update_kegiatan/' . $detail['video_kegiatan']) ?>" type="video/mp4">
+                                        Maaf, browser Anda tidak mendukung tag video.
+                                    </video>
+                                <?php else: ?>
+                                    <p>Tidak ada video</p>
+                                <?php endif; ?>
                             </div>
                         </div>
 
