@@ -27,14 +27,17 @@
                                         <input id="foto_barang" name="foto_barang[]" type="file" class="form-control">                                    
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-md-3 col-sm-12">
                                     <div class="p-3">
                                         <label class="form-label">Keterangan Foto ke - <?php echo $i; ?></label>
-                                        <input id="catatan_foto" name="catatan_foto[]" type="text" class="form-control" placeholder="Keterangan Foto ke - <?php echo $i; ?>" value="<?php echo $v['catatan_foto']; ?>">
+                                        <div class="d-flex align-items-center">
+                                            <input id="catatan_foto" name="catatan_foto[]" type="text" class="form-control" placeholder="Keterangan Foto ke - <?php echo $i; ?>" value="<?php echo $v['catatan_foto']; ?>" style="margin-right: 10px">
+                                            <a href="<?php echo site_url('uji_fungsi_barang/delete_foto/' . $v['id']); ?>" onclick="return confirm('Apakah Anda yakin hapus foto ini?');" class="btn btn-sm btn-danger" title="Hapus Foto"><i class="ri-delete-bin-5-line"></i></a>
+                                        </div>
                                         <input type="hidden" name="detail_foto_id[]" value="<?php echo $v['id']; ?>" readonly>
                                         <input type="hidden" name="foto_exist[]" value="<?php echo $v['foto_barang']; ?>" readonly>
                                     </div>
-                                </div>
+                                </div>                                
                             </div>
                             <?php $i++; } ?>
                             <input type="hidden" name="uji_penerimaan_id" value="<?php echo $get_detail['uji_penerimaan_id']; ?>" readonly>

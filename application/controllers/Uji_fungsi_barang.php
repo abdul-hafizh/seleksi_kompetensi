@@ -551,4 +551,37 @@ class Uji_fungsi_barang extends Telescoope_Controller
             redirect(site_url('uji_fungsi_barang'));
         }
     }
+
+    public function delete_foto($id) {
+        $this->db->trans_begin();
+
+        $get = $this->db->get_where('uji_detail_foto', array('id' => $id))->row_array();
+
+        $file_path = FCPATH . 'uploads/uji_fungsi_barang/' . $get['foto_barang'];
+
+        $this->db->where('id', $id);
+        $foto = $this->db->delete('uji_detail_foto');
+
+        if ($foto) {
+            
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }       
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $this->setMessage("Gagal hapus data.");
+                redirect(site_url('uji_fungsi_barang/detail_foto/' . $get['uji_header_id'] ));
+    
+            } else {
+                $this->db->trans_commit();
+                $this->setMessage("Berhasil hapus data.");
+                redirect(site_url('uji_fungsi_barang/detail_foto/' . $get['uji_header_id']));
+            }
+        } else {
+            $this->db->trans_rollback();
+            $this->setMessage("Gagal hapus data.");
+            redirect(site_url('uji_fungsi_barang/detail_foto/' . $get['uji_header_id']));
+        }
+    }
 }
