@@ -33,7 +33,7 @@ class Berita_acara extends Telescoope_Controller
 
         $config['allowed_types'] = '*';
         $config['overwrite'] = false;
-        $config['max_size'] = 5920;
+        $config['max_size'] = 50920;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -125,9 +125,11 @@ class Berita_acara extends Telescoope_Controller
         $totalRecordwithFilter = $count;
 
         $data = array();
-        $lampiran = '<span class="badge bg-secondary">No File</span>';
+        $lampiran = '<span class="badge bg-secondary">No File</span>';       
         
         foreach($result as $v) {   
+
+            $file_path = FCPATH . 'uploads/berita_acara/' . $v['file_lampiran'];
             
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('berita_acara/update/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
@@ -140,7 +142,7 @@ class Berita_acara extends Telescoope_Controller
                 </div>';
             }
 
-            if(isset($v['file_lampiran'])) {
+            if(!empty($v['file_lampiran']) && file_exists($file_path)) {
                 $lampiran = '<a href="' . base_url('uploads/berita_acara/' . $v['file_lampiran']) . '" class="btn btn-sm btn-info" target="_blank">View</a>';
             }
 
