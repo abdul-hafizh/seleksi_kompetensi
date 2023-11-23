@@ -40,6 +40,7 @@
                                 <th>Nama Lokasi</th>
                                 <th>Nama Penerima</th>
                                 <th>Tanggal Kegiatan</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -85,6 +86,7 @@
                 { data: 'nama_lokasi' }, 
                 { data: 'nama_penerima' },
                 { data: 'tgl_kegiatan' },
+                { data: 'status' },
                 { data: 'action' },
             ]            
         });

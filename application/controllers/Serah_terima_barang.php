@@ -33,7 +33,7 @@ class Serah_terima_barang extends Telescoope_Controller
 
         $config['allowed_types'] = 'jpg|jpeg|png|gif';
         $config['overwrite'] = false;
-        $config['max_size'] = 5120;
+        $config['max_size'] = 50120;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -84,6 +84,7 @@ class Serah_terima_barang extends Telescoope_Controller
             $this->db->like('province_name', $search);
             $this->db->or_like('regency_name', $search);
             $this->db->or_like('nama_lokasi', $search);
+            $this->db->or_like('status_terima', $search);
             $this->db->group_end();
         }
 
@@ -104,6 +105,7 @@ class Serah_terima_barang extends Telescoope_Controller
             $this->db->like('province_name', $search);
             $this->db->or_like('regency_name', $search);
             $this->db->or_like('nama_lokasi', $search);
+            $this->db->or_like('status_terima', $search);
             $this->db->group_end();
         }
 
@@ -123,12 +125,17 @@ class Serah_terima_barang extends Telescoope_Controller
         $data = array();
         
         foreach($result as $v) {   
+
+            $status = $v['status_terima'] == 'Pending' ? '<span class="badge bg-secondary">Pending</span>' : '<span class="badge bg-success">Approved</span>';
             
             $action = '<div class="btn-group" role="group">
                         <a href="' .  site_url('serah_terima_barang/update/' . $v['id']) . '" class="btn btn-sm btn-primary">Detail</a>
                     </div>';
                     
-            if($position || $position3) {                         
+            if($position) {       
+                
+                $status = $v['status_terima'] == 'Pending' ? '<span class="badge bg-secondary">Waiting Approval</span>' : '<span class="badge bg-success">Approved</span>';
+
                 $action = '<div class="btn-group" role="group">
                     <a href="' .  site_url('serah_terima_barang/update/' . $v['id']) . '" class="btn btn-sm btn-warning">Edit</a>
                     <a href="' .  site_url('serah_terima_barang/delete/' . $v['id']) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Apakah Anda yakin?\');">Hapus</a>
@@ -142,6 +149,7 @@ class Serah_terima_barang extends Telescoope_Controller
                 "nama_lokasi" => $v['kode_lokasi'] . ' | ' . $v['nama_lokasi'],
                 "nama_penerima" => $v['nama_penerima'],
                 "tgl_kegiatan" => $v['tgl_kegiatan'],
+                "status" => $status,
                 "action" => $action
             );
         }
@@ -174,8 +182,11 @@ class Serah_terima_barang extends Telescoope_Controller
         $data = array();                
         
         $position = $this->Administration_m->getPosition("KOORDINATOR");
-
+        
+        $data['get_role'] = $this->Administration_m->getPosition("PENGAWAS");
         $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi()->result_array();
+        $data['job_title'] = $this->data['userdata']['job_title'];
+
         if($position) {
             $data['get_lokasi'] = $this->Lokasi_skd_m->getLokasi($this->data['userdata']['lokasi_skd_id'])->result_array();
         }
@@ -203,6 +214,7 @@ class Serah_terima_barang extends Telescoope_Controller
             'nama_penerima' => $post['nama_penerima'],
             'nama_penyedia' => $post['nama_penyedia'],
             'tgl_kegiatan' => $post['tgl_kegiatan'],
+            'status_terima' => 'Pending',
             'jabatan' => $post['jabatan'],
             'nip' => $post['nip'],
             'alamat_kegiatan' => $post['alamat_kegiatan'],
@@ -289,6 +301,7 @@ class Serah_terima_barang extends Telescoope_Controller
             'jabatan' => $post['jabatan'],
             'nip' => $post['nip'],
             'alamat_kegiatan' => $post['alamat_kegiatan'],
+            'status_terima' => $post['status_terima'],
             'catatan' => $post['catatan'],
             'updated_by' => $this->data['userdata']['employee_id'],
             'updated_at' => date('Y-m-d H:i:s')
@@ -306,6 +319,8 @@ class Serah_terima_barang extends Telescoope_Controller
                 
                 $file_name = isset($_FILES['foto_kegiatan']['name'][$key]) ? $_FILES['foto_kegiatan']['name'][$key] : '';
 
+                $file_path = FCPATH . 'uploads/serah_terima_barang/' . $post['foto_kegiatan'];
+
                 if (!empty($file_name)) {
                     $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . $key+1 . '_' . date('His') . '_' . $file_name;
                     $_FILES['file']['type'] = $_FILES['foto_kegiatan']['type'][$key];
@@ -314,6 +329,9 @@ class Serah_terima_barang extends Telescoope_Controller
                     $_FILES['file']['size'] = $_FILES['foto_kegiatan']['size'][$key];
         
                     if ($this->upload->do_upload('file')) {
+                        if (file_exists($file_path)) {
+                            unlink($file_path);
+                        }  
                         $uploadKtp = $this->upload->data();
                         $data_insert[] = array(
                             'keterangan' => $keterangan[$key],
@@ -355,6 +373,74 @@ class Serah_terima_barang extends Telescoope_Controller
         redirect(site_url('serah_terima_barang'));        
     }
 
+    public function submit_data_foto(){
+
+        $post = $this->input->post(); 
+        $id_row = $post['id_row'];
+        $keterangan = $post['keterangan'];
+
+        if (count($post) == 0) {
+            $this->setMessage("Isi data dengan benar.");
+            redirect(site_url('serah_terima_barang'));
+        }
+
+        $this->db->trans_begin();
+
+        $dir = './uploads/' . $this->data['dir'];
+
+        if (!empty($id_row)) {
+            $data_insert = array();
+        
+            foreach ($id_row as $key => $v) {
+                
+                $file_name = isset($_FILES['foto_kegiatan']['name'][$key]) ? $_FILES['foto_kegiatan']['name'][$key] : '';
+
+                if (!empty($file_name)) {
+                    $_FILES['file']['name'] = $this->data['userdata']['employee_id'] . '_barang_' . $key+1 . '_' . date('His') . '_' . $file_name;
+                    $_FILES['file']['type'] = $_FILES['foto_kegiatan']['type'][$key];
+                    $_FILES['file']['tmp_name'] = $_FILES['foto_kegiatan']['tmp_name'][$key];
+                    $_FILES['file']['error'] = $_FILES['foto_kegiatan']['error'][$key];
+                    $_FILES['file']['size'] = $_FILES['foto_kegiatan']['size'][$key];
+        
+                    if ($this->upload->do_upload('file')) {
+                        $uploadKtp = $this->upload->data();
+                        $data_insert[] = array(
+                            'keterangan' => $keterangan[$key],
+                            'file_path' => isset($uploadKtp['file_name']) ? $uploadKtp['file_name'] : '',
+                        );
+                    }
+                } else {
+                    $data_insert[] = array(
+                        'keterangan' => $keterangan[$key],
+                        'file_path' => $foto_exist[$key],
+                    );
+                }            
+            }     
+            
+            foreach ($data_insert as $insert_data) {
+                $detail = array(
+                    "serah_terima_id" => $post['id_dismantle'],
+                    'foto_kegiatan' => $insert_data['file_path'],
+                    'keterangan' => $insert_data['keterangan'],
+                    'created_by' => $this->data['userdata']['employee_id'],
+                    'created_at' => date('Y-m-d H:i:s')
+                );            
+
+                $simpan_detail = $this->db->insert('serah_terima_foto', $detail);
+            }
+        }
+        
+        if ($this->db->trans_status() === FALSE)  {
+            $this->setMessage("Failed update data.");
+            $this->db->trans_rollback();
+        } else {
+            $this->setMessage("Success update data.");
+            $this->db->trans_commit();
+        }            
+
+        redirect(site_url('serah_terima_barang'));        
+    }
+
     public function delete($id) {
         $this->db->trans_begin();
 
@@ -379,6 +465,39 @@ class Serah_terima_barang extends Telescoope_Controller
             $this->db->trans_rollback();
             $this->setMessage("Gagal hapus data.");
             redirect(site_url('serah_terima_barang'));
+        }
+    }
+
+    public function delete_foto($id) {
+        $this->db->trans_begin();
+
+        $get = $this->db->get_where('serah_terima_foto', array('id' => $id))->row_array();
+
+        $file_path = FCPATH . 'uploads/serah_terima_barang/' . $get['foto_kegiatan'];
+
+        $this->db->where('id', $id);
+        $foto = $this->db->delete('serah_terima_foto');
+
+        if ($foto) {
+            
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }       
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $this->setMessage("Gagal hapus data.");
+                redirect(site_url('serah_terima_barang/update/' . $get['serah_terima_id'] ));
+    
+            } else {
+                $this->db->trans_commit();
+                $this->setMessage("Berhasil hapus data.");
+                redirect(site_url('serah_terima_barang/update/' . $get['serah_terima_id']));
+            }
+        } else {
+            $this->db->trans_rollback();
+            $this->setMessage("Gagal hapus data.");
+            redirect(site_url('serah_terima_barang/update/' . $get['serah_terima_id']));
         }
     }
 }
