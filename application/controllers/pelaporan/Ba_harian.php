@@ -68,19 +68,19 @@ class Ba_harian extends Telescoope_Controller
             $data['update_barang'] = $update_barang;
             $data['update_barang_detail'] = $update_barang_detail;
             $data['month_list'] = [
-                0 => '',
-                1 => 'Januari',
-                2 => 'Februari',
-                3 => 'Maret',
-                4 => 'April',
-                5 => 'Mei',
-                6 => 'Juni',
-                7 => 'Juli',
-                8 => 'Agustus',
-                9 => 'September',
-                10 => 'Oktober',
-                11 => 'November',
-                12 => 'Desember',
+                '' => '',
+                '01' => 'Januari',
+                '02' => 'Februari',
+                '03' => 'Maret',
+                '04' => 'April',
+                '05' => 'Mei',
+                '06' => 'Juni',
+                '07' => 'Juli',
+                '08' => 'Agustus',
+                '09' => 'September',
+                '10' => 'Oktober',
+                '11' => 'November',
+                '12' => 'Desember',
             ];
             $data['day_list'] = [
                 'Sun' => 'Minggu',
@@ -94,7 +94,7 @@ class Ba_harian extends Telescoope_Controller
 
             $this->load->library('pdf');
             $this->pdf->setPaper('A4', 'potrait');
-            $this->pdf->filename = "laporan_berita_acara_harian.pdf";
+            $this->pdf->filename = "Laporan Berita Acara Harian Tanggal " . $tgl_update . ".pdf";
             $this->pdf->set_option('isRemoteEnabled', true);
             $this->pdf->load_view('pelaporan/ba_harian/export_pdf', $data);
         } else {
@@ -116,19 +116,19 @@ class Ba_harian extends Telescoope_Controller
             $data['update_barang'] = $update_barang;
             $data['update_barang_detail'] = $update_barang_detail;
             $data['month_list'] = [
-                0 => '',
-                1 => 'Januari',
-                2 => 'Februari',
-                3 => 'Maret',
-                4 => 'April',
-                5 => 'Mei',
-                6 => 'Juni',
-                7 => 'Juli',
-                8 => 'Agustus',
-                9 => 'September',
-                10 => 'Oktober',
-                11 => 'November',
-                12 => 'Desember',
+                '' => '',
+                '01' => 'Januari',
+                '02' => 'Februari',
+                '03' => 'Maret',
+                '04' => 'April',
+                '05' => 'Mei',
+                '06' => 'Juni',
+                '07' => 'Juli',
+                '08' => 'Agustus',
+                '09' => 'September',
+                '10' => 'Oktober',
+                '11' => 'November',
+                '12' => 'Desember',
             ];
             $data['day_list'] = [
                 'Sun' => 'Minggu',
@@ -142,7 +142,7 @@ class Ba_harian extends Telescoope_Controller
 
             $this->load->library('pdf');
             $this->pdf->setPaper('A4', 'potrait');
-            $this->pdf->filename = "laporan_berita_acara_harian.pdf";
+            $this->pdf->filename = "Laporan Berita Acara Harian Tanggal " . $tgl_update . ".pdf";
             $this->pdf->set_option('isRemoteEnabled', true);
             $this->pdf->load_view('pelaporan/ba_harian/export_pdf', $data, true);
         } else {

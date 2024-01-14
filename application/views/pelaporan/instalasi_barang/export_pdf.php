@@ -142,7 +142,7 @@
     <br>
     <br><br><br><br>
     <br><br><br>
-    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;'><strong><span style='font-size:13px;font-family:"Tahoma",sans-serif;'><?= isset($instalasi_barang['kode_penerimaan']) ? $instalasi_barang['kode_penerimaan'] : ''; ?> </span></strong></p>
+    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;'><strong><span style='font-size:13px;font-family:"Tahoma",sans-serif;'><?php echo isset($instalasi_barang['kode_penerimaan']) ? $instalasi_barang['kode_penerimaan'] : ''; ?> </span></strong></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;'><strong><span style='font-size:27px;line-height:107%;font-family:"Tahoma",sans-serif;'>SKB BKN PUSAT</span></strong></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;text-align:justify;'><span style='font-size:16px;line-height:107%;font-family:"Tahoma",sans-serif;'>Jl. Mayor Jendral Sutoyo No 12 , RT.4 / RW.14, Cililitan, Kec.&nbsp;</span><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Kramat Jati, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13640</span></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;text-align:justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>&nbsp;</span></p>
@@ -195,7 +195,7 @@
     </table>
     <br>
     <hr>
-    <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Pada hari in <?= $day_list[date("D", strtotime($instalasi_barang['tgl_terima']))] ?> tanggal <?= date("d", strtotime($instalasi_barang['tgl_terima'])) ?> bulan <?= $month_list[date("m", strtotime($instalasi_barang['tgl_terima']))] ?> tahun <?= date("Y", strtotime($instalasi_barang['tgl_terima'])) ?>, telah dilakukan instalasi/ pemasangan sarana dan prasarana untuk keperluan pelaksanaan Ujian Seleksi Nasional CASN Tahun <?= date("Y", strtotime($instalasi_barang['tgl_terima'])) ?> di titik lokasi Provinsi <?= $instalasi_barang['province_name'] ?> yang berlokasi di <?= $instalasi_barang['nama_lokasi'] ?> dengan alamat <?= $instalasi_barang['alamat'] ?> dengan rincian sebagai berikut :</span></p>
+    <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Pada hari ini <?php echo $day_list[date("D", strtotime($instalasi_barang['tgl_terima']))] ?> tanggal <?php echo date("d", strtotime($instalasi_barang['tgl_terima'])) ?> bulan <?php echo $month_list[date("m", strtotime($instalasi_barang['tgl_terima']))] ?> tahun <?php echo date("Y", strtotime($instalasi_barang['tgl_terima'])) ?>, telah dilakukan instalasi/ pemasangan sarana dan prasarana untuk keperluan pelaksanaan Ujian Seleksi Nasional CASN Tahun <?php echo date("Y", strtotime($instalasi_barang['tgl_terima'])) ?> di titik lokasi Provinsi <?php echo $instalasi_barang['province_name'] ?> yang berlokasi di <?php echo $instalasi_barang['nama_lokasi'] ?> dengan alamat <?php echo $instalasi_barang['alamat'] ?> dengan rincian sebagai berikut :</span></p>
     <br>
     <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;font-weight:bold;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>A. SARANA PRASARANA UTAMA</span></p>
     <br>
@@ -219,12 +219,12 @@
                 <?php $no = 1; ?>
                 <?php foreach ($instalasi_barang_detail as $k => $v) : ?>
                     <tr>
-                        <td style="border:1px solid black;width:5%;text-align:center;"><?= $no; ?></td>
-                        <td style="border:1px solid black;width:10%;"><?= $v['nama_barang']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?= $v['jumlah_terpasang']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?= $v['satuan']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?= $v['jumlah_terima']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?= $v['jumlah_rusak']; ?></td>
+                        <td style="border:1px solid black;width:5%;text-align:center;"><?php echo $no; ?></td>
+                        <td style="border:1px solid black;width:10%;"><?php echo $v['nama_barang']; ?></td>
+                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_terpasang']; ?></td>
+                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['satuan']; ?></td>
+                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_terima']; ?></td>
+                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_rusak']; ?></td>
                         <td style="border:1px solid black;width:10%;text-align:center;">&nbsp;</td>
                     </tr>
                     <?php $no++; ?>
@@ -281,7 +281,7 @@
         </tbody>
     </table>
 
-    <p>PENERIMAAN BARANG DAN INSTALASI</p>
+    <h3>PENERIMAAN BARANG DAN INSTALASI</h3><hr/><br/><br/>
     <table style="border:none;border-collapse: collapse;width:100%;">
         <tbody>
             <tr>
@@ -292,17 +292,17 @@
             <tr>
                 <td style="width:120px;">Lokasi</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?= $instalasi_barang['nama_lokasi'] ?></td>
+                <td>&nbsp;&nbsp;<?php echo $instalasi_barang['nama_lokasi'] ?></td>
             </tr>
             <tr>
                 <td style="width:120px;">Alamat Lokasi</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?= $instalasi_barang['alamat'] ?></td>
+                <td>&nbsp;&nbsp;<?php echo $instalasi_barang['alamat'] ?></td>
             </tr>
             <tr>
                 <td style="width:120px;">Tanggal</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?= date("d", strtotime($instalasi_barang['tgl_terima'])) . " " . $month_list[date("m", strtotime($instalasi_barang['tgl_terima']))] . " " . date("Y", strtotime($instalasi_barang['tgl_terima'])) ?></td>
+                <td>&nbsp;&nbsp;<?php echo date("d", strtotime($instalasi_barang['tgl_terima'])) . " " . $month_list[date("m", strtotime($instalasi_barang['tgl_terima']))] . " " . date("Y", strtotime($instalasi_barang['tgl_terima'])) ?></td>
             </tr>
         </tbody>
     </table>
@@ -319,12 +319,12 @@
                                 <tbody>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?= base_url('uploads/penerimaan_barang/' . $instalasi_barang_detail[$i]["foto_barang"] . '') ?>" />
+                                            <img src="<?php echo base_url('uploads/penerimaan_barang/' . $instalasi_barang_detail[$i]["foto_barang"] . '') ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?= isset($instalasi_barang_detail[$i]["keterangan"]) ? $instalasi_barang_detail[$i]["keterangan"] : '&nbsp;' ?>
+                                            <?php echo isset($instalasi_barang_detail[$i]["keterangan"]) ? $instalasi_barang_detail[$i]["keterangan"] : '&nbsp;' ?>
                                         </td>
                                     </tr>
                             </table>
@@ -335,12 +335,12 @@
                                 <tbody>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?= base_url('uploads/penerimaan_barang/' . $instalasi_barang_detail[$i + 1]["foto_barang"] . '') ?>" />
+                                            <img src="<?php echo base_url('uploads/penerimaan_barang/' . $instalasi_barang_detail[$i + 1]["foto_barang"] . '') ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?= isset($instalasi_barang_detail[$i]["keterangan"]) ? $instalasi_barang_detail[$i + 1]["keterangan"] : '&nbsp;' ?>
+                                            <?php echo isset($instalasi_barang_detail[$i]["keterangan"]) ? $instalasi_barang_detail[$i + 1]["keterangan"] : '&nbsp;' ?>
                                         </td>
                                     </tr>
                             </table>
@@ -351,6 +351,6 @@
             <?php endif; ?>
         </tbody>
     </table>
+    
 </body>
-
 </html>

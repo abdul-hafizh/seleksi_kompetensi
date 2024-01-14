@@ -25,7 +25,7 @@ class Update_barang extends Telescoope_Controller
 
         $config['allowed_types'] = '*';
         $config['overwrite'] = false;
-        $config['max_size'] = 4086;
+        $config['max_size'] = 10086;
         $config['upload_path'] = $dir;
         $this->load->library('upload', $config);
 
@@ -247,7 +247,7 @@ class Update_barang extends Telescoope_Controller
 
                 $data_insert = array();
 
-                $max_file_size = 4 * 1024 * 1024;
+                $max_file_size = 10 * 1024 * 1024;
             
                 foreach ($barang_id as $key => $v) {
 
@@ -375,7 +375,7 @@ class Update_barang extends Telescoope_Controller
             $dir = './uploads/' . $this->data['dir'];
             $data_insert = array();
 
-            $max_file_size = 4 * 1024 * 1024;
+            $max_file_size = 10 * 1024 * 1024;
 
             if (!empty($barang_id)) {
             
