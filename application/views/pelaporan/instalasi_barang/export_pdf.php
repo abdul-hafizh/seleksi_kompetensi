@@ -319,12 +319,12 @@
                                 <tbody>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?php echo base_url('uploads/penerimaan_barang/' . $instalasi_barang_detail[$i]["foto_barang"] . '') ?>" />
+                                            <img src="<?php echo base_url('uploads/penerimaan_barang/' . $instalasi_barang_detail[$i]["foto_barang"] . '') ?>" width="200px" height="200px" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?php echo isset($instalasi_barang_detail[$i]["keterangan"]) ? $instalasi_barang_detail[$i]["keterangan"] : '&nbsp;' ?>
+                                            <?php echo isset($instalasi_barang_detail[$i]["nama_barang"]) ? $instalasi_barang_detail[$i]["nama_barang"] : '&nbsp;' ?>
                                         </td>
                                     </tr>
                             </table>
@@ -335,12 +335,12 @@
                                 <tbody>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?php echo base_url('uploads/penerimaan_barang/' . $instalasi_barang_detail[$i + 1]["foto_barang"] . '') ?>" />
+                                            <img src="<?php echo base_url('uploads/penerimaan_barang/' . $instalasi_barang_detail[$i + 1]["foto_barang"] . '') ?>" width="200px" height="200px"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?php echo isset($instalasi_barang_detail[$i]["keterangan"]) ? $instalasi_barang_detail[$i + 1]["keterangan"] : '&nbsp;' ?>
+                                            <?php echo isset($instalasi_barang_detail[$i]["nama_barang"]) ? $instalasi_barang_detail[$i + 1]["nama_barang"] : '&nbsp;' ?>
                                         </td>
                                     </tr>
                             </table>
