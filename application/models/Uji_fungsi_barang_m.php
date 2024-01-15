@@ -78,4 +78,31 @@ class Uji_fungsi_barang_m extends CI_Model {
 		
 		return $this->db->get();
 	}	
+
+	public function get_BarangExist($uji_id)
+	{
+		$this->db->select('upb.*, emp.fullname, emp.phone, emp.email, emp.nik, emp.alamat, skd.nama_lokasi, skd.alamat, ref.province_name');
+		$this->db->where('upb.id', $uji_id);
+		$this->db->from('uji_penerimaan_barang upb');
+		$this->db->join('penerimaan_barang pebr', 'pebr.id = upb.penerimaan_id', 'left');
+		$this->db->join('pengiriman_barang pbr', 'pbr.id = pebr.pengiriman_id', 'left');
+		$this->db->join('perencanaan p', 'p.id = pbr.perencanaan_id', 'left');
+		$this->db->join('lokasi_skd skd', 'skd.id = p.kode_lokasi_skd', 'left');
+		$this->db->join('ref_locations ref', 'ref.location_id = skd.lokasi_id', 'left');
+		$this->db->join('adm_employee emp', 'emp.id = upb.updated_by', 'left');
+		return $this->db->get();
+	}
+
+	public function get_BarangDetail($id = '')
+	{
+		$this->db->distinct();
+		$this->db->select('upb.*, upd.status_baik, upd.status_tidak, upd.catatan, upf.foto_barang, upf.catatan_foto, emp.fullname, emp.phone, emp.email, emp.nik, emp.alamat, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn');
+		$this->db->where('upf.uji_header_id', $id);
+		$this->db->join('uji_penerimaan_detail upd', 'upb.id = upd.uji_penerimaan_id', 'left');
+		$this->db->join('uji_detail_foto upf', 'upd.id = upf.uji_detail_id', 'left');
+		$this->db->join('adm_barang', 'adm_barang.id = upd.barang_id', 'left');
+		$this->db->join('adm_employee emp', 'emp.id = upb.updated_by', 'left');
+
+		return $this->db->get('uji_penerimaan_barang upb');
+	}
 }

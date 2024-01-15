@@ -18,18 +18,10 @@
                                 <option value="">Pilih Uji Fungsi</option>
                                 <?php if (isset($get_uji_fungsi)) : ?>
                                     <?php foreach ($get_uji_fungsi as $k => $v) : ?>
-                                        <option value="<?php echo $v['id']; ?>"><?php echo $v['kode_uji'] . ' | ' . $v['nama_lokasi'] . '('. $v['alamat'] .') ' . $v['regency_name']; ?></option>
+                                        <option value="<?php echo $v['id_uji']; ?>"><?php echo $v['kode_uji'] . ' | ' . $v['nama_lokasi'] . '('. $v['alamat'] .') ' . $v['regency_name']; ?></option>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-lg-2">
-                            <label class="form-label">Tanggal Terima</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input type="date" class="form-control" name="tgl_terima" placeholder="Tanggal Terima" required>
                         </div>
                     </div>
                 </div>

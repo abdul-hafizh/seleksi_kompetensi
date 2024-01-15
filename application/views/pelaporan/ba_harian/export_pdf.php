@@ -185,17 +185,17 @@
     <table style="margin-bottom: -2em!important;">
         <tr>
             <td style="width: 60%;text-align:center;">
-                <h3>
+                <h4>
                     BERITA ACARA HARIAN
                     <br>
-                </h3>
-                <p class="fs-14">
-                    SEWA SARANA PRASARANA UNTUK SELEKSI NASIONAL CALON APARATUR SIPIL NEGARA CASN<br>
+                    SEWA SARANA PRASARANA UNTUK SELEKSI NASIONAL CALON APARATUR SIPIL NEGARA CASN
+                    <br>
                     TAHUN ANGGARAN 2023 (SKB CASN TAHAP 1)
-                </p>
+                </h4>
             </td>
         </tr>
     </table>
+    <br>
     <br>
     <hr>
     <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Pada hari in <?php echo $day_list[date("D", strtotime($update_barang['tgl_update_harian']))] ?> tanggal <?php echo date("d", strtotime($update_barang['tgl_update_harian'])) ?> bulan <?php echo $month_list[date("m", strtotime($update_barang['tgl_update_harian']))] ?> tahun <?php echo date("Y", strtotime($update_barang['tgl_update_harian'])) ?>, telah digunakan sarana dan prasarana untuk keperluan pelaksanaan Ujian Seleksi Nasional CASN Tahun <?php echo date("Y", strtotime($update_barang['tgl_update_harian'])) ?> di titik lokasi Provinsi <?php echo $update_barang['province_name'] ?> yang berlokasi di <?php echo $update_barang['nama_lokasi'] ?> dengan alamat <?php echo $update_barang['alamat'] ?> dengan rincian sebagai berikut :</span></p>
@@ -285,12 +285,12 @@
         </tbody>
     </table>
 
-    <h3 style="align-text: center">
+    <h4 style="text-align:center">
         LAPORAN DOKUMENTASI SEWA <br/>
         PRASARANA UNTUK SELEKSI NASIONAL CALON <br/>
         APARATUR SIPIL NEGARA (CASN) <br/>
         TAHUN ANGGARAN 2023 (SKB CASN TAHAP II)
-    </h3>
+    </h4>
     <br/><br/>
 
     <p>Laporan Penerimaan Barang dan Instalasi Harian.</p>
@@ -331,12 +331,12 @@
                                 <tbody>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i]["foto_barang"] . '') ?>" />
+                                            <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i]["foto_barang"] . '') ?>" width="200px" height="200px" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?php echo isset($update_barang_detail[$i]["keterangan"]) ? $update_barang_detail[$i]["keterangan"] : '&nbsp;' ?>
+                                            <?php echo isset($update_barang_detail[$i]["nama_barang"]) ? $update_barang_detail[$i]["nama_barang"] : '&nbsp;' ?>
                                         </td>
                                     </tr>
                             </table>
@@ -347,12 +347,12 @@
                                 <tbody>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i + 1]["foto_barang"] . '') ?>" />
+                                            <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i + 1]["foto_barang"] . '') ?>" width="200px" height="200px" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?php echo isset($update_barang_detail[$i]["keterangan"]) ? $update_barang_detail[$i + 1]["keterangan"] : '&nbsp;' ?>
+                                            <?php echo isset($update_barang_detail[$i]["nama_barang"]) ? $update_barang_detail[$i + 1]["nama_barang"] : '&nbsp;' ?>
                                         </td>
                                     </tr>
                             </table>

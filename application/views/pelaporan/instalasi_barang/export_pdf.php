@@ -182,17 +182,17 @@
     <table style="margin-bottom: -2em!important; margin-top: 1em!important;">
         <tr>
             <td style="width: 60%;text-align:center;">
-                <h3>
+                <h4>
                     BERITA ACARA PENERIMAAN DAN INSTALASI/PEMASANGAN BARANG
                     <br>
-                </h3>
-                <p class="fs-14">
-                    SEWA SARANA PRASARANA UNTUK SELEKSI NASIONAL CALON APARATUR SIPIL NEGARA (CASN)<br>
+                    SEWA SARANA PRASARANA UNTUK SELEKSI NASIONAL CALON APARATUR SIPIL NEGARA (CASN)
+                    <br>
                     TAHUN ANGGARAN 2023 (SKB CASN TAHAP 1)
-                </p>
+                </h4>
             </td>
         </tr>
     </table>
+    <br>
     <br>
     <hr>
     <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Pada hari ini <?php echo $day_list[date("D", strtotime($instalasi_barang['tgl_terima']))] ?> tanggal <?php echo date("d", strtotime($instalasi_barang['tgl_terima'])) ?> bulan <?php echo $month_list[date("m", strtotime($instalasi_barang['tgl_terima']))] ?> tahun <?php echo date("Y", strtotime($instalasi_barang['tgl_terima'])) ?>, telah dilakukan instalasi/ pemasangan sarana dan prasarana untuk keperluan pelaksanaan Ujian Seleksi Nasional CASN Tahun <?php echo date("Y", strtotime($instalasi_barang['tgl_terima'])) ?> di titik lokasi Provinsi <?php echo $instalasi_barang['province_name'] ?> yang berlokasi di <?php echo $instalasi_barang['nama_lokasi'] ?> dengan alamat <?php echo $instalasi_barang['alamat'] ?> dengan rincian sebagai berikut :</span></p>
@@ -279,12 +279,12 @@
         </tbody>
     </table>
 
-    <h3 style="align-text: center">
+    <h4 style="text-align:center">
         LAPORAN DOKUMENTASI SEWA <br/>
         PRASARANA UNTUK SELEKSI NASIONAL CALON <br/>
         APARATUR SIPIL NEGARA (CASN) <br/>
         TAHUN ANGGARAN 2023 (SKB CASN TAHAP II)
-    </h3>
+    </h4>
     <br/><br/>
 
     <p>Laporan Penerimaan Barang dan Instalasi.</p>

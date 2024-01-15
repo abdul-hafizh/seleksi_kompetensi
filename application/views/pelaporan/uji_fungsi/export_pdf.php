@@ -142,7 +142,7 @@
     <br>
     <br><br><br><br>
     <br><br><br>
-    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;'><strong><span style='font-size:13px;font-family:"Tahoma",sans-serif;'><?php echo isset($uji_fungsi['kode_penerimaan']) ? $uji_fungsi['kode_penerimaan'] : ''; ?> </span></strong></p>
+    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;'><strong><span style='font-size:13px;font-family:"Tahoma",sans-serif;'><?php echo isset($uji_barang['kode_uji']) ? $uji_barang['kode_uji'] : ''; ?> </span></strong></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;'><strong><span style='font-size:27px;line-height:107%;font-family:"Tahoma",sans-serif;'>SKB BKN PUSAT</span></strong></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;text-align:justify;'><span style='font-size:16px;line-height:107%;font-family:"Tahoma",sans-serif;'>Jl. Mayor Jendral Sutoyo No 12 , RT.4 / RW.14, Cililitan, Kec.&nbsp;</span><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Kramat Jati, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13640</span></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;text-align:justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>&nbsp;</span></p>
@@ -182,25 +182,24 @@
     <table style="margin-bottom: -2em!important; margin-top: 1em!important;">
         <tr>
             <td style="width: 60%;text-align:center;">
-                <h3>
+                <h4>
                     BERITA ACARA UJI FUNGSI PERANGKAT TEKNOLOGI INFORMASI ELEKTRONIK
                     <br>
                     UNTUK SELEKSI NASIONAL CALPON APARATUR SIPIL NEGARA (CASN) TAHUN
                     <br>
                     ANGGARAN 2023 (SKB CASN TAHAP 2)
-                </h3>
+                </h4>
             </td>
         </tr>
     </table>
     <br>
     <br>
+    <hr>
     <table id="content" style="border:1px solid black;width:100%;">
         <thead>
             <tr>
                 <th style="border:1px solid black;width:5%;" rowspan="2">No</th>
                 <th style="border:1px solid black;width:20%;" rowspan="2">Nama Barang</th>
-                <th style="border:1px solid black;width:10%;" rowspan="2">Jumlah Terpasang</th>
-                <th style="border:1px solid black;width:10%;" rowspan="2">Satuan</th>
                 <th style="border:1px solid black;width:10%;" colspan="2">Status *)</th>
                 <th style="border:1px solid black;width:10%;" rowspan="2">Keterangan **)</th>
             </tr>
@@ -210,17 +209,15 @@
             </tr>
         </thead>
         <tbody>
-            <?php if (isset($uji_fungsi_detail) && count($uji_fungsi_detail)) : ?>
+            <?php if (isset($uji_barang_detail) && count($uji_barang_detail)) : ?>
                 <?php $no = 1; ?>
-                <?php foreach ($uji_fungsi_detail as $k => $v) : ?>
+                <?php foreach ($uji_barang_detail as $k => $v) : ?>
                     <tr>
                         <td style="border:1px solid black;width:5%;text-align:center;"><?php echo $no; ?></td>
                         <td style="border:1px solid black;width:10%;"><?php echo $v['nama_barang']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_terpasang']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['satuan']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_terima']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_rusak']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;">&nbsp;</td>
+                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['status_baik']; ?></td>
+                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['status_tidak']; ?></td>
+                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['catatan']; ?></td>
                     </tr>
                     <?php $no++; ?>
                 <?php endforeach; ?>
@@ -261,7 +258,7 @@
                 <td style="width:50%;text-align:center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="width:50%;text-align:center;">( <?php echo $uji_fungsi['fullname'] ?> )</td>
+                <td style="width:50%;text-align:center;">( <?php echo $uji_barang['fullname'] ?> )</td>
                 <td style="width:50%;text-align:center;">( Bambang Supardi, S.Sos )</td>
             </tr>
             <tr>
@@ -271,12 +268,12 @@
         </tbody>
     </table>
 
-    <h3 style="align-text: center">
+    <h4 style="text-align:center">
         LAPORAN DOKUMENTASI SEWA <br/>
         PRASARANA UNTUK SELEKSI NASIONAL CALON <br/>
         APARATUR SIPIL NEGARA (CASN) <br/>
         TAHUN ANGGARAN 2023 (SKB CASN TAHAP II)
-    </h3>
+    </h4>
     <br/><br/>
 
     <p>Laporan Uji Fungsi IT dan Elektronik.</p>
@@ -285,22 +282,22 @@
             <tr>
                 <td style="width:120px;">Koordinator</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?php echo $uji_fungsi['fullname'] ?></td>
+                <td>&nbsp;&nbsp;<?php echo $uji_barang['fullname'] ?></td>
             </tr>
             <tr>
                 <td style="width:120px;">Lokasi</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?php echo $uji_fungsi['nama_lokasi'] ?></td>
+                <td>&nbsp;&nbsp;<?php echo $uji_barang['nama_lokasi'] ?></td>
             </tr>
             <tr>
                 <td style="width:120px;">Alamat Lokasi</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?php echo $uji_fungsi['alamat'] ?></td>
+                <td>&nbsp;&nbsp;<?php echo $uji_barang['alamat'] ?></td>
             </tr>
             <tr>
                 <td style="width:120px;">Tanggal</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?php echo date("d", strtotime($uji_fungsi['tgl_terima'])) . " " . $month_list[date("m", strtotime($uji_fungsi['tgl_terima']))] . " " . date("Y", strtotime($uji_fungsi['tgl_terima'])) ?></td>
+                <td>&nbsp;&nbsp;<?php echo date("d", strtotime($uji_barang['jadwal_kegiatan'])) . " " . $month_list[date("m", strtotime($uji_barang['jadwal_kegiatan']))] . " " . date("Y", strtotime($uji_barang['jadwal_kegiatan'])) ?></td>
             </tr>
         </tbody>
     </table>
@@ -308,21 +305,21 @@
     <br>
     <table style="border:none;border-collapse: collapse;width:100%;">
         <tbody>
-            <?php if (isset($uji_fungsi_detail) && count($uji_fungsi_detail)) : ?>
+            <?php if (isset($uji_barang_detail) && count($uji_barang_detail)) : ?>
                 <?php $no = 1; ?>
-                <?php for ($i = 0; $i < sizeof($uji_fungsi_detail); $i += 2) : ?>
+                <?php for ($i = 0; $i < sizeof($uji_barang_detail); $i += 2) : ?>
                     <tr>
                         <td style="width:50%;text-align:center;">
                             <table id="content" style="border:1px solid black;width:100%;">
                                 <tbody>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?php echo base_url('uploads/uji_fungsi_barang/' . $uji_fungsi_detail[$i]["foto_barang"] . '') ?>" width="200px" height="200px" />
+                                            <img src="<?php echo base_url('uploads/uji_fungsi_barang/' . $uji_barang_detail[$i]["foto_barang"] . '') ?>" width="200px" height="200px" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?php echo isset($uji_fungsi_detail[$i]["nama_barang"]) ? $uji_fungsi_detail[$i]["nama_barang"] : '&nbsp;' ?>
+                                            <?php echo isset($uji_barang_detail[$i]["nama_barang"]) ? $uji_barang_detail[$i]["nama_barang"] : '&nbsp;' ?>
                                         </td>
                                     </tr>
                             </table>
@@ -333,12 +330,12 @@
                                 <tbody>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?php echo base_url('uploads/uji_fungsi_barang/' . $uji_fungsi_detail[$i + 1]["foto_barang"] . '') ?>" width="200px" height="200px"/>
+                                            <img src="<?php echo base_url('uploads/uji_fungsi_barang/' . $uji_barang_detail[$i + 1]["foto_barang"] . '') ?>" width="200px" height="200px"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?php echo isset($uji_fungsi_detail[$i]["nama_barang"]) ? $uji_fungsi_detail[$i + 1]["nama_barang"] : '&nbsp;' ?>
+                                            <?php echo isset($uji_barang_detail[$i]["nama_barang"]) ? $uji_barang_detail[$i + 1]["nama_barang"] : '&nbsp;' ?>
                                         </td>
                                     </tr>
                             </table>

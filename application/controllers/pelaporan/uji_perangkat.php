@@ -58,26 +58,96 @@ class Uji_perangkat extends Telescoope_Controller
     public function export()
     {
         $post = $this->input->post();
-        $penerimaan_id = $post['uji_id'];
-        $tgl_terima = $post['tgl_terima'];
-        $file = './assets/uji_aceh_Potola_arabia.pdf';
-        force_download($file, NULL);
+        $uji_id = $post['uji_id'];  
 
-        // $instalasi_barang = $this->Uji_fungsi_barang_m->get_InstalasiBarangExist($penerimaan_id, $tgl_terima)->row_array();
-        // if (isset($instalasi_barang)) {
-        //     $instalasi_barang_detail = $this->Uji_fungsi_barang_m->get_InstalasiBarangDetail($instalasi_barang['id'])->result_array();
-        //     $data = array();
-        //     $data['instalasi_barang'] = $instalasi_barang;
-        //     $data['instalasi_barang_detail'] = $instalasi_barang_detail;
+        $uji_barang = $this->Uji_fungsi_barang_m->get_BarangExist($uji_id)->row_array();
+        if (isset($uji_barang)) {
+            $uji_barang_detail = $this->Uji_fungsi_barang_m->get_BarangDetail($uji_barang['id'])->result_array();
+            $data = array();
+            $data['uji_barang'] = $uji_barang;
+            $data['uji_barang_detail'] = $uji_barang_detail;
+            $data['month_list'] = [
+                '' => '',
+                '01' => 'Januari',
+                '02' => 'Februari',
+                '03' => 'Maret',
+                '04' => 'April',
+                '05' => 'Mei',
+                '06' => 'Juni',
+                '07' => 'Juli',
+                '08' => 'Agustus',
+                '09' => 'September',
+                '10' => 'Oktober',
+                '11' => 'November',
+                '12' => 'Desember',
+            ];
+            $data['day_list'] = [
+                'Sun' => 'Minggu',
+                'Mon' => 'Senin',
+                'Tue' => 'Selasa',
+                'Wed' => 'Rabu',
+                'Thu' => 'Kamis',
+                'Fri' => 'Jumat',
+                'Sat' => 'Sabtu',
+            ];
 
-        //     $this->load->library('pdf');
-        //     $this->pdf->setPaper('A4', 'potrait');
-        //     $this->pdf->filename = "laporan_instalasi_barang.pdf";
-        //     $this->pdf->set_option('isRemoteEnabled', true);
-        //     $this->pdf->load_view('pelaporan/instalasi_barang/export_pdf', $data);
-        // } else {
-        //     $this->setMessage("Data instalasi barang tidak ditemukan.");
-        //     redirect(site_url('pelaporan/instalasi_barang'));
-        // }
+            $this->template("pelaporan/uji_perangkat/export_pdf", "Data Update Kegiatan", $data);
+
+            $this->load->library('pdf');
+            $this->pdf->setPaper('A4', 'potrait');
+            $this->pdf->filename = "Laporan Uji Fungsi IT dan Elektronik Jadwal " . $uji_barang['jadwal_kegiatan'] . ".pdf";
+            $this->pdf->set_option('isRemoteEnabled', true);
+            $this->pdf->load_view('pelaporan/uji_fungsi/export_pdf', $data);
+        } else {
+            $this->setMessage("Data uji barang tidak ditemukan.");
+            redirect(site_url('pelaporan/uji_perangkat'));        
+        }
+    }
+
+    public function download()
+    {
+        $post = $this->input->get();
+        $uji_id = $post['uji_id'];
+
+        $uji_barang = $this->Uji_fungsi_barang_m->get_BarangExist($uji_id)->row_array();
+        if (isset($uji_barang)) {
+            $uji_barang_detail = $this->Uji_fungsi_barang_m->get_BarangDetail($uji_barang['id'])->result_array();
+            $data = array();
+            $data['uji_barang'] = $uji_barang;
+            $data['uji_barang_detail'] = $uji_barang_detail;
+            $data['month_list'] = [
+                '' => '',
+                '01' => 'Januari',
+                '02' => 'Februari',
+                '03' => 'Maret',
+                '04' => 'April',
+                '05' => 'Mei',
+                '06' => 'Juni',
+                '07' => 'Juli',
+                '08' => 'Agustus',
+                '09' => 'September',
+                '10' => 'Oktober',
+                '11' => 'November',
+                '12' => 'Desember',
+            ];
+            $data['day_list'] = [
+                'Sun' => 'Minggu',
+                'Mon' => 'Senin',
+                'Tue' => 'Selasa',
+                'Wed' => 'Rabu',
+                'Thu' => 'Kamis',
+                'Fri' => 'Jumat',
+                'Sat' => 'Sabtu',
+            ];
+
+            $this->load->library('pdf');
+            $this->pdf->setPaper('A4', 'potrait');
+            $this->pdf->filename = "Laporan Uji Fungsi IT dan Elektronik Jadwal " . $uji_barang['jadwal_kegiatan'] . ".pdf";
+            $this->pdf->set_option('isRemoteEnabled', true);
+            $this->pdf->load_view('pelaporan/uji_fungsi/export_pdf', $data, true);
+        } else {
+            $this->setMessage("Data uji barang tidak ditemukan.");
+            redirect(site_url('pelaporan/uji_perangkat'));
+        }
     }
 }
