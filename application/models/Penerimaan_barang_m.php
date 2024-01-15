@@ -100,7 +100,7 @@ class Penerimaan_barang_m extends CI_Model
 
 	public function get_InstalasiBarangExist($penerimaan_id, $tgl_terima)
 	{
-		$this->db->select('pb.*, skd.nama_lokasi, skd.alamat, ref.province_name');
+		$this->db->select('pb.*, emp.fullname, emp.phone, emp.email, emp.nik, emp.alamat, skd.nama_lokasi, skd.alamat, ref.province_name');
 		$this->db->where('pb.id', $penerimaan_id);
 		$this->db->where('pb.tgl_terima', $tgl_terima);
 		$this->db->from('penerimaan_barang pb');
@@ -108,14 +108,17 @@ class Penerimaan_barang_m extends CI_Model
 		$this->db->join('perencanaan p', 'p.id = pbr.perencanaan_id', 'left');
 		$this->db->join('lokasi_skd skd', 'skd.id = p.kode_lokasi_skd', 'left');
 		$this->db->join('ref_locations ref', 'ref.location_id = skd.lokasi_id', 'left');
+		$this->db->join('adm_employee emp', 'emp.id = pb.updated_by', 'left');
 		return $this->db->get();
 	}
 
 	public function get_InstalasiBarangDetail($id = '')
 	{
-		$this->db->select('pd.*, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn');
+		$this->db->select('pd.*, emp.fullname, emp.phone, emp.email, emp.nik, emp.alamat, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn');
 		$this->db->where('pd.penerimaan_id', $id);
 		$this->db->join('adm_barang', 'adm_barang.id = pd.barang_id', 'left');
+		$this->db->join('penerimaan_barang pb', 'pb.id = pd.penerimaan_id', 'left');
+		$this->db->join('adm_employee emp', 'emp.id = pb.updated_by', 'left');
 
 		return $this->db->get('penerimaan_detail pd');
 	}

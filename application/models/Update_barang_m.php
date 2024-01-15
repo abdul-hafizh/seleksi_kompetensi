@@ -56,14 +56,15 @@ class Update_barang_m extends CI_Model
 		return $this->db->get();
 	}
 
-	public function get_UpdateBarangExist($perencanaan_id, $tgl_update_harian, $id = null)
+	public function get_UpdateBarangExist($penerimaan_id, $tgl_update_harian, $id = null)
 	{
-		$this->db->select('uhb.*, skd.nama_lokasi, skd.alamat, ref.province_name');
-		$this->db->where('uhb.perencanaan_id', $perencanaan_id);
+		$this->db->select('uhb.*, skd.nama_lokasi, skd.alamat, ref.province_name, emp.fullname, emp.phone, emp.email, emp.nik, emp.alamat');
+		$this->db->where('uhb.penerimaan_id', $penerimaan_id);
 		$this->db->where('uhb.tgl_update_harian', $tgl_update_harian);
-		$this->db->join('perencanaan p', 'p.id = uhb.perencanaan_id', 'left');
+		$this->db->join('perencanaan p', 'p.id = uhb.penerimaan_id', 'left');
 		$this->db->join('lokasi_skd skd', 'skd.id = p.kode_lokasi_skd', 'left');
 		$this->db->join('ref_locations ref', 'ref.location_id = skd.lokasi_id', 'left');
+		$this->db->join('adm_employee emp', 'emp.id = uhb.updated_by', 'left');
 		if (isset($id)) {
 			$this->db->where('uhb.id !=', $id);
 		}
@@ -74,9 +75,11 @@ class Update_barang_m extends CI_Model
 
 	public function get_UpdateBarangDetail($id = '')
 	{
-		$this->db->select('pd.*, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn');
+		$this->db->select('pd.*, emp.fullname, emp.phone, emp.email, emp.nik, emp.alamat, adm_barang.kode_barang_id, adm_barang.nama_barang, adm_barang.merek, adm_barang.satuan, adm_barang.jenis_alat, adm_barang.kelompok, adm_barang.sn');
 		$this->db->where('pd.update_barang_id', $id);
 		$this->db->join('adm_barang', 'adm_barang.id = pd.barang_id', 'left');
+		$this->db->join('update_harian_barang uhb', 'uhb.id = pd.update_barang_id', 'left');
+		$this->db->join('adm_employee emp', 'emp.id = uhb.updated_by', 'left');
 
 		return $this->db->get('update_harian_barang_detail pd');
 	}

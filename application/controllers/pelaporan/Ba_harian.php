@@ -52,16 +52,17 @@ class Ba_harian extends Telescoope_Controller
     {
         $data = array();
         $data['get_perencanaan'] = $this->Perencanaan_m->getPerencanaan()->result_array();
+        $data['get_penerimaan'] = $this->Penerimaan_barang_m->getPenerimaan_barang()->result_array();
         $this->template("pelaporan/ba_harian/form_ba_harian_v", "Data Pelaporan Berita Acara Harian", $data);
     }
 
     public function export()
     {
         $post = $this->input->post();
-        $perencanaan_id = $post['perencanaan_id'];
+        $penerimaan_id = $post['penerimaan_id'];
         $tgl_update = $post['tgl_update'];
 
-        $update_barang = $this->Update_barang_m->get_UpdateBarangExist($perencanaan_id, $tgl_update)->row_array();
+        $update_barang = $this->Update_barang_m->get_UpdateBarangExist($penerimaan_id, $tgl_update)->row_array();
         if (isset($update_barang)) {
             $update_barang_detail = $this->Update_barang_m->get_UpdateBarangDetail($update_barang['id'])->result_array();
             $data = array();
@@ -106,10 +107,10 @@ class Ba_harian extends Telescoope_Controller
     public function download()
     {
         $post = $this->input->get();
-        $perencanaan_id = $post['perencanaan_id'];
+        $penerimaan_id = $post['penerimaan_id'];
         $tgl_update = $post['tgl_update'];
 
-        $update_barang = $this->Update_barang_m->get_UpdateBarangExist($perencanaan_id, $tgl_update)->row_array();
+        $update_barang = $this->Update_barang_m->get_UpdateBarangExist($penerimaan_id, $tgl_update)->row_array();
         if (isset($update_barang)) {
             $update_barang_detail = $this->Update_barang_m->get_UpdateBarangDetail($update_barang['id'])->result_array();
             $data = array();

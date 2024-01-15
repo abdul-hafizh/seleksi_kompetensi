@@ -196,9 +196,7 @@
     <br>
     <hr>
     <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Pada hari ini <?php echo $day_list[date("D", strtotime($instalasi_barang['tgl_terima']))] ?> tanggal <?php echo date("d", strtotime($instalasi_barang['tgl_terima'])) ?> bulan <?php echo $month_list[date("m", strtotime($instalasi_barang['tgl_terima']))] ?> tahun <?php echo date("Y", strtotime($instalasi_barang['tgl_terima'])) ?>, telah dilakukan instalasi/ pemasangan sarana dan prasarana untuk keperluan pelaksanaan Ujian Seleksi Nasional CASN Tahun <?php echo date("Y", strtotime($instalasi_barang['tgl_terima'])) ?> di titik lokasi Provinsi <?php echo $instalasi_barang['province_name'] ?> yang berlokasi di <?php echo $instalasi_barang['nama_lokasi'] ?> dengan alamat <?php echo $instalasi_barang['alamat'] ?> dengan rincian sebagai berikut :</span></p>
-    <br>
-    <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;font-weight:bold;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>A. SARANA PRASARANA UTAMA</span></p>
-    <br>
+    <br>    
     <table id="content" style="border:1px solid black;width:100%;">
         <thead>
             <tr>
@@ -243,12 +241,12 @@
     <table style="border:none;border-collapse: collapse;width:100%;page-break-after: always;">
         <tbody>
             <tr>
-                <td style="width:50%;text-align:center;">Yang Menerima :</td>
-                <td style="width:50%;text-align:center;">Yang Menyerahkan :</td>
+                <td style="width:50%;text-align:center;">Yang menyerahkan :</td>
+                <td style="width:50%;text-align:center;">Yang menerima :</td>
             </tr>
             <tr>
-                <td style="width:50%;text-align:center;font-weight:bold;">Koordinator/ Wakil Pihak BKN</td>
                 <td style="width:50%;text-align:center;font-weight:bold;">Koordinator Pihak Penyedia</td>
+                <td style="width:50%;text-align:center;font-weight:bold;">Koordinator Wakil Pihak BKN</td>
             </tr>
             <tr>
                 <td style="width:50%;text-align:center;">&nbsp;</td>
@@ -271,23 +269,31 @@
                 <td style="width:50%;text-align:center;">&nbsp;</td>
             </tr>
             <tr>
+                <td style="width:50%;text-align:center;">( <?php echo $instalasi_barang['fullname'] ?> )</td>
                 <td style="width:50%;text-align:center;">( Bambang Supardi, S.Sos )</td>
-                <td style="width:50%;text-align:center;">( Ahmad Sukendar )</td>
             </tr>
             <tr>
-                <td style="width:50%;text-align:center;">NIP. 197009011995031001</td>
                 <td style="width:50%;text-align:center;">&nbsp;</td>
+                <td style="width:50%;text-align:center;">NIP. 197009011995031001</td>
             </tr>
         </tbody>
     </table>
 
-    <h3>PENERIMAAN BARANG DAN INSTALASI</h3><hr/><br/><br/>
+    <h3 style="align-text: center">
+        LAPORAN DOKUMENTASI SEWA <br/>
+        PRASARANA UNTUK SELEKSI NASIONAL CALON <br/>
+        APARATUR SIPIL NEGARA (CASN) <br/>
+        TAHUN ANGGARAN 2023 (SKB CASN TAHAP II)
+    </h3>
+    <br/><br/>
+
+    <p>Laporan Penerimaan Barang dan Instalasi.</p>
     <table style="border:none;border-collapse: collapse;width:100%;">
         <tbody>
             <tr>
                 <td style="width:120px;">Koordinator</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;Ahmad Sukendar</td>
+                <td>&nbsp;&nbsp;<?php echo $instalasi_barang['fullname'] ?></td>
             </tr>
             <tr>
                 <td style="width:120px;">Lokasi</td>
