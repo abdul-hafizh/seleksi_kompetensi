@@ -327,35 +327,51 @@
                 <?php for ($i = 0; $i < sizeof($update_barang_detail); $i += 2) : ?>
                     <tr>
                         <td style="width:50%;text-align:center;">
-                            <table id="content" style="border:1px solid black;width:100%;">
-                                <tbody>
-                                    <tr>
-                                        <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i]["foto_barang"] . '') ?>" width="200px" height="200px" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?php echo isset($update_barang_detail[$i]["nama_barang"]) ? $update_barang_detail[$i]["nama_barang"] : '&nbsp;' ?>
-                                        </td>
-                                    </tr>
-                            </table>
+                            <?php if (isset($update_barang_detail[$i]["foto_barang"]) && !empty($update_barang_detail[$i]["foto_barang"])) : ?>
+                            <?php
+                                $imagePath = 'uploads/update_barang/' . $update_barang_detail[$i]["foto_barang"];
+                                if (file_exists($imagePath)) :
+                            ?>
+                                <table id="content" style="border:1px solid black;width:100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="border:1px solid black;width:10%;text-align:center;">
+                                                <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i]["foto_barang"] . '') ?>" width="200px" height="200px" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:1px solid black;width:10%;text-align:center;">
+                                                <?php echo isset($update_barang_detail[$i]["nama_barang"]) ? $update_barang_detail[$i]["nama_barang"] : '&nbsp;' ?>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </td>
                         <td>&nbsp;&nbsp;&nbsp;</td>
                         <td style="width:50%;text-align:center;">
-                            <table id="content" style="border:1px solid black;width:100%;">
-                                <tbody>
-                                    <tr>
-                                        <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i + 1]["foto_barang"] . '') ?>" width="200px" height="200px" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border:1px solid black;width:10%;text-align:center;">
-                                            <?php echo isset($update_barang_detail[$i]["nama_barang"]) ? $update_barang_detail[$i + 1]["nama_barang"] : '&nbsp;' ?>
-                                        </td>
-                                    </tr>
-                            </table>
+                            <?php if (isset($update_barang_detail[$i + 1]["foto_barang"]) && !empty($update_barang_detail[$i + 1]["foto_barang"])) : ?>
+                            <?php
+                                $imagePath = 'uploads/update_barang/' . $update_barang_detail[$i + 1]["foto_barang"];
+                                if (file_exists($imagePath)) :
+                            ?>
+                                <table id="content" style="border:1px solid black;width:100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="border:1px solid black;width:10%;text-align:center;">
+                                                <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i + 1]["foto_barang"] . '') ?>" width="200px" height="200px" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border:1px solid black;width:10%;text-align:center;">
+                                                <?php echo isset($update_barang_detail[$i]["nama_barang"]) ? $update_barang_detail[$i + 1]["nama_barang"] : '&nbsp;' ?>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php $no++; ?>
