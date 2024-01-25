@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>BERITA ACARA HARIAN</title>
+    <title>BERITA ACARA DISMANTLE</title>
     <style type="text/css">
         body {
             font-family: "Calibri", Verdana, Geneva, Tahoma, sans-serif;
@@ -133,7 +133,7 @@
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;'>&nbsp;</p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;'>&nbsp;</p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;'>&nbsp;</p>
-    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;text-align:center;'><strong><span style='font-size:27px;font-family:"Tahoma",sans-serif;'>BERITA ACARA HARIAN</span></strong></p>
+    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;text-align:center;'><strong><span style='font-size:27px;font-family:"Tahoma",sans-serif;'>BERITA ACARA DISMANTLE</span></strong></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;text-align:center;'><strong><span style='font-size:27px;font-family:"Tahoma",sans-serif;'>&nbsp;</span></strong></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;text-align:center;'><strong><span style='font-size:27px;font-family:"Tahoma",sans-serif;'>&nbsp;</span></strong></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;text-align:center;'><strong><span style='font-size:27px;font-family:"Tahoma",sans-serif;'>&nbsp;</span></strong></p>
@@ -142,7 +142,7 @@
     <br>
     <br><br><br><br>
     <br><br><br>
-    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Tahoma",sans-serif;'><?php echo isset($update_barang['kode_perencanaan']) ? $update_barang['kode_perencanaan'] : ''; ?> </span></strong></p>
+    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;'><strong><span style='font-size:13px;font-family:"Tahoma",sans-serif;'><?php echo isset($dismantle_row['kode_serah_terima']) ? $dismantle_row['kode_serah_terima'] : ''; ?> </span></strong></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;'><strong><span style='font-size:27px;line-height:107%;font-family:"Tahoma",sans-serif;'>SKB BKN PUSAT</span></strong></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;text-align:justify;'><span style='font-size:16px;line-height:107%;font-family:"Tahoma",sans-serif;'>Jl. Mayor Jendral Sutoyo No 12 , RT.4 / RW.14, Cililitan, Kec.&nbsp;</span><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Kramat Jati, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13640</span></p>
     <p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;text-align:justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>&nbsp;</span></p>
@@ -186,7 +186,7 @@
         <tr>
             <td style="width: 60%;text-align:center;">
                 <h4>
-                    BERITA ACARA HARIAN
+                    BERITA ACARA DISMANTLE
                     <br>
                     SEWA SARANA PRASARANA UNTUK SELEKSI NASIONAL CALON APARATUR SIPIL NEGARA (CASN)
                     <br>
@@ -198,61 +198,44 @@
     <br>
     <br>
     <hr>
-    <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Pada hari in <?php echo $day_list[date("D", strtotime($update_barang['tgl_update_harian']))] ?> tanggal <?php echo date("d", strtotime($update_barang['tgl_update_harian'])) ?> bulan <?php echo $month_list[date("m", strtotime($update_barang['tgl_update_harian']))] ?> tahun <?php echo date("Y", strtotime($update_barang['tgl_update_harian'])) ?>, telah digunakan sarana dan prasarana untuk keperluan pelaksanaan Ujian Seleksi Nasional CASN Tahun <?php echo date("Y", strtotime($update_barang['tgl_update_harian'])) ?> di titik lokasi Provinsi <?php echo $update_barang['province_name'] ?> yang berlokasi di <?php echo $update_barang['nama_lokasi'] ?> dengan alamat <?php echo $update_barang['alamat'] ?> dengan rincian sebagai berikut :</span></p>
-    <br>
-    <table id="content" style="border:1px solid black;width:100%;">
-        <thead>
-            <tr>
-                <th style="border:1px solid black;width:5%;" rowspan="2">No</th>
-                <th style="border:1px solid black;width:20%;" rowspan="2">Nama Barang</th>
-                <th style="border:1px solid black;width:10%;" rowspan="2">Jumlah</th>
-                <th style="border:1px solid black;width:10%;" rowspan="2">Satuan</th>
-                <th style="border:1px solid black;width:10%;" colspan="2">Status</th>
-                <th style="border:1px solid black;width:10%;" colspan="2">Kondisi</th>
-            </tr>
-            <tr>
-                <th style="border:1px solid black;width:10%;">Ada</th>
-                <th style="border:1px solid black;width:10%;">Tidak</th>
-                <th style="border:1px solid black;width:10%;">Baik</th>
-                <th style="border:1px solid black;width:10%;">Tidak Baik</th>
-            </tr>
-        </thead>
+    <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Pada hari in <?php echo $day_list[date("D", strtotime($dismantle_row['tgl_kegiatan']))] ?> Tanggal <?php echo date("d", strtotime($dismantle_row['tgl_kegiatan'])) ?> Bulan <?php echo $month_list[date("m", strtotime($dismantle_row['tgl_kegiatan']))]; ?> Tahun <?php echo date("Y", strtotime($dismantle_row['tgl_kegiatan'])) ?>, yang bertandan tangan di bawah in : </span></p> 
+    <br/>
+    <table style="border:none;border-collapse: collapse;width:100%;">
         <tbody>
-            <?php if (isset($update_barang_detail) && count($update_barang_detail)) : ?>
-                <?php $no = 1; ?>
-                <?php foreach ($update_barang_detail as $k => $v) : ?>
-                    <tr>
-                        <td style="border:1px solid black;width:5%;text-align:center;"><?php echo $no; ?></td>
-                        <td style="border:1px solid black;width:10%;"><?php echo $v['nama_barang']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_barang']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['satuan']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_barang_status_ada']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_barang_status_tidak_ada']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_barang_kondisi_baik']; ?></td>
-                        <td style="border:1px solid black;width:10%;text-align:center;"><?php echo $v['jumlah_barang_kondisi_rusak']; ?></td>
-                    </tr>
-                    <?php $no++; ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            <tr>
+                <td style="width:180px;">Nama</td>
+                <td> : </td>
+                <td>&nbsp;&nbsp;<?php echo $dismantle_row['nama_penerima'] ?></td>
+            </tr>
+            <tr>
+                <td style="width:180px;">NIP</td>
+                <td> : </td>
+                <td>&nbsp;&nbsp;<?php echo $dismantle_row['nip'] ?></td>
+            </tr>
+            <tr>
+                <td style="width:180px;">Jabatan</td>
+                <td> : </td>
+                <td>&nbsp;&nbsp;<?php echo $dismantle_row['jabatan'] ?></td>
+            </tr>            
         </tbody>
     </table>
-    <br>
-    <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;font-weight:bold;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>PETUNJUK PENGISIAN FORM : </span></p>
-    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>*) Disi sesuai dengan jumlah (angka) unit/PK/m2 yang terpasang dan siap untuk digunakan.</span></p>
-    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>**) Diisi apabila terdapat ketidaksesuaian antara jumlah unit/PK/m2 dengan spesifikasi teknis (lihat lampiran spesifikasi teknis).</span></p>
-    <br>
-    <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Demikianlah berita acara ini dibuat dengan sebenarnya, untuk dapat diketahui dan dipergunakan sebagaimana mestinya.</span></p>
-
+    <br>    
+    <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Menyatakan bahwa pelaksanaan Seleksi Nasional Calon Aparatur Sipil Negara (CASN) TA 2023 tahapan Seleksi Kompetensi Bidang (SKB) Tahap 1 di titik lokasi <?php echo $dismantle_row['nama_lokasi'] ?> di <?php echo $dismantle_row['alamat_kegiatan'] ?> telah selesai dilaksanakan.</span></p> 
+    <br/>
+    <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Seluruh Sarana Prasarana tersebut telah digunakan untuk pelaksanan Seleksi Nasional Calon Aparatur Sipil (CASN) TA 2023 tahapan Seleksi Kompetensi Bidang (SKB) Tahap 1 dan telah dinyatakan selesai pada tanggal <?php echo date("d", strtotime($dismantle_row['tgl_kegiatan'])) ?> bulan <?php echo $month_list[date("m", strtotime($dismantle_row['tgl_kegiatan']))]; ?> tahun <?php echo date("Y", strtotime($dismantle_row['tgl_kegiatan'])) ?> dan tidak dipergunakan lagi untuk kegiatan tersebut. Oleh karena itu kami akan melakukan Deinstalasi Perangkat pada tanggal <?php echo date("d", strtotime($dismantle_row['tgl_kegiatan'])) ?> bulan <?php echo $month_list[date("m", strtotime($dismantle_row['tgl_kegiatan']))]; ?> tahun <?php echo date("Y", strtotime($dismantle_row['tgl_kegiatan'])) ?>.</span></p> 
+    <br>    
+    <p style='margin-top:1em!important;margin-right:0cm;margin-bottom:0cm;margin-left:0cm;font-size:10.0pt;line-height:normal;text-align: justify;'><span style='font-size:16px;font-family:"Tahoma",sans-serif;'>Demikian surat Pernyataan ini dibuat dengan sebenarnya, untuk dapat diketahui dan dipergunakan sebagaimana mestinya.</span></p> 
+    <br>    
     <br>
     <table style="border:none;border-collapse: collapse;width:100%;page-break-after: always;">
         <tbody>
             <tr>
-                <td style="width:50%;text-align:center;">Yang menyerahkan :</td>
                 <td style="width:50%;text-align:center;">Yang menerima :</td>
+                <td style="width:50%;text-align:center;">Yang menyerahkan :</td>
             </tr>
             <tr>
+                <td style="width:50%;text-align:center;font-weight:bold;">Koordinator/Wakil Pihak BKN</td>
                 <td style="width:50%;text-align:center;font-weight:bold;">Koordinator Pihak Penyedia</td>
-                <td style="width:50%;text-align:center;font-weight:bold;">Koordinator Wakil Pihak BKN</td>
             </tr>
             <tr>
                 <td style="width:50%;text-align:center;">&nbsp;</td>
@@ -275,46 +258,45 @@
                 <td style="width:50%;text-align:center;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="width:50%;text-align:center;">( <?php echo $update_barang['fullname'] ?> )</td>
-                <td style="width:50%;text-align:center;">( Bambang Supardi, S.Sos )</td>
+                <td style="width:50%;text-align:center;">( <?php echo $dismantle_row['nama_penerima'] ?> )</td>
+                <td style="width:50%;text-align:center;">( <?php echo $dismantle_row['nama_penyedia'] ?> )</td>
             </tr>
             <tr>
+                <td style="width:50%;text-align:center;">NIP. <?php echo $dismantle_row['nip'] ?></td>
                 <td style="width:50%;text-align:center;">&nbsp;</td>
-                <td style="width:50%;text-align:center;">NIP. 197009011995031001</td>
             </tr>
         </tbody>
     </table>
 
     <h4 style="text-align:center">
-        LAPORAN DOKUMENTASI SEWA <br/>
-        PRASARANA UNTUK SELEKSI NASIONAL CALON <br/>
-        APARATUR SIPIL NEGARA (CASN) <br/>
-        TAHUN ANGGARAN 2023 (SKB CASN TAHAP II)
+        LAPORAN DOKUMENTASI KEGIATAN PEMBONGKARAN/DISMANTLING <br/>
+        SARANA PRASARANA UNTUK SELEKSI NASIONAL CALON <br/>
+        APARATUR SIPIL NEGARA (CASN) TA 2023
     </h4>
-    <br/><br/>
-
-    <p>Laporan Penerimaan Barang dan Instalasi Harian.</p>
+    <br/>
+    <br/>
+    <br/>
     <table style="border:none;border-collapse: collapse;width:100%;">
         <tbody>
             <tr>
                 <td style="width:120px;">Koordinator</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?php echo $update_barang['fullname'] ?></td>
+                <td>&nbsp;&nbsp;<?php echo $dismantle_row['fullname'] ?></td>
             </tr>
             <tr>
                 <td style="width:120px;">Lokasi</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?php echo $update_barang['nama_lokasi'] ?></td>
+                <td>&nbsp;&nbsp;<?php echo $dismantle_row['nama_lokasi'] ?></td>
             </tr>
             <tr>
                 <td style="width:120px;">Alamat Lokasi</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?php echo $update_barang['alamat'] ?></td>
+                <td>&nbsp;&nbsp;<?php echo $dismantle_row['alamat_kegiatan'] ?></td>
             </tr>
             <tr>
                 <td style="width:120px;">Tanggal</td>
                 <td> : </td>
-                <td>&nbsp;&nbsp;<?php echo date("d", strtotime($update_barang['tgl_update_harian'])) . " " . $month_list[date("m", strtotime($update_barang['tgl_update_harian']))] . " " . date("Y", strtotime($update_barang['tgl_update_harian'])) ?></td>
+                <td>&nbsp;&nbsp;<?php echo date("d", strtotime($dismantle_row['tgl_kegiatan'])) . " " . $month_list[date("m", strtotime($dismantle_row['tgl_kegiatan']))] . " " . date("Y", strtotime($dismantle_row['tgl_kegiatan'])) ?></td>
             </tr>
         </tbody>
     </table>
@@ -322,26 +304,26 @@
     <br>
     <table style="border:none;border-collapse: collapse;width:100%;">
         <tbody>
-            <?php if (isset($update_barang_detail) && count($update_barang_detail)) : ?>
+            <?php if (isset($dismantle_row_detail) && count($dismantle_row_detail)) : ?>
                 <?php $no = 1; ?>
-                <?php for ($i = 0; $i < sizeof($update_barang_detail); $i += 2) : ?>
+                <?php for ($i = 0; $i < sizeof($dismantle_row_detail); $i += 2) : ?>
                     <tr>
                         <td style="width:50%;text-align:center;">
-                            <?php if (isset($update_barang_detail[$i]["foto_barang"]) && !empty($update_barang_detail[$i]["foto_barang"])) : ?>
+                            <?php if (isset($dismantle_row_detail[$i]["foto_kegiatan"]) && !empty($dismantle_row_detail[$i]["foto_kegiatan"])) : ?>
                             <?php
-                                $imagePath = 'uploads/update_barang/' . $update_barang_detail[$i]["foto_barang"];
+                                $imagePath = 'uploads/dismantle_row/' . $dismantle_row_detail[$i]["foto_kegiatan"];
                                 if (file_exists($imagePath)) :
                             ?>
                                 <table id="content" style="border:1px solid black;width:100%;">
                                     <tbody>
                                         <tr>
                                             <td style="border:1px solid black;width:10%;text-align:center;">
-                                                <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i]["foto_barang"] . '') ?>" width="200px" height="200px" />
+                                                <img src="<?php echo base_url('uploads/dismantle_row/' . $dismantle_row_detail[$i]["foto_kegiatan"] . '') ?>" width="200px" height="200px" />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style="border:1px solid black;width:10%;text-align:center;">
-                                                <?php echo isset($update_barang_detail[$i]["nama_barang"]) ? $update_barang_detail[$i]["nama_barang"] : '&nbsp;' ?>
+                                                <?php echo isset($dismantle_row_detail[$i]["foto_kegiatan"]) ? 'Kegiatan Dismantle ' . $no : '&nbsp;' ?>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -351,21 +333,21 @@
                         </td>
                         <td>&nbsp;&nbsp;&nbsp;</td>
                         <td style="width:50%;text-align:center;">
-                            <?php if (isset($update_barang_detail[$i + 1]["foto_barang"]) && !empty($update_barang_detail[$i + 1]["foto_barang"])) : ?>
+                            <?php if (isset($dismantle_row_detail[$i + 1]["foto_kegiatan"]) && !empty($dismantle_row_detail[$i + 1]["foto_kegiatan"])) : ?>
                             <?php
-                                $imagePath = 'uploads/update_barang/' . $update_barang_detail[$i + 1]["foto_barang"];
+                                $imagePath = 'uploads/dismantle_row/' . $dismantle_row_detail[$i + 1]["foto_kegiatan"];
                                 if (file_exists($imagePath)) :
                             ?>
                                 <table id="content" style="border:1px solid black;width:100%;">
                                     <tbody>
                                         <tr>
                                             <td style="border:1px solid black;width:10%;text-align:center;">
-                                                <img src="<?php echo base_url('uploads/update_barang/' . $update_barang_detail[$i + 1]["foto_barang"] . '') ?>" width="200px" height="200px" />
+                                                <img src="<?php echo base_url('uploads/dismantle_row/' . $dismantle_row_detail[$i + 1]["foto_kegiatan"] . '') ?>" width="200px" height="200px" />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td style="border:1px solid black;width:10%;text-align:center;">
-                                                <?php echo isset($update_barang_detail[$i]["nama_barang"]) ? $update_barang_detail[$i + 1]["nama_barang"] : '&nbsp;' ?>
+                                                <?php echo isset($dismantle_row_detail[$i + 1]["foto_kegiatan"]) ? 'Kegiatan Dismantle ' . $no : '&nbsp;' ?>
                                             </td>
                                         </tr>
                                     </tbody>

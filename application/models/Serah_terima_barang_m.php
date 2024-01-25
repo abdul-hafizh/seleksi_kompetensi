@@ -10,13 +10,19 @@ class Serah_terima_barang_m extends CI_Model {
 
 	}
 
-	public function getDismantle($id = '', $lokasi = '', $regional = ''){
+	public function getDismantle($id = '', $lokasi = '', $regional = '', $tgl = ''){
 
-        $this->db->select('st.*, rl.*, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi');
+        $this->db->select('st.*, rl.*, lokasi_skd.kode_lokasi, lokasi_skd.nama_lokasi, lokasi_skd.alamat, emp.fullname');
 
 		if(!empty($id)){
 
 			$this->db->where('st.id', $id);
+
+		}
+
+		if(!empty($tgl)){
+
+			$this->db->where('st.tgl_kegiatan', $tgl);
 
 		}
 
@@ -34,6 +40,7 @@ class Serah_terima_barang_m extends CI_Model {
 		
 		$this->db->join('lokasi_skd', 'lokasi_skd.id = st.lokasi_skd_id', 'left');
 		$this->db->join('ref_locations rl', 'rl.location_id = lokasi_skd.lokasi_id', 'left');
+		$this->db->join('adm_employee emp', 'emp.id = st.updated_by', 'left');
 
 		return $this->db->get('serah_terima st');
     }
