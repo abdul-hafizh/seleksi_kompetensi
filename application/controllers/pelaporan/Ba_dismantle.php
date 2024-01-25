@@ -52,7 +52,7 @@ class Ba_dismantle extends Telescoope_Controller
     {
         $data = array();
         $data['get_dismantle'] = $this->Serah_terima_barang_m->getDismantle()->result_array();
-        $this->template("pelaporan/ba_dismantle/form_ba_dismantle_v", "Data Pelaporan Berita Acara Harian", $data);
+        $this->template("pelaporan/ba_dismantle/form_ba_dismantle_v", "Data Pelaporan Berita Acara Dismantle", $data);
     }
 
     public function export()

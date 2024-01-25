@@ -3,7 +3,7 @@
 <!-- jquery validate-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
-<form action="<?php echo site_url('pelaporan/ba_harian/export'); ?>" method="post" id="basic-form" enctype="multipart/form-data" target="_blank">
+<form action="<?php echo site_url('pelaporan/ba_dismantle/export'); ?>" method="post" id="basic-form" enctype="multipart/form-data" target="_blank">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -74,7 +74,7 @@
         let tgl_kegiatan =$("#tgl_kegiatan").val();
         let dismantle_id=$("#dismantle_id").val();
         if(tgl_kegiatan && dismantle_id){
-            window.location.href='<?php echo site_url("pelaporan/ba_harian/download"); ?>?dismantle_id='+dismantle_id+'&tgl_kegiatan='+tgl_kegiatan
+            window.location.href='<?php echo site_url("pelaporan/ba_dismantle/download"); ?>?dismantle_id='+dismantle_id+'&tgl_kegiatan='+tgl_kegiatan
         }else{
             alert('Dismantle dan tanggal kegiatan harap di isi.');
         }
